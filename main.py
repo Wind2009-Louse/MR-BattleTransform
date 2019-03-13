@@ -1,7 +1,6 @@
 import time
 from script import db
 from script.jsonpack import *
-from script.locate import *
 
 def main():
     while(True):

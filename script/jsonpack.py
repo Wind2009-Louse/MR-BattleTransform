@@ -1,6 +1,7 @@
 import json
 import requests
 import os
+from script.locate import *
 
 def jsondir():
     os.chdir(os.getcwd())
