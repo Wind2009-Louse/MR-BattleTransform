@@ -399,8 +399,10 @@ def art_to_str(this_art):
 
 def rate_append(type,rate):
     if type in CHANCE_GOOD_LIST or type in BAD_LIST.keys():
-        if rate >= 1000:
+        if rate > 1000:
             return '<span title="%.1f%%">必定</span>'%(rate/10)
+        elif rate == 1000:
+            return '必定'
         else:
             return '<span title="%.1f%%">概率</span>'%(rate/10)
     else:
@@ -520,21 +522,19 @@ def get_battle_enemy(json_data):
         # 判断是否为大型敌人
         positions_str = ""
         if len(this_wave["positions"]) > 0:
-            positions_str += "&#10;"
-            for pos in [7,4,1,8,5,2,9,6,3]:
+            positions_str = '{{敌人站位'
+            for pos in range(1,10):
+                positions_str += "|"
                 if pos in this_wave["positions"]:
-                    positions_str += "■"
-                else:
-                    positions_str += "□"
-                if pos <= 2:
-                    positions_str += "&#10;"
+                    positions_str += str(pos)
+            positions_str += '}}'
         # 每个敌人
         total_mem_str = ""
         for enemy in this_wave["enemies"]:
             attr_list = ""
             for each_attr in enemy['ATTR']:
                 attr_list += each_attr
-            return_str += '| <span title="ATK:%d&#10;DEF:%d%s">%s(%d/%s)</span> || '%(enemy["ATK"],enemy["DEF"],positions_str,enemy["name"],enemy["HP"],attr_list)
+            return_str += '| %s<span title="ATK:%d&#10;DEF:%d">%s(%d/%s)</span> || '%(positions_str,enemy["ATK"],enemy["DEF"],enemy["name"],enemy["HP"],attr_list)
             # 敌人技能，按照能力型-技能型排序
             ability_memory = []
             skill_memory = []
