@@ -163,7 +163,7 @@ ATTR_COLOR = {"火" : "Red",
               "木" : "ForestGreen",
               "水" : "Blue",
               "暗" : "Purple",
-              "光" : "Goldenrod",
+              "光" : "Orange",
               "无" : "Black"}
 BAD_LIST = {'POISON' : "毒",
             "BURN" : "烧伤",
@@ -212,11 +212,14 @@ REVOKE_TYPES = {"BUFF" : "Buff解除",
 TYPE_WILL_ON_ENEMY = {"CONDITION_BAD","DEBUFF"}
 COST_TRANS = {'みたま特製エナジードリンク' : "饮料",
               "色鉛筆" : "铅笔",
+              "料金分の愛情が入ったパフェ" : "帕菲",
               "記憶の頁" : "记忆之页",
               "回数券" : "回数券",
               "ブラックカード" : "黑卡",
               "フォーチュンペーパー" : "幸运纸"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？"]
+
+POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
 
 def char_idtostr(id,origin_str):
     if (type(id) != int): id = int(id)

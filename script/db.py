@@ -95,7 +95,8 @@ def enemy_initial():
               "ATK": 0,
               "DEF": 0,
               "ATTR": set(),
-              "MEM":set()}
+              "MEM":set(),
+              "position":0}
     return result
 
 def get_battle_enemy(json_data):
@@ -110,14 +111,22 @@ def get_battle_enemy(json_data):
             "begin":this_wave_index,
             "end":this_wave_index,
             "enemies":[],
-            "positions":[]
+            "positions":[],
+            "allgirls":True
         }
         for this_enemy in this_wave['enemyList']:
             # 如果是大型敌人，则记录其位置
-            if this_enemy['enemySizeType'] == "BIG":
+            if 'enemySizeType' in this_enemy.keys() and this_enemy['enemySizeType'] == "BIG":
                 this_wave_state["positions"].append(this_enemy["pos"])
                 pass
             new_enemy = enemy_initial()
+            # 判断是否全为少女
+            if type(this_enemy["miniCharId"]) != int:
+                enemy_id = int(this_enemy["miniCharId"])
+            else:
+                enemy_id = this_enemy["miniCharId"]
+            if enemy_id >= 500000 or enemy_id % 10 == 9:
+                this_wave_state["allgirls"] = False
             # 读取
             new_enemy["HP"] = this_enemy["hp"]
             if new_enemy["HP"] == 0:
@@ -126,6 +135,8 @@ def get_battle_enemy(json_data):
             new_enemy["ATK"] = this_enemy["attack"]
             new_enemy["ATTR"].add(ATTR_LIST[this_enemy['align']])
             new_enemy["DEF"] = this_enemy["defence"]
+            if "pos" in this_enemy.keys():
+                new_enemy["position"] = this_enemy["pos"]
             for mem_id in this_enemy['memoriaList']:
                 if mem_id not in new_enemy["MEM"]:
                     new_enemy["MEM"].add(mem_id)
@@ -141,6 +152,10 @@ def get_battle_enemy(json_data):
                     break
             if not have_same_enemy:
                 this_wave_state["enemies"].append(new_enemy)
+        # 清除标记
+        if not this_wave_state['allgirls']:
+            for this_enemy in this_wave_state["enemies"]:
+                this_enemy["position"] = 0
         # 判断是否和上一Wave重复
         if len(wave_state) > 0:
             last_wave = wave_state[len(wave_state)-1]
@@ -187,6 +202,9 @@ def get_battle_enemy(json_data):
             attr_list = ""
             for each_attr in enemy['ATTR']:
                 attr_list += each_attr
+            if this_wave["allgirls"]:
+                attr_color = ATTR_COLOR[list(enemy['ATTR'])[0]]
+                positions_str = "{{阵形|%d=%s}}"%(POSITION_TRANSFORM[enemy['position']],attr_color)
             return_str += '| %s<span title="ATK:%d&#10;DEF:%d">%s(%d/%s)</span> || '%(positions_str,enemy["ATK"],enemy["DEF"],enemy["name"],enemy["HP"],attr_list)
             # 敌人技能，按照能力型-技能型排序
             ability_memory = []
@@ -221,7 +239,7 @@ def get_battle_enemy(json_data):
                             need_add_skillname = True
                             break
                     if need_add_skillname:
-                        this_mem_str = "{{Ruby|%s|%s}}"%(this_mem_str,abi_mem['name'])
+                        this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,abi_mem['name'])
                 if (total_mem_str != ""):
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
