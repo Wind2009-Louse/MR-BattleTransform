@@ -276,7 +276,7 @@ def get_battle_enemy(json_data):
                             need_add_skillname = True
                             break
                     if need_add_skillname:
-                        this_mem_str = "{{Ruby|%s|%s}}"%(this_mem_str,skill_mem['name'])
+                        this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,skill_mem['name'])
                 if (total_mem_str != ""):
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
