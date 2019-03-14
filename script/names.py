@@ -225,7 +225,7 @@ def char_idtostr(id,origin_str):
     if (type(id) != int): id = int(id)
     return_str = ""
     if origin_str == "幸福な魔女の手下":
-        return "[[？？？魔女的手下|幸福的魔女的手下]]"
+        return "[[幸福的魔女的手下]]"
     if id % 10 == 9:
         return_str += "镜"
     real_id = math.floor(id / 100)
