@@ -28,10 +28,10 @@ def main():
             if (id == "9"):
                 output_result += '|}'
                 os.chdir(os.getcwd())
-                dir = os.getcwd() + "/output/"
+                dir = os.path.join(os.getcwd(),"output")
                 if not os.path.exists(dir):
                     os.mkdir(dir)
-                file_name = '%s/output/%s.txt' % (os.getcwd(), time.strftime("%Y-%m-%d %H-%M-%S", time.localtime()))
+                file_name = os.path.join(dir, time.strftime("%Y-%m-%d %H-%M-%S", time.localtime()))
                 file = open(file_name,"w",encoding="utf-8")
                 file.write(output_result)
                 file.close()
@@ -56,10 +56,10 @@ def main():
             if (id == "9"):
                 output_result += '|}'
                 os.chdir(os.getcwd())
-                dir = os.getcwd() + "/output/"
+                dir = os.path.join(os.getcwd(),"output")
                 if not os.path.exists(dir):
                     os.mkdir(dir)
-                file_name = '%s/output/%s.txt' % (os.getcwd(), time.strftime("%Y-%m-%d %H-%M-%S", time.localtime()))
+                file_name = os.path.join(dir, time.strftime("%Y-%m-%d %H-%M-%S", time.localtime()))
                 file = open(file_name,"w",encoding="utf-8")
                 file.write(output_result)
                 file.close()
@@ -86,11 +86,11 @@ def main():
 
     output_result += '|}'
     os.chdir(os.getcwd())
-    dir = os.getcwd() + "/output/"
+    dir = os.path.join(os.getcwd(),"output")
     if not os.path.exists(dir):
         os.mkdir(dir)
     if output_result != '{| class="wikitable" style="text-align:center; margin:0 auto;"\n! 关卡 !! 材料掉落 !! Wave !! 敌人 !! 技能\n|-\n|}':
-        file_name = '%s/output/%s.txt' % (os.getcwd(), time.strftime("%Y-%m-%d %H-%M-%S", time.localtime()))
+        file_name = os.path.join(dir, time.strftime("%Y-%m-%d %H-%M-%S", time.localtime()))
         file = open(file_name,"w",encoding="utf-8")
         file.write(output_result)
         file.close()
