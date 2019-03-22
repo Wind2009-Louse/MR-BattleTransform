@@ -178,7 +178,8 @@ BAD_LIST = {'POISON' : "毒",
             "BLINDNESS" : "幻惑",
             "BAN_SKILL" : "技能封印",
             "BAN_MAGIA" : "Magia封印",
-            "INVALID_HEAL_HP" : "HP回复禁止"}
+            "INVALID_HEAL_HP" : "HP回复禁止",
+            "INVALID_HEAL_MP" : "MP回复禁止"}
 GOOD_LIST = {"AUTO_HEAL" : "自动回复",
              "AVOID" : "回避",
              "COUNTER" : "反击",
