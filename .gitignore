@@ -130,4 +130,4 @@ dmypy.json
 json/*
 output/*
 script/locate.py
-script/locate.py
+mem_check.py
