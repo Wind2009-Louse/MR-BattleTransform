@@ -23,9 +23,11 @@ CHAR_ID_LIST = {
     1019 : "[[天音月咲]]",
     1101 : "[[环伊吕波（泳装ver.）]]",
     1103 : "[[谣鹤乃]]",
+    1105 : "[[小菲莉希亚]]",
     1108 : "[[圣阿莉娜]]",
     1208 : "[[圣阿莉娜]]",
     1117 : "[[八云御魂（晴着ver.）]]",
+    1201 : "[[小伊吕波]]",
     2001 : "[[鹿目圆]]",
     2002 : "[[晓美焰]]",
     2003 : "[[晓美焰（眼镜ver.）]]",
@@ -121,6 +123,7 @@ CHAR_ID_LIST = {
     6405 : "[[舞台装置的魔女]]",
     6500 : "[[巧克力的魔女]]",
     6501 : "[[神滨圣女之谣]]",
+    6502 : "[[小伊吕波|巨大伊吕波]]",
     7000 : "[[钟摆的魔女的手下]]",
     7001 : "[[立耳的魔女的手下]]",
     7002 : "[[绝交挂锁之谣]]",
@@ -230,8 +233,10 @@ POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
 def char_idtostr(id,origin_str):
     if (type(id) != int): id = int(id)
     return_str = ""
-    if origin_str == "幸福な魔女の手下":
+    if origin_str == "幸福な魔女の手下" or origin_str == "幸福の魔女の手下":
         return "[[幸福的魔女的手下]]"
+    if origin_str == "神浜レアリティースターのウワサ":
+        return "神滨稀有度之星之谣"
     if id % 10 == 9:
         return_str += "镜"
     real_id = math.floor(id / 100)
@@ -311,6 +316,8 @@ def art_to_str(this_art):
         this_mem_str += "%sDOWN" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'INITIAL' and this_art['sub'] == 'MP':
         this_mem_str += "初始%d%%MP" % (this_art['effect'] / 10)
+    elif this_art['code'] == "RESURRECT":
+        this_mem_str += "苏生"
     else:
         print("ART新CODE:", this_art["code"])
     return this_mem_str
