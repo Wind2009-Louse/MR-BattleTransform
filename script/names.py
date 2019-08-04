@@ -41,6 +41,7 @@ CHAR_ID_LIST = {
     2102 : "[[小圆前辈]]",
     2300 : "[[晓美焰（泳装ver.）]]",
     2500 : "[[圣麻美]]",
+    2600 : "[[佐仓杏子（泳装ver.）]]",
     3001 : "[[矢宵鹿乃子]]",
     3002 : "[[空穗夏希]]",
     3003 : "[[都雏乃]]",
@@ -237,7 +238,8 @@ COST_TRANS = {'みたま特製エナジードリンク' : "饮料",
               "フォーチュンペーパー" : "幸运纸",
               "メモリーピン":"记忆大头针",
               "練習カレンダー":"练习日历本",
-              "珊瑚礁":"珊瑚礁"}
+              "珊瑚礁":"珊瑚礁",
+              "始まりの焚火":"篝火"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？"]
 
 POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
@@ -289,10 +291,16 @@ def art_to_str(this_art):
                 this_art_str = "%s(%d%%)" % (this_art_str, this_art['effect'] / 10)
         elif this_art_str == "保护" and this_art['target'] == 'DYING':
             this_art_str = "保护濒死的同伴"
+        if this_art_str == "保护" and 'param' in this_art.keys():
+            this_art_str += "(必定保护%s)"%char_idtostr(this_art['param']*100,'NULL')
         this_mem_str += this_art_str
     elif this_art['code'] == 'CONDITION_BAD':
         this_mem_str += rate_append(this_art['sub'], this_art['rate'])
         this_art_str = BAD_LIST[this_art['sub']]
+        if this_art_str == "毒" and this_art['effect'] > 100:
+            this_art_str = "强化毒"
+        if this_art_str == "诅咒" and this_art['effect'] > 200:
+            this_art_str = "强化诅咒"
         this_mem_str += this_art_str
     elif this_art['code'] == 'IGNORE':
         this_mem_str += rate_append(this_art['sub'], this_art['rate'])
@@ -324,6 +332,8 @@ def art_to_str(this_art):
         this_mem_str += "HP最大时%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'BUFF_PARTY_DIE':
         this_mem_str += "同伴死亡时%sUP" % (WORDS_TRANS[this_art['sub']])
+    elif this_art['code'] == 'BUFF_DIE':
+        this_mem_str += "死亡时同伴%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'DEBUFF':
         this_mem_str += "%sDOWN" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'INITIAL' and this_art['sub'] == 'MP':
