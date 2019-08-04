@@ -2,7 +2,7 @@
 将战斗数据转换为mediawiki格式表格
 
 # 环境
-Python 3.6.5
+Python 3
 
 # 库
 * json
