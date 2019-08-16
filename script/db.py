@@ -319,6 +319,14 @@ def get_battle_enemy(json_data):
                         is_dummy = True
                     else:
                         this_mem_str += art_to_str(this_art)
+                    # 判断是否需要输出效果范围(和下一个效果相同则不输出)
+                    this_range = range_to_str(this_art)
+                    if (art_id != len(this_art_list)-1):
+                        next_range = range_to_str(this_art_list[art_id+1])
+                    else:
+                        next_range = ""
+                    if this_range != next_range:
+                        this_mem_str += this_range
                 if (total_mem_str != ""):
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
@@ -346,6 +354,14 @@ def get_battle_enemy(json_data):
                         is_dummy = True
                     else:
                         this_mem_str += art_to_str(this_art)
+                    # 判断是否需要输出效果范围(和下一个效果相同则不输出)
+                    this_range = range_to_str(this_art)
+                    if (art_id != len(this_art_list)-1):
+                        next_range = range_to_str(this_art_list[art_id+1])
+                    else:
+                        next_range = ""
+                    if this_range != next_range:
+                        this_mem_str += this_range
                 if (total_mem_str != ""):
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str

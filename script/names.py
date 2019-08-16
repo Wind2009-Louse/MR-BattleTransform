@@ -343,24 +343,31 @@ def art_to_str(this_art):
     elif this_art['code'] == "RESURRECT":
         this_mem_str += "苏生"
     elif this_art['code'] == "ATTACK":
-        if this_art['target'] == "TARGET":
-            this_mem_str += "对敌方单体伤害"
-        elif this_art['target'] == "ALL":
-            this_mem_str += "对敌方全体伤害"
-        elif this_art['target'][0:6] == "RANDOM":
-            this_mem_str += "随机%s次 伤害"%this_art['target'][-1]
-        else:
-            print("新攻击：%s",str(this_art))
-        this_mem_str = '<span title="%.1f%%">%s</span>'%(this_art['effect'] / 10, this_mem_str)
-
+        sub_str = ""
         if 'sub' in this_art:
             if this_art['sub'] == "DAMAGE_UP_BADS":
-                this_mem_str += "(异常增伤)"
+                sub_str += "异常增伤"
             elif this_art['sub'] == "LINKED_DAMAGE":
-                this_mem_str += "(HP低威力UP)"
+                sub_str += "低HP威力UP"
+            elif this_art['sub'] == "ALIGNMENT":
+                sub_str += "属性强化"
             elif this_art['sub'] == "DUMMY":
-                this_mem_str = "DUMMY"
-        
+                return "DUMMY"
+        if this_art['target'] == "TARGET":
+            this_mem_str += "对敌方单体%s伤害"%sub_str
+        elif this_art['target'] == "ALL":
+            this_mem_str += "对敌方全体%s伤害"%sub_str
+        elif this_art['target'][0:6] == "RANDOM":
+            this_mem_str += "随机%s次 %s伤害"%(this_art['target'][-1],sub_str)
+        elif this_art['target'] == "HORIZONTAL":
+            this_mem_str += "横方向%s伤害"%sub_str
+        elif this_art['target'] == "VERTICAL":
+            this_mem_str += "纵方向%s伤害"%sub_str
+        else:
+            print("新攻击：%s",str(this_art))
+        if 'effect' in this_art:
+            this_mem_str = '<span title="%.1f%%">%s</span>'%(this_art['effect'] / 10, this_mem_str)
+
     else:
         print("ART新CODE:", this_art["code"])
     return this_mem_str
