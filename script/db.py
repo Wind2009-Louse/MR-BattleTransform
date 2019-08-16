@@ -1,6 +1,7 @@
 from script.names import *
 
 def get_quest_header(id_str, json_data, item_data, height=1):
+    '''获得关卡内容(名字、难度、AP、掉落)'''
     return_str = ""
     battle_ap = 0
     battle_diff = 0
@@ -90,16 +91,20 @@ def get_quest_header(id_str, json_data, item_data, height=1):
     return return_str
 
 def enemy_initial():
+    '''初始化敌人信息，含：\n\nname, HP, ATK, DEF, ATTR, MEM, Magia, Doppel, position'''
     result = {"name": "",
               "HP": 0,
               "ATK": 0,
               "DEF": 0,
               "ATTR": set(),
               "MEM":set(),
+              "Magia": 0,
+              "Doppel": 0,
               "position":0}
     return result
 
 def get_battle_enemy(json_data):
+    '''输出敌人信息'''
     return_str = ""
     enemy_count = 0
     wave_state = []
@@ -118,7 +123,6 @@ def get_battle_enemy(json_data):
             # 如果是大型敌人，则记录其位置
             if 'enemySizeType' in this_enemy.keys() and this_enemy['enemySizeType'] == "BIG":
                 this_wave_state["positions"].append(this_enemy["pos"])
-                pass
             new_enemy = enemy_initial()
             # 判断是否全为少女
             if type(this_enemy["miniCharId"]) != int:
@@ -140,12 +144,19 @@ def get_battle_enemy(json_data):
             for mem_id in this_enemy['memoriaList']:
                 if mem_id not in new_enemy["MEM"]:
                     new_enemy["MEM"].add(mem_id)
+            if 'magiaId' in this_enemy:
+                new_enemy['Magia'] = this_enemy['magiaId']
+            if 'doppelId' in this_enemy:
+                new_enemy['Doppel'] = this_enemy['doppelId']
+            # 判断是否存在相同的敌人
             have_same_enemy = False
             for enemy_before in this_wave_state["enemies"]:
                 if enemy_before["name"] == new_enemy["name"] \
                 and enemy_before["ATK"] == new_enemy["ATK"] \
                 and enemy_before["DEF"] == new_enemy["DEF"] \
-                and enemy_before["MEM"] == new_enemy["MEM"]:
+                and enemy_before["MEM"] == new_enemy["MEM"] \
+                and enemy_before["Magia"] == new_enemy["Magia"] \
+                and enemy_before["Doppel"] == new_enemy["Doppel"] :
                     have_same_enemy = True
                     # 相同属性自动省略
                     enemy_before["ATTR"].add(ATTR_LIST[this_enemy['align']])
@@ -168,13 +179,14 @@ def get_battle_enemy(json_data):
                 if enemy_last_wave not in this_wave_state["enemies"]:
                     isAllSame = False
                     break
-            # 如果重复，则修改wave
+            # 如果重复，则修改wave index
             if isAllSame:
                 wave_state[len(wave_state) - 1]["end"] = this_wave_index
             else:
                 wave_state.append(this_wave_state)
         else:
             wave_state.append(this_wave_state)
+    
     # 开始转为字符串
     for wave_index in range(len(wave_state)):
         # 关卡基本信息
@@ -232,6 +244,7 @@ def get_battle_enemy(json_data):
                         this_mem_str += "&"
                     this_art = this_art_list[art_id]
                     this_mem_str += art_to_str(this_art)
+                # 是否标记效果名
                 if 'name' in abi_mem.keys():
                     need_add_skillname = False
                     for char in SPECIAL_MEMORY_NAME:
@@ -244,6 +257,7 @@ def get_battle_enemy(json_data):
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
 
+            # 技能型
             for skill_mem in skill_memory:
                 this_mem_str = ""
                 # 获取效果
@@ -280,5 +294,61 @@ def get_battle_enemy(json_data):
                 if (total_mem_str != ""):
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
+            
+            # Magia
+            if enemy["Magia"] != 0:
+                this_mem_str = "Magia:"
+                # 获取效果
+                this_art_list = []
+                for magia in json_data['magiaList']:
+                    if magia["magiaId"] == enemy["Magia"]:
+                        for art_id in magia["artList"]:
+                            for art in json_data['artList']:
+                                if art['artId'] == art_id:
+                                    this_art_list.append(art)
+                                    break
+
+                # 将效果输出
+                is_dummy = False
+                for art_id in range(len(this_art_list)):
+                    if art_id > 0 and not (art_id == 1 and is_dummy):
+                        this_mem_str += "&"
+                    this_art = this_art_list[art_id]
+                    art_str = art_to_str(this_art)
+                    if art_str == "DUMMY":
+                        is_dummy = True
+                    else:
+                        this_mem_str += art_to_str(this_art)
+                if (total_mem_str != ""):
+                    total_mem_str += "<br />"
+                total_mem_str += this_mem_str
+
+            # Doppel
+            if enemy["Doppel"] != 0:
+                this_mem_str = "Doppel:"
+                # 获取效果
+                this_art_list = []
+                for doppel in json_data['doppelList']:
+                    if doppel["doppelId"] == enemy["Doppel"]:
+                        for art_id in doppel["artList"]:
+                            for art in json_data['artList']:
+                                if art['artId'] == art_id:
+                                    this_art_list.append(art)
+                                    break
+                # 将效果输出
+                is_dummy = False
+                for art_id in range(len(this_art_list)):
+                    if art_id > 0 and not (art_id == 1 and is_dummy):
+                        this_mem_str += "&"
+                    this_art = this_art_list[art_id]
+                    art_str = art_to_str(this_art)
+                    if art_str == "DUMMY":
+                        is_dummy = True
+                    else:
+                        this_mem_str += art_to_str(this_art)
+                if (total_mem_str != ""):
+                    total_mem_str += "<br />"
+                total_mem_str += this_mem_str
+
             return_str += (total_mem_str + "\n|-\n")
     return enemy_count,return_str

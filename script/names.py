@@ -261,6 +261,7 @@ def char_idtostr(id,origin_str):
     return return_str
 
 def item_idtostr(id, json_data):
+    '''将掉落转换为字符串'''
     new_id = re.sub(r'GIFT_(\d*)_\d*',r'\1', id)
     if (id == new_id): return ""
     new_id = int(new_id)
@@ -270,6 +271,7 @@ def item_idtostr(id, json_data):
     return ""
 
 def art_to_str(this_art):
+    '''将art转换为字符串'''
     this_mem_str = ""
     if this_art['code'] == 'ENCHANT':
         sub_state = BAD_LIST[this_art['sub']]
@@ -340,6 +342,25 @@ def art_to_str(this_art):
         this_mem_str += "初始%d%%MP" % (this_art['effect'] / 10)
     elif this_art['code'] == "RESURRECT":
         this_mem_str += "苏生"
+    elif this_art['code'] == "ATTACK":
+        if this_art['target'] == "TARGET":
+            this_mem_str += "对敌方单体伤害"
+        elif this_art['target'] == "ALL":
+            this_mem_str += "对敌方全体伤害"
+        elif this_art['target'][0:6] == "RANDOM":
+            this_mem_str += "随机%s次 伤害"%this_art['target'][-1]
+        else:
+            print("新攻击：%s",str(this_art))
+        this_mem_str = '<span title="%.1f%%">%s</span>'%(this_art['effect'] / 10, this_mem_str)
+
+        if 'sub' in this_art:
+            if this_art['sub'] == "DAMAGE_UP_BADS":
+                this_mem_str += "(异常增伤)"
+            elif this_art['sub'] == "LINKED_DAMAGE":
+                this_mem_str += "(HP低威力UP)"
+            elif this_art['sub'] == "DUMMY":
+                this_mem_str = "DUMMY"
+        
     else:
         print("ART新CODE:", this_art["code"])
     return this_mem_str
@@ -357,6 +378,9 @@ def rate_append(type,rate):
 
 def range_to_str(this_art):
     result_str = ""
+    # Magia无范围
+    if this_art['code'] == "ATTACK":
+        return ""
     if this_art['target'] == 'SELF':
         if this_art['code'] == 'HEAL':
             # 如 (自/10%)
