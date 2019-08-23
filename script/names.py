@@ -29,6 +29,7 @@ CHAR_ID_LIST = {
     1117 : "[[八云御魂（晴着ver.）]]",
     1118 : "[[天音姐妹（泳装ver.）]]",
     1201 : "[[小伊吕波]]",
+    1301 : "[[伊吕波·八千代（决战ver.）]]",
     2001 : "[[鹿目圆]]",
     2002 : "[[晓美焰]]",
     2003 : "[[晓美焰（眼镜ver.）]]",
@@ -229,6 +230,7 @@ REVOKE_TYPES = {"BUFF" : "Buff解除",
                 "BAD" : "状态异常解除",
                 "GOOD" : "赋予效果解除"}
 TYPE_WILL_ON_ENEMY = {"CONDITION_BAD","DEBUFF"}
+LIMIT_TARGET = {"WITCH":"魔女","RUMOR":"谣","HUMAN":"魔法少女"}
 COST_TRANS = {'みたま特製エナジードリンク' : "饮料",
               "色鉛筆" : "铅笔",
               "料金分の愛情が入ったパフェ" : "帕菲",
@@ -328,6 +330,9 @@ def art_to_str(this_art):
             print("REVOKE新sub: ",this_art['sub'])
     elif this_art['code'] == 'BUFF':
         this_mem_str += "%sUP" % (WORDS_TRANS[this_art['sub']])
+    elif this_art['code'] == 'LIMITED_ENEMY_TYPE':
+        target_name = WORDS_TRANS[this_art['genericValue']]
+        this_mem_str += "对%s%s" % (target_name,GOOD_LIST[this_art['sub']])
     elif this_art['code'] == 'BUFF_DYING':
         this_mem_str += "濒死时%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'BUFF_HPMAX':
