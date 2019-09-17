@@ -129,7 +129,7 @@ def get_battle_enemy(json_data):
                 enemy_id = int(this_enemy["miniCharId"])
             else:
                 enemy_id = this_enemy["miniCharId"]
-            if enemy_id >= 500000 or enemy_id % 10 == 9:
+            if (enemy_id >= 500000 and (enemy_id // 100) not in [7150,7151]) or enemy_id % 10 == 9:
                 this_wave_state["allgirls"] = False
             # 读取
             new_enemy["HP"] = this_enemy["hp"]
