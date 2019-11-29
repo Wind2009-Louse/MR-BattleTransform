@@ -297,7 +297,7 @@ def get_battle_enemy(json_data):
             
             # Magia
             if enemy["Magia"] != 0:
-                this_mem_str = "Magia:"
+                this_mem_str = '<span class="mw-customtoggle-m%d" style="background:LightGrey;">Magia</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-m%d">'%(enemy["Magia"],enemy["Magia"])
                 # 获取效果
                 this_art_list = []
                 for magia in json_data['magiaList']:
@@ -327,13 +327,14 @@ def get_battle_enemy(json_data):
                         next_range = ""
                     if this_range != next_range:
                         this_mem_str += this_range
-                if (total_mem_str != ""):
+                this_mem_str += '</div>'
+                if total_mem_str != "":
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
 
             # Doppel
             if enemy["Doppel"] != 0:
-                this_mem_str = "Doppel:"
+                this_mem_str = '<span class="mw-customtoggle-d%d" style="background:Silver;">Doppel</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-d%d">'%(enemy["Doppel"],enemy["Doppel"])
                 # 获取效果
                 this_art_list = []
                 for doppel in json_data['doppelList']:
@@ -362,7 +363,8 @@ def get_battle_enemy(json_data):
                         next_range = ""
                     if this_range != next_range:
                         this_mem_str += this_range
-                if (total_mem_str != ""):
+                this_mem_str += '</div>'
+                if total_mem_str != "" and enemy["Magia"] == 0:
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
 
