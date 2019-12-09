@@ -140,7 +140,7 @@ def get_battle_enemy(json_data):
             new_enemy["ATTR"].add(ATTR_LIST[this_enemy['align']])
             new_enemy["DEF"] = this_enemy["defence"]
             if "pos" in this_enemy.keys():
-                new_enemy["position"] = this_enemy["pos"]
+                new_enemy["position"] = [this_enemy["pos"]]
             for mem_id in this_enemy['memoriaList']:
                 if mem_id not in new_enemy["MEM"]:
                     new_enemy["MEM"].add(mem_id)
@@ -160,6 +160,7 @@ def get_battle_enemy(json_data):
                     have_same_enemy = True
                     # 相同属性自动省略
                     enemy_before["ATTR"].add(ATTR_LIST[this_enemy['align']])
+                    enemy_before["position"].append(this_enemy["pos"])
                     break
             if not have_same_enemy:
                 this_wave_state["enemies"].append(new_enemy)
@@ -216,7 +217,9 @@ def get_battle_enemy(json_data):
                 attr_list += each_attr
             if this_wave["allgirls"]:
                 attr_color = ATTR_COLOR[list(enemy['ATTR'])[0]]
-                positions_str = "{{阵形|%d=%s}}"%(POSITION_TRANSFORM[enemy['position']],attr_color)
+                positions_str = ""
+                if len(enemy['position']) == 1:
+                    positions_str = "{{阵形|%d=%s}}"%(POSITION_TRANSFORM[enemy['position'][0]],attr_color)
             return_str += '| %s<span title="ATK:%d&#10;DEF:%d">%s(%d/%s)</span> || '%(positions_str,enemy["ATK"],enemy["DEF"],enemy["name"],enemy["HP"],attr_list)
             # 敌人技能，按照能力型-技能型排序
             ability_memory = []
