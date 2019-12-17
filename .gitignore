@@ -131,3 +131,5 @@ json/*
 output/*
 script/locate.py
 mem_check.py
+se.py
+se_2.py
