@@ -331,6 +331,8 @@ def art_to_str(this_art):
                 this_art_str = "%s(%d%%)" % (this_art_str, this_art['effect'] / 10)
         elif this_art_str == "保护" and this_art['target'] == 'DYING':
             this_art_str = "保护濒死的同伴"
+        elif this_art_str == "Survive":
+            this_art_str = '<span title="%.1f%%">Survive</span>'%(this_art['effect'] / 10)
         if this_art_str == "保护" and 'param' in this_art.keys():
             this_art_str += "(必定保护%s)"%char_idtostr(this_art['param']*100,'NULL')
         this_mem_str += this_art_str
@@ -463,6 +465,8 @@ def range_to_str(this_art):
                 result_str += "(%s/%d)" % (temp_str,this_art['effect']/10)
             else:
                 result_str += "(%s/%d%%)" % (temp_str,this_art['effect']/10)
+        elif this_art['code'] == "RESURRECT":
+            result_str += "(%s/%d%%)" % (temp_str,this_art['effect']/10)
         else:
             # 如 (敌全)
             result_str += "(%s)" % temp_str
