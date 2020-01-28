@@ -103,7 +103,7 @@ def enemy_initial():
               "position":0}
     return result
 
-def get_battle_enemy(json_data):
+def get_battle_enemy(json_data, battle_id=0):
     '''输出敌人信息'''
     return_str = ""
     enemy_count = 0
@@ -300,7 +300,9 @@ def get_battle_enemy(json_data):
             
             # Magia
             if enemy["Magia"] != 0:
-                this_mem_str = '<span class="mw-customtoggle-m%d" style="background:LightGrey;">Magia</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-m%d">'%(enemy["Magia"],enemy["Magia"])
+                this_mem_str = '<span class="mw-customtoggle-m%d-%d" style="background:LightGrey;">\
+Magia</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-m%d-%d">'%(
+battle_id, enemy["Magia"], battle_id, enemy["Magia"])
                 # 获取效果
                 this_art_list = []
                 for magia in json_data['magiaList']:
@@ -337,7 +339,9 @@ def get_battle_enemy(json_data):
 
             # Doppel
             if enemy["Doppel"] != 0:
-                this_mem_str = '<span class="mw-customtoggle-d%d" style="background:Silver;">Doppel</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-d%d">'%(enemy["Doppel"],enemy["Doppel"])
+                this_mem_str = '<span class="mw-customtoggle-d%d-%d" style="background:Silver;">\
+Doppel</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-d%d">'%(
+battle_id, enemy["Doppel"], battle_id, enemy["Doppel"])
                 # 获取效果
                 this_art_list = []
                 for doppel in json_data['doppelList']:

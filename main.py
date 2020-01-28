@@ -46,7 +46,7 @@ def main():
                 print("没有找到该关卡！")
                 deletejson(id)
                 continue
-            total_enemy, return_str = db.get_battle_enemy(quest_json)
+            total_enemy, return_str = db.get_battle_enemy(quest_json, int(id))
             str_header = db.get_quest_header(id, battle_list_json, gift_json, total_enemy)
             print_str = str_header + return_str
             output_result += print_str
@@ -79,7 +79,7 @@ def main():
                     print("没有找到该关卡！")
                     deletejson(battle_id)
                     continue
-                total_enemy, return_str = db.get_battle_enemy(quest_json)
+                total_enemy, return_str = db.get_battle_enemy(quest_json, int(battle_id))
                 str_header = db.get_quest_header(battle_id, battle_list_json, gift_json, total_enemy)
                 print_str = str_header + return_str
                 output_result += print_str

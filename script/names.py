@@ -86,6 +86,7 @@ CHAR_ID_LIST = {
     3031 : "[[绫野梨花]]",
     3032 : "[[梢麻友]]",
     3033 : "[[史乃沙优希]]",
+    3034 : "[[惠萌花]]",
     3035 : "[[千秋理子]]",
     3037 : "[[安名梅露]]",
     3038 : "[[古町美仓]]",
@@ -198,8 +199,12 @@ CHAR_ID_LIST = {
     7501 : "结界入口",
     7600 : "铠甲的使魔Ⅰ",
     7601 : "铠甲的使魔Ⅱ",
-    7700 : "魔法少女",
-    7701 : "魔法少女"
+    7700 : "魔法少女(二木市)",
+    7701 : "魔法少女(二木市/干部)",
+    7702 : "魔法少女(时女)",
+    7703 : "魔法少女(时女)",
+    7704 : "黑羽(新Magius)",
+    7705 : "白羽(新Magius)"
 }
 ATTR_LIST = {"FIRE": "火",
              "TIMBER" : "木",
@@ -225,7 +230,8 @@ BAD_LIST = {'POISON' : "毒",
             "BAN_SKILL" : "技能封印",
             "BAN_MAGIA" : "Magia封印",
             "INVALID_HEAL_HP" : "HP回复禁止",
-            "INVALID_HEAL_MP" : "MP回复禁止"}
+            "INVALID_HEAL_MP" : "MP回复禁止",
+            "DEBUFF" : "DEBUFF",}
 GOOD_LIST = {"AUTO_HEAL" : "自动回复",
              "AVOID" : "回避",
              "COUNTER" : "反击",
@@ -321,6 +327,7 @@ def art_to_str(this_art):
     elif this_art['code'] == 'CONDITION_GOOD':
         this_mem_str += rate_append(this_art['sub'], this_art['rate'])
         this_art_str = GOOD_LIST[this_art['sub']]
+        effect_not_used = True
         if this_art_str == '反击' and this_art['effect'] > 800:
             this_art_str = '交叉反击'
         elif this_art_str == '自动回复':
@@ -334,9 +341,14 @@ def art_to_str(this_art):
             this_art_str = "保护濒死的同伴"
         elif this_art_str == "Survive":
             this_art_str = '<span title="%.1f%%">Survive</span>'%(this_art['effect'] / 10)
+        else:
+            effect_not_used = False
         if this_art_str == "保护" and 'param' in this_art.keys():
             this_art_str += "(必定保护%s)"%char_idtostr(this_art['param']*100,'NULL')
-        this_mem_str += this_art_str
+        if not effect_not_used and "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">%s</span>' % (this_art['effect'] / 10, this_art_str)
+        else:
+            this_mem_str += this_art_str
     elif this_art['code'] == 'CONDITION_BAD':
         this_mem_str += rate_append(this_art['sub'], this_art['rate'])
         this_art_str = BAD_LIST[this_art['sub']]
@@ -344,7 +356,10 @@ def art_to_str(this_art):
             this_art_str = "强化毒"
         if this_art_str == "诅咒" and this_art['effect'] > 200:
             this_art_str = "强化诅咒"
-        this_mem_str += this_art_str
+        if "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">%s</span>' % (this_art['effect'] / 10, this_art_str)
+        else:
+            this_mem_str += this_art_str
     elif this_art['code'] == 'IGNORE':
         this_mem_str += rate_append(this_art['sub'], this_art['rate'])
         if this_art['sub'] in GOOD_LIST.keys():
@@ -368,20 +383,41 @@ def art_to_str(this_art):
         else:
             print("REVOKE新sub: ",this_art['sub'])
     elif this_art['code'] == 'BUFF':
-        this_mem_str += "%sUP" % (WORDS_TRANS[this_art['sub']])
+        if "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+        else:
+            this_mem_str += "%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'LIMITED_ENEMY_TYPE':
         target_name = WORDS_TRANS[this_art['genericValue']]
-        this_mem_str += "对%s%s" % (target_name,GOOD_LIST[this_art['sub']])
+        if "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">对%s%s</span>' % (this_art['effect'] / 10, target_name, GOOD_LIST[this_art['sub']])
+        else:
+            this_mem_str += "对%s%s" % (target_name,GOOD_LIST[this_art['sub']])
     elif this_art['code'] == 'BUFF_DYING':
-        this_mem_str += "濒死时%sUP" % (WORDS_TRANS[this_art['sub']])
+        if "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">濒死时%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+        else:
+            this_mem_str += "濒死时%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'BUFF_HPMAX':
-        this_mem_str += "HP最大时%sUP" % (WORDS_TRANS[this_art['sub']])
+        if "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">HP最大时%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+        else:
+            this_mem_str += "HP最大时%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'BUFF_PARTY_DIE':
-        this_mem_str += "同伴死亡时%sUP" % (WORDS_TRANS[this_art['sub']])
+        if "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">同伴死亡时%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+        else:
+            this_mem_str += "同伴死亡时%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'BUFF_DIE':
-        this_mem_str += "死亡时同伴%sUP" % (WORDS_TRANS[this_art['sub']])
+        if "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">死亡时同伴%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+        else:
+            this_mem_str += "死亡时同伴%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'DEBUFF':
-        this_mem_str += "%sDOWN" % (WORDS_TRANS[this_art['sub']])
+        if "effect" in this_art:
+            this_mem_str += '<span title="%.1f%%">%sDOWN</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+        else:
+            this_mem_str += "%sDOWN" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'INITIAL' and this_art['sub'] == 'MP':
         this_mem_str += "初始%d%%MP" % (this_art['effect'] / 10)
     elif this_art['code'] == "RESURRECT":
