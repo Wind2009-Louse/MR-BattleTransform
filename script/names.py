@@ -31,6 +31,8 @@ CHAR_ID_LIST = {
     1027 : "[[土岐沙绪]]",
     1029 : "[[宫尾时雨]]",
     1030 : "[[安积育梦]]",
+    1039 : "[[佐和月出里]]",
+    1040 : "[[篠目夜鹤]]",
     1041 : "[[莉薇娅·梅黛洛斯]]",
     1101 : "[[环伊吕波（泳装ver.）]]",
     1103 : "[[谣鹤乃]]",
@@ -55,6 +57,7 @@ CHAR_ID_LIST = {
     2400 : "[[美树沙耶香（晴着ver.）]]",
     2500 : "[[圣麻美]]",
     2600 : "[[佐仓杏子（泳装ver.）]]",
+    2700 : "[[百江渚（情人节ver.）]]",
     3001 : "[[矢宵鹿乃子]]",
     3002 : "[[空穗夏希]]",
     3003 : "[[都雏乃]]",
@@ -88,10 +91,12 @@ CHAR_ID_LIST = {
     3033 : "[[史乃沙优希]]",
     3034 : "[[惠萌花]]",
     3035 : "[[千秋理子]]",
+    3036 : "[[由贵真里爱]]",
     3037 : "[[安名梅露]]",
     3038 : "[[古町美仓]]",
     3039 : "[[三穗野星罗]]",
     3040 : "[[吉良手鞠]]",
+    3042 : "[[枇枇木巡]]",
     3043 : "[[万年樱之谣]]",
     3044 : "[[智珠兰华]]",
     3046 : "[[观鸟令]]",
@@ -141,7 +146,7 @@ CHAR_ID_LIST = {
 
     6011 : "[[愉悦的蓝宝石之唇]]",
     6012 : "[[顺从的红宝石之脐]]",
-    6013 : "[[振动的海蓝宝石之足]]",
+    6013 : "[[振动的海蓝宝石之踵]]",
 
     6101 : "[[幸福的魔女]]",
     6102 : "[[幸福魔女]]",
@@ -157,6 +162,7 @@ CHAR_ID_LIST = {
     6403 : "[[零食的魔女]]",
     6404 : "[[犬之魔女]]",
     6405 : "[[舞台装置的魔女]]",
+    6406 : "[[涂鸦的魔女]]",
     6500 : "[[巧克力的魔女]]",
     6501 : "[[神滨圣女之谣]]",
     6502 : "[[小伊吕波|巨大伊吕波]]",
@@ -240,6 +246,12 @@ GOOD_LIST = {"AUTO_HEAL" : "自动回复",
              "DAMAGE_DOWN_NODISK" : "Magia伤害削减",
              "DAMAGE_DOWN_ACCEL" : "Accele伤害削减",
              "DAMAGE_DOWN_BLAST" : "Blast伤害削减",
+             "DAMAGE_DOWN_DARK" : "暗属性伤害削减",
+             "DAMAGE_DOWN_LIGHT" : "光属性伤害削减",
+             "DAMAGE_DOWN_WATER" : "水属性伤害削减",
+             "DAMAGE_DOWN_FIRE" : "火属性伤害削减",
+             "DAMAGE_DOWN_TIMBER" : "木属性伤害削减",
+             "DAMAGE_DOWN_VOID" : "无属性伤害削减",
              "DAMAGE_UP" : "伤害上升",
              "DAMAGE_UP_BAD" : "敌方状态异常时伤害UP",
              "DEFENSE_IGNORED" : "防御无视",
@@ -265,7 +277,9 @@ WORDS_TRANS = {"ATTACK" : "攻击力",
                "CHARGING" : "Charge盘伤害",
                "MAGIA" : "Magia伤害",
                "DOPPEL" : "DOPPEL伤害",
-               "DAMAGE" : "造成伤害"}
+               "DAMAGE" : "造成伤害",
+               "WEAK_BLAST" : "Blast伤害",
+               "WEAK_CHARGE_DONE" : "Charge后伤害",}
 REVOKE_TYPES = {"BUFF" : "Buff解除",
                 "DEBUFF" : "Debuff解除",
                 "BAD" : "状态异常解除",
@@ -284,7 +298,8 @@ COST_TRANS = {'みたま特製エナジードリンク' : "饮料",
               "珊瑚礁":"珊瑚礁",
               "始まりの焚火":"篝火",
               "サンタのひげ":"圣诞胡子",
-              "秋の七草":"秋之七草"}
+              "秋の七草":"秋之七草",
+              "宇宙一のレシピ":"食谱"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？","災"]
 
 POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
@@ -415,7 +430,10 @@ def art_to_str(this_art):
             this_mem_str += "死亡时同伴%sUP" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'DEBUFF':
         if "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">%sDOWN</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+            if "WEAK" in this_art['sub']:
+                this_mem_str += '<span title="%.1f%%">%s弱体</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+            else:
+                this_mem_str += '<span title="%.1f%%">%sDOWN</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
         else:
             this_mem_str += "%sDOWN" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'INITIAL' and this_art['sub'] == 'MP':

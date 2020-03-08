@@ -247,6 +247,9 @@ def get_battle_enemy(json_data, battle_id=0):
                         this_mem_str += "&"
                     this_art = this_art_list[art_id]
                     this_mem_str += art_to_str(this_art)
+                    # 判断是否需要输出效果范围(和下一个效果相同则不输出)
+                    if 'turn' in this_art:
+                        this_mem_str += "(%dT)"%this_art['turn']
                 # 是否标记效果名
                 if 'name' in abi_mem.keys():
                     need_add_skillname = False
