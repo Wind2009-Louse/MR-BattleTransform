@@ -38,6 +38,7 @@ CHAR_ID_LIST = {
     1103 : "[[谣鹤乃]]",
     1105 : "[[小菲莉希亚]]",
     1108 : "[[圣阿莉娜]]",
+    1109 : "[[小玲奈（偶像ver.）]]",
     1208 : "[[圣阿莉娜]]",
     1117 : "[[八云御魂（晴着ver.）]]",
     1118 : "[[天音姐妹（泳装ver.）]]",
@@ -157,6 +158,7 @@ CHAR_ID_LIST = {
     6107 : "[[生神的魔女]]",
     6108 : "[[橡胶的魔女]]",
     6109 : "[[流浪的魔女]]",
+    6110 : "[[占卜师的魔女]]",
     6400 : "[[班长的魔女]]",
     6401 : "[[玫瑰园的魔女]]",
     6403 : "[[零食的魔女]]",
@@ -246,6 +248,8 @@ GOOD_LIST = {"AUTO_HEAL" : "自动回复",
              "DAMAGE_DOWN_NODISK" : "Magia伤害削减",
              "DAMAGE_DOWN_ACCEL" : "Accele伤害削减",
              "DAMAGE_DOWN_BLAST" : "Blast伤害削减",
+             "DAMAGE_DOWN_CHARGE" : "Charge后伤害削减",
+             "DAMAGE_DOWN_CHARGING" : "Charge盘伤害削减",
              "DAMAGE_DOWN_DARK" : "暗属性伤害削减",
              "DAMAGE_DOWN_LIGHT" : "光属性伤害削减",
              "DAMAGE_DOWN_WATER" : "水属性伤害削减",
@@ -279,7 +283,8 @@ WORDS_TRANS = {"ATTACK" : "攻击力",
                "DOPPEL" : "DOPPEL伤害",
                "DAMAGE" : "造成伤害",
                "WEAK_BLAST" : "Blast伤害",
-               "WEAK_CHARGE_DONE" : "Charge后伤害",}
+               "WEAK_CHARGE_DONE" : "Charge后伤害",
+               "WEAK_WATER" : "水属性伤害",}
 REVOKE_TYPES = {"BUFF" : "Buff解除",
                 "DEBUFF" : "Debuff解除",
                 "BAD" : "状态异常解除",
@@ -299,7 +304,8 @@ COST_TRANS = {'みたま特製エナジードリンク' : "饮料",
               "始まりの焚火":"篝火",
               "サンタのひげ":"圣诞胡子",
               "秋の七草":"秋之七草",
-              "宇宙一のレシピ":"食谱"}
+              "宇宙一のレシピ":"食谱",
+              "まどかPからの連絡":"联络"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？","災"]
 
 POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
@@ -309,8 +315,12 @@ def char_idtostr(id,origin_str):
     return_str = ""
     if origin_str == "幸福な魔女の手下" or origin_str == "幸福の魔女の手下":
         return "[[幸福的魔女的手下]]"
+    if origin_str == "FM神浜のウワサ":
+        return "[[绝交阶梯之谣|FM神滨之谣]]"
     if origin_str == "神浜レアリティースターのウワサ":
         return "神滨稀有度之星之谣"
+    if origin_str == "記憶キュゥレーターのウワサ":
+        return "[[记忆馆长之谣|记忆Q长之谣]]"
     if id % 10 == 9:
         return_str += "镜"
     real_id = math.floor(id / 100)
@@ -344,7 +354,7 @@ def art_to_str(this_art):
         this_art_str = GOOD_LIST[this_art['sub']]
         effect_not_used = True
         if this_art_str == '反击' and this_art['effect'] > 800:
-            this_art_str = '交叉反击'
+            this_art_str = '<span title="%.1f%%">交叉反击</span>'%(this_art['effect'] / 10)
         elif this_art_str == '自动回复':
             if 'genericValue' in this_art.keys() and this_art['genericValue'] == 'MP':
                 this_art_str = "MP自动回复"
@@ -431,13 +441,13 @@ def art_to_str(this_art):
     elif this_art['code'] == 'DEBUFF':
         if "effect" in this_art:
             if "WEAK" in this_art['sub']:
-                this_mem_str += '<span title="%.1f%%">%s弱体</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+                this_mem_str += '<span title="%.1f%%">%s耐性DOWN</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
             else:
                 this_mem_str += '<span title="%.1f%%">%sDOWN</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
         else:
             this_mem_str += "%sDOWN" % (WORDS_TRANS[this_art['sub']])
     elif this_art['code'] == 'INITIAL' and this_art['sub'] == 'MP':
-        this_mem_str += "初始%d%%MP" % (this_art['effect'] / 10)
+        this_mem_str += "初始%dMP" % (this_art['effect'] / 10)
     elif this_art['code'] == "RESURRECT":
         this_mem_str += "苏生"
     elif this_art['code'] == "ATTACK":

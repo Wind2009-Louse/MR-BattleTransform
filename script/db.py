@@ -248,7 +248,7 @@ def get_battle_enemy(json_data, battle_id=0):
                     this_art = this_art_list[art_id]
                     this_mem_str += art_to_str(this_art)
                     # 判断是否需要输出效果范围(和下一个效果相同则不输出)
-                    if 'turn' in this_art:
+                    if 'turn' in this_art and this_art['code'] != "ENCHANT":
                         this_mem_str += "(%dT)"%this_art['turn']
                 # 是否标记效果名
                 if 'name' in abi_mem.keys():
@@ -343,7 +343,7 @@ battle_id, enemy["Magia"], battle_id, enemy["Magia"])
             # Doppel
             if enemy["Doppel"] != 0:
                 this_mem_str = '<span class="mw-customtoggle-d%d-%d" style="background:Silver;">\
-Doppel</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-d%d">'%(
+Doppel</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-d%d-%d">'%(
 battle_id, enemy["Doppel"], battle_id, enemy["Doppel"])
                 # 获取效果
                 this_art_list = []
