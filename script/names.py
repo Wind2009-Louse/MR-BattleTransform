@@ -39,7 +39,9 @@ CHAR_ID_LIST = {
     1039 : "[[佐和月出里]]",
     1040 : "[[篠目夜鹤]]",
     1041 : "[[莉薇娅·梅黛洛斯]]",
+    1042 : "[[小丘比]]",
     1101 : "[[环伊吕波（泳装ver.）]]",
+    1102 : "[[八千代·美冬（起始ver.）]]",
     1103 : "[[谣鹤乃]]",
     1105 : "[[小菲莉希亚]]",
     1108 : "[[圣阿莉娜]]",
@@ -114,10 +116,12 @@ CHAR_ID_LIST = {
     3047 : "[[青叶知花]]",
     3049 : "[[雪野加奈惠]]",
     3050 : "[[香春优奈]]",
+    3051 : "[[饰利润]]",
     3053 : "[[牧野郁美]]",
     3056 : "[[水树垒]]",
     3058 : "[[南津凉子]]",
     3501 : "[[梨花·怜（圣诞ver.）]]",
+    3502 : "[[万年樱之谣（泳装ver.）]]",
     3900 : "[[黑]]",
     4001 : "[[美国织莉子]]",
     4002 : "[[吴纪里香]]",
@@ -283,7 +287,9 @@ GOOD_LIST = {"AUTO_HEAL" : "自动回复",
              "PURSUE" : "追击",
              "SKILL_QUICK" : "技能冷却加速",
              "GUTS" : "忍耐",
-             "SURVIVE" : "Survive"}
+             "SURVIVE" : "Survive",
+             "MP_PLUS_BLAST" : "Blast攻击时获得MP",
+             "IMITATE_ATTRIBUTE" : "Variable"}
 CHANCE_GOOD_LIST = ["AVOID","COUNTER","CRITICAL","DAMAGE_DOWN","DAMAGE_UP",
                     "DEFENSE_IGNORED","PROVOKE","PROTECT","PURSUE","INVALID_HEAL_HP",
                     "SKILL_QUICK"]
@@ -302,7 +308,8 @@ WORDS_TRANS = {"ATTACK" : "攻击力",
                "DAMAGE" : "造成伤害",
                "WEAK_BLAST" : "Blast伤害",
                "WEAK_CHARGE_DONE" : "Charge后伤害",
-               "WEAK_WATER" : "水属性伤害",}
+               "WEAK_WATER" : "水属性伤害",
+               "WEAK_LIGHT" : "光属性伤害",}
 REVOKE_TYPES = {"BUFF" : "Buff解除",
                 "DEBUFF" : "Debuff解除",
                 "BAD" : "状态异常解除",
@@ -324,7 +331,10 @@ COST_TRANS = {'みたま特製エナジードリンク' : "饮料",
               "秋の七草":"秋之七草",
               "宇宙一のレシピ":"食谱",
               "まどかPからの連絡":"联络",
-              "乙女の秘密":"少女的秘密"}
+              "乙女の秘密":"少女的秘密",
+              "アクアリウムへの招待状":"请柬",
+              "いたずら駄菓子":"糖果",
+              "白紙の便箋":"便笺"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？","災"]
 
 POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
