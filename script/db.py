@@ -8,37 +8,37 @@ def get_quest_header(id_str, json_data, item_data, height=1):
     battle_cost = "AP"
     battle_drop = ""
     battle_drop_list = []
-    for i in json_data['uQuestBattleList'].keys(): # 比如101101
-        for data_key in json_data['uQuestBattleList'][i].keys(): # 比如1011011
+    for i in json_data["uQuestBattleList"].keys(): # 比如101101
+        for data_key in json_data["uQuestBattleList"][i].keys(): # 比如1011011
             if (id_str == data_key):
-                if ('ap' in json_data['uSectionList'][i]):
-                    battle_ap = json_data['uSectionList'][i]['ap']
-                    battle_diff = json_data['uSectionList'][i]['difficulty']
-                data = json_data['uQuestBattleList'][i][data_key]
-                if 'title' in data.keys():
-                    battle_title = data['title']
-                    battle_title = re.sub('エクストラ', 'Extra', battle_title)
-                elif json_data['uSectionList'][i]['questType'] == 'ACCOMPLISH':
-                    temp_id = (data['sectionId'] % 100)
+                if ("ap" in json_data["uSectionList"][i]):
+                    battle_ap = json_data["uSectionList"][i]["ap"]
+                    battle_diff = json_data["uSectionList"][i]["difficulty"]
+                data = json_data["uQuestBattleList"][i][data_key]
+                if "title" in data.keys():
+                    battle_title = data["title"]
+                    battle_title = re.sub("エクストラ", "Extra", battle_title)
+                elif json_data["uSectionList"][i]["questType"] == "ACCOMPLISH":
+                    temp_id = (data["sectionId"] % 100)
                     if (temp_id > 10):
                         temp_id -= 10
-                    temp_id = (temp_id - 1) * 5 + data['sectionIndex']
+                    temp_id = (temp_id - 1) * 5 + data["sectionIndex"]
                     battle_title = "BATTLE %d" % temp_id
                 else:
-                    battle_title = "BATTLE %d"%data['sectionIndex']
-                if 'needItemNum' in data.keys():
-                    battle_ap = data['needItemNum']
-                elif 'ap' in data.keys():
-                    battle_ap = data['ap']
-                if 'difficulty' in data.keys():
-                    battle_diff = data['difficulty']
-                if 'useItem' in data.keys():
-                    use_Item = data['useItem']['name']
+                    battle_title = "BATTLE %d"%data["sectionIndex"]
+                if "needItemNum" in data.keys():
+                    battle_ap = data["needItemNum"]
+                elif "ap" in data.keys():
+                    battle_ap = data["ap"]
+                if "difficulty" in data.keys():
+                    battle_diff = data["difficulty"]
+                if "useItem" in data.keys():
+                    use_Item = data["useItem"]["name"]
                     if use_Item in COST_TRANS.keys():
                         battle_cost = COST_TRANS[use_Item]
                     else:
                         print("新消耗物品:%s"%use_Item)
-                if 'consumeType' in data.keys() and data['consumeType'] == 'RAID':
+                if "consumeType" in data.keys() and data["consumeType"] == "RAID":
                     battle_cost = "RP"
                     battle_ap = 1
 
@@ -69,15 +69,15 @@ def get_quest_header(id_str, json_data, item_data, height=1):
                         if (battle_drop != ""): battle_drop += "<br />"
                         battle_drop += item
 
-                if json_data['uSectionList'][i]['questType'] == 'ACCOMPLISH':
-                    if ('effectAdjusterList' in data):
-                        battle_drop="HP回复量%d%%<br />MP回复量%d%%"%(data['effectAdjusterList'][0]['value']/10,data['effectAdjusterList'][0]['value']/10)
+                if json_data["uSectionList"][i]["questType"] == "ACCOMPLISH":
+                    if ("effectAdjusterList" in data):
+                        battle_drop="HP回复量%d%%<br />MP回复量%d%%"%(data["effectAdjusterList"][0]["value"]/10,data["effectAdjusterList"][0]["value"]/10)
                         pass
                     else:
                         battle_drop = "无"
                     pass
 
-                battle_drop = re.sub(r'＋',r'+',battle_drop)
+                battle_drop = re.sub(r"＋",r"+",battle_drop)
                 # make str
                 return_str += '| colspan="5" |\n|-\n'
                 if (height == 1):
@@ -110,7 +110,7 @@ def get_battle_enemy(json_data, battle_id=0):
     wave_state = []
     # 加载敌人信息
     this_wave_index = 0
-    for this_wave in json_data['waveList']:
+    for this_wave in json_data["waveList"]:
         this_wave_index += 1
         this_wave_state = {
             "begin":this_wave_index,
@@ -119,9 +119,9 @@ def get_battle_enemy(json_data, battle_id=0):
             "positions":[],
             "allgirls":True
         }
-        for this_enemy in this_wave['enemyList']:
+        for this_enemy in this_wave["enemyList"]:
             # 如果是大型敌人，则记录其位置
-            if 'enemySizeType' in this_enemy.keys() and this_enemy['enemySizeType'] == "BIG":
+            if "enemySizeType" in this_enemy.keys() and this_enemy["enemySizeType"] == "BIG":
                 this_wave_state["positions"].append(this_enemy["pos"])
             new_enemy = enemy_initial()
             # 判断是否全为少女
@@ -135,19 +135,19 @@ def get_battle_enemy(json_data, battle_id=0):
             new_enemy["HP"] = this_enemy["hp"]
             if new_enemy["HP"] == 0:
                 continue
-            new_enemy["name"] = char_idtostr(this_enemy["miniCharId"], this_enemy['name'])
+            new_enemy["name"] = char_idtostr(this_enemy["miniCharId"], this_enemy["name"])
             new_enemy["ATK"] = this_enemy["attack"]
-            new_enemy["ATTR"].add(ATTR_LIST[this_enemy['align']])
+            new_enemy["ATTR"].add(ATTR_LIST[this_enemy["align"]])
             new_enemy["DEF"] = this_enemy["defence"]
             if "pos" in this_enemy.keys():
                 new_enemy["position"] = [this_enemy["pos"]]
-            for mem_id in this_enemy['memoriaList']:
+            for mem_id in this_enemy["memoriaList"]:
                 if mem_id not in new_enemy["MEM"]:
                     new_enemy["MEM"].add(mem_id)
-            if 'magiaId' in this_enemy:
-                new_enemy['Magia'] = this_enemy['magiaId']
-            if 'doppelId' in this_enemy:
-                new_enemy['Doppel'] = this_enemy['doppelId']
+            if "magiaId" in this_enemy:
+                new_enemy["Magia"] = this_enemy["magiaId"]
+            if "doppelId" in this_enemy:
+                new_enemy["Doppel"] = this_enemy["doppelId"]
             # 判断是否存在相同的敌人
             have_same_enemy = False
             for enemy_before in this_wave_state["enemies"]:
@@ -159,13 +159,13 @@ def get_battle_enemy(json_data, battle_id=0):
                 and enemy_before["Doppel"] == new_enemy["Doppel"] :
                     have_same_enemy = True
                     # 相同属性自动省略
-                    enemy_before["ATTR"].add(ATTR_LIST[this_enemy['align']])
+                    enemy_before["ATTR"].add(ATTR_LIST[this_enemy["align"]])
                     enemy_before["position"].append(this_enemy["pos"])
                     break
             if not have_same_enemy:
                 this_wave_state["enemies"].append(new_enemy)
         # 清除标记
-        if not this_wave_state['allgirls']:
+        if not this_wave_state["allgirls"]:
             for this_enemy in this_wave_state["enemies"]:
                 this_enemy["position"] = 0
         # 判断是否和上一Wave重复
@@ -194,40 +194,40 @@ def get_battle_enemy(json_data, battle_id=0):
         this_wave = wave_state[wave_index]
         this_enemy_count = len(this_wave["enemies"])
         enemy_count += this_enemy_count
-        if this_wave['begin'] == this_wave['end']:
-            wave_str = "%s"%this_wave['begin']
+        if this_wave["begin"] == this_wave["end"]:
+            wave_str = "%s"%this_wave["begin"]
         else:
-            wave_str = "%s-%s"%(this_wave['begin'],this_wave['end'])
+            wave_str = "%s-%s"%(this_wave["begin"],this_wave["end"])
         return_str += '| rowspan = "%d" | W%s\n'%(this_enemy_count,wave_str)
         # 判断是否为大型敌人
         positions_str = ""
         if len(this_wave["positions"]) > 0:
-            positions_str = '{{阵形'
+            positions_str = "{{阵形"
             attr_color = ATTR_COLOR[list(this_wave["enemies"][0]["ATTR"])[0]]
             for pos in [7,4,1,8,5,2,9,6,3]:
                 positions_str += "|"
                 if pos in this_wave["positions"]:
                     positions_str += attr_color
-            positions_str += '}}'
+            positions_str += "}}"
         # 每个敌人
         total_mem_str = ""
         for enemy in this_wave["enemies"]:
             attr_list = ""
-            for each_attr in enemy['ATTR']:
+            for each_attr in enemy["ATTR"]:
                 attr_list += each_attr
             if this_wave["allgirls"]:
-                attr_color = ATTR_COLOR[list(enemy['ATTR'])[0]]
+                attr_color = ATTR_COLOR[list(enemy["ATTR"])[0]]
                 positions_str = ""
-                if len(enemy['position']) == 1:
-                    positions_str = "{{阵形|%d=%s}}"%(POSITION_TRANSFORM[enemy['position'][0]],attr_color)
+                if len(enemy["position"]) == 1:
+                    positions_str = "{{阵形|%d=%s}}"%(POSITION_TRANSFORM[enemy["position"][0]],attr_color)
             return_str += '| %s<span title="ATK:%d&#10;DEF:%d">%s(%d/%s)</span> || '%(positions_str,enemy["ATK"],enemy["DEF"],enemy["name"],enemy["HP"],attr_list)
             # 敌人技能，按照能力型-技能型排序
             ability_memory = []
             skill_memory = []
             total_mem_str = ""
-            for mem in json_data['memoriaList']:
-                if mem['memoriaId'] in enemy["MEM"]:
-                    if mem['cost'] > 0:
+            for mem in json_data["memoriaList"]:
+                if mem["memoriaId"] in enemy["MEM"]:
+                    if mem["cost"] > 0:
                         skill_memory.append(mem)
                     else:
                         ability_memory.append(mem)
@@ -236,9 +236,9 @@ def get_battle_enemy(json_data, battle_id=0):
                 this_mem_str = ""
                 # 获取效果
                 this_art_list = []
-                for art_id in abi_mem['artList']:
-                    for art in json_data['artList']:
-                        if art['artId'] == art_id:
+                for art_id in abi_mem["artList"]:
+                    for art in json_data["artList"]:
+                        if art["artId"] == art_id:
                             this_art_list.append(art)
                             break
                 # 将效果输出
@@ -248,17 +248,17 @@ def get_battle_enemy(json_data, battle_id=0):
                     this_art = this_art_list[art_id]
                     this_mem_str += art_to_str(this_art)
                     # 判断是否需要输出效果范围(和下一个效果相同则不输出)
-                    if 'turn' in this_art and this_art['code'] != "ENCHANT":
-                        this_mem_str += "(%dT)"%this_art['turn']
+                    if "turn" in this_art and this_art["code"] != "ENCHANT":
+                        this_mem_str += "(%dT)"%this_art["turn"]
                 # 是否标记效果名
-                if 'name' in abi_mem.keys():
+                if "name" in abi_mem.keys():
                     need_add_skillname = False
                     for char in SPECIAL_MEMORY_NAME:
-                        if char in abi_mem['name']:
+                        if char in abi_mem["name"]:
                             need_add_skillname = True
                             break
                     if need_add_skillname:
-                        this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,abi_mem['name'])
+                        this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,abi_mem["name"])
                 if (total_mem_str != ""):
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
@@ -268,9 +268,9 @@ def get_battle_enemy(json_data, battle_id=0):
                 this_mem_str = ""
                 # 获取效果
                 this_art_list = []
-                for art_id in skill_mem['artList']:
-                    for art in json_data['artList']:
-                        if art['artId'] == art_id:
+                for art_id in skill_mem["artList"]:
+                    for art in json_data["artList"]:
+                        if art["artId"] == art_id:
                             this_art_list.append(art)
                             break
                 # 将效果输出
@@ -288,15 +288,15 @@ def get_battle_enemy(json_data, battle_id=0):
                     if this_range != next_range:
                         this_mem_str += this_range
 
-                this_mem_str = "%s[%dT]" % (this_mem_str, skill_mem['cost'])
-                if 'name' in skill_mem.keys():
+                this_mem_str = "%s[%dT]" % (this_mem_str, skill_mem["cost"])
+                if "name" in skill_mem.keys():
                     need_add_skillname = False
                     for char in SPECIAL_MEMORY_NAME:
-                        if char in skill_mem['name']:
+                        if char in skill_mem["name"]:
                             need_add_skillname = True
                             break
                     if need_add_skillname:
-                        this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,skill_mem['name'])
+                        this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,skill_mem["name"])
                 if (total_mem_str != ""):
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
@@ -308,11 +308,11 @@ Magia</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-m%
 battle_id, enemy["Magia"], battle_id, enemy["Magia"])
                 # 获取效果
                 this_art_list = []
-                for magia in json_data['magiaList']:
+                for magia in json_data["magiaList"]:
                     if magia["magiaId"] == enemy["Magia"]:
                         for art_id in magia["artList"]:
-                            for art in json_data['artList']:
-                                if art['artId'] == art_id:
+                            for art in json_data["artList"]:
+                                if art["artId"] == art_id:
                                     this_art_list.append(art)
                                     break
 
@@ -335,7 +335,7 @@ battle_id, enemy["Magia"], battle_id, enemy["Magia"])
                         next_range = ""
                     if this_range != next_range:
                         this_mem_str += this_range
-                this_mem_str += '</div>'
+                this_mem_str += "</div>"
                 if total_mem_str != "":
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str
@@ -347,11 +347,11 @@ Doppel</span><div class="mw-collapsible mw-collapsed" id="mw-customcollapsible-d
 battle_id, enemy["Doppel"], battle_id, enemy["Doppel"])
                 # 获取效果
                 this_art_list = []
-                for doppel in json_data['doppelList']:
+                for doppel in json_data["doppelList"]:
                     if doppel["doppelId"] == enemy["Doppel"]:
                         for art_id in doppel["artList"]:
-                            for art in json_data['artList']:
-                                if art['artId'] == art_id:
+                            for art in json_data["artList"]:
+                                if art["artId"] == art_id:
                                     this_art_list.append(art)
                                     break
                 # 将效果输出
@@ -373,7 +373,7 @@ battle_id, enemy["Doppel"], battle_id, enemy["Doppel"])
                         next_range = ""
                     if this_range != next_range:
                         this_mem_str += this_range
-                this_mem_str += '</div>'
+                this_mem_str += "</div>"
                 if total_mem_str != "" and enemy["Magia"] == 0:
                     total_mem_str += "<br />"
                 total_mem_str += this_mem_str

@@ -247,7 +247,7 @@ ATTR_COLOR = {"火" : "Red",
               "暗" : "Purple",
               "光" : "Orange",
               "无" : "Black"}
-BAD_LIST = {'POISON' : "毒",
+BAD_LIST = {"POISON" : "毒",
             "BURN" : "烧伤",
             "CURSE" : "诅咒",
             "CHARM" : "魅惑",
@@ -314,9 +314,14 @@ REVOKE_TYPES = {"BUFF" : "Buff解除",
                 "DEBUFF" : "Debuff解除",
                 "BAD" : "状态异常解除",
                 "GOOD" : "赋予效果解除"}
+CODE_MAP = {"BUFF" : "%sUP",
+            "BUFF_DYING" : "濒死时%sUP",
+            "BUFF_HPMAX" : "HP最大时%sUP",
+            "BUFF_PARTY_DIE" : "同伴死亡时%sUP",
+            "BUFF_DIE" : "死亡时同伴%sUP"}
 TYPE_WILL_ON_ENEMY = {"CONDITION_BAD","DEBUFF"}
 LIMIT_TARGET = {"WITCH":"魔女","RUMOR":"谣","HUMAN":"魔法少女","EMOTION":"心魔"}
-COST_TRANS = {'みたま特製エナジードリンク' : "饮料",
+COST_TRANS = {"みたま特製エナジードリンク" : "饮料",
               "色鉛筆" : "铅笔",
               "料金分の愛情が入ったパフェ" : "帕菲",
               "記憶の頁" : "记忆之页",
@@ -361,152 +366,134 @@ def char_idtostr(id,origin_str):
 
 def item_idtostr(id, json_data):
     '''将掉落转换为字符串'''
-    new_id = re.sub(r'GIFT_(\d*)_\d*',r'\1', id)
+    new_id = re.sub(r"GIFT_(\d*)_\d*",r"\1", id)
     if (id == new_id): return ""
     new_id = int(new_id)
-    for i in json_data['giftList']:
-        if i['id'] == new_id:
-            return "{{素材|%s}}" % i['name']
+    for i in json_data["giftList"]:
+        if i["id"] == new_id:
+            return "{{素材|%s}}" % i["name"]
     return ""
 
 def art_to_str(this_art):
     '''将art转换为字符串'''
     this_mem_str = ""
-    if this_art['code'] == 'ENCHANT':
-        sub_state = BAD_LIST[this_art['sub']]
-        if this_art['rate'] != 1000:
-            this_mem_str += '<span title="%.1f%%">攻击时概率赋予%s(%dT)状态</span>' % (this_art['rate'] / 10 ,sub_state, this_art['turn'])
+    if this_art["code"] == "ENCHANT":
+        sub_state = BAD_LIST[this_art["sub"]]
+        if this_art["rate"] != 1000:
+            this_mem_str += '<span title="%.1f%%">攻击时概率赋予%s(%dT)状态</span>' % (this_art["rate"] / 10 ,sub_state, this_art["turn"])
         else:
-            this_mem_str += '攻击时必定赋予%s(%dT)状态' % (sub_state, this_art['turn'])
-    elif this_art['code'] == 'CONDITION_GOOD':
-        this_mem_str += rate_append(this_art['sub'], this_art['rate'])
-        this_art_str = GOOD_LIST[this_art['sub']]
+            this_mem_str += "攻击时必定赋予%s(%dT)状态" % (sub_state, this_art["turn"])
+    elif this_art["code"] == "CONDITION_GOOD":
+        this_mem_str += rate_append(this_art["sub"], this_art["rate"])
+        this_art_str = GOOD_LIST[this_art["sub"]]
         effect_not_used = True
-        if this_art_str == '反击' and this_art['effect'] > 800:
-            this_art_str = '<span title="%.1f%%">交叉反击</span>'%(this_art['effect'] / 10)
-        elif this_art_str == '自动回复':
-            if 'genericValue' in this_art.keys() and this_art['genericValue'] == 'MP':
+        if this_art_str == "反击" and this_art["effect"] > 800:
+            this_art_str = '<span title="%.1f%%">交叉反击</span>'%(this_art["effect"] / 10)
+        elif this_art_str == "自动回复":
+            if "genericValue" in this_art.keys() and this_art["genericValue"] == "MP":
                 this_art_str = "MP自动回复"
-                this_art_str = "%s(%d)" % (this_art_str, this_art['effect'] / 10)
+                this_art_str = "%s(%d)" % (this_art_str, this_art["effect"] / 10)
             else:
                 this_art_str = "HP自动回复"
-                this_art_str = "%s(%d%%)" % (this_art_str, this_art['effect'] / 10)
-        elif this_art_str == "保护" and this_art['target'] == 'DYING':
+                this_art_str = "%s(%d%%)" % (this_art_str, this_art["effect"] / 10)
+        elif this_art_str == "保护" and this_art["target"] == "DYING":
             this_art_str = "保护濒死的同伴"
         elif this_art_str == "Survive":
-            this_art_str = '<span title="%.1f%%">Survive</span>'%(this_art['effect'] / 10)
+            this_art_str = '<span title="%.1f%%">Survive</span>'%(this_art["effect"] / 10)
         else:
             effect_not_used = False
-        if this_art_str == "保护" and 'param' in this_art.keys():
-            this_art_str += "(必定保护%s)"%char_idtostr(this_art['param']*100,'NULL')
+        if this_art_str == "保护" and "param" in this_art.keys():
+            this_art_str += "(必定保护%s)"%char_idtostr(this_art["param"]*100,"NULL")
         if not effect_not_used and "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">%s</span>' % (this_art['effect'] / 10, this_art_str)
+            this_mem_str += '<span title="%.1f%%">%s</span>' % (this_art["effect"] / 10, this_art_str)
         else:
             this_mem_str += this_art_str
-    elif this_art['code'] == 'CONDITION_BAD':
-        this_mem_str += rate_append(this_art['sub'], this_art['rate'])
-        this_art_str = BAD_LIST[this_art['sub']]
-        if this_art_str == "毒" and this_art['effect'] > 100:
+    elif this_art["code"] == "CONDITION_BAD":
+        this_mem_str += rate_append(this_art["sub"], this_art["rate"])
+        this_art_str = BAD_LIST[this_art["sub"]]
+        if this_art_str == "毒" and this_art["effect"] > 100:
             this_art_str = "强化毒"
-        if this_art_str == "诅咒" and this_art['effect'] > 200:
+        if this_art_str == "诅咒" and this_art["effect"] > 200:
             this_art_str = "强化诅咒"
         if "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">%s</span>' % (this_art['effect'] / 10, this_art_str)
+            this_mem_str += '<span title="%.1f%%">%s</span>' % (this_art["effect"] / 10, this_art_str)
         else:
             this_mem_str += this_art_str
-    elif this_art['code'] == 'IGNORE':
-        this_mem_str += rate_append(this_art['sub'], this_art['rate'])
-        if this_art['sub'] in GOOD_LIST.keys():
-            this_mem_str += "%s无效" % (GOOD_LIST[this_art['sub']])
-        elif this_art['sub'] in BAD_LIST.keys():
-            this_mem_str += "%s无效" % (BAD_LIST[this_art['sub']])
+    elif this_art["code"] == "IGNORE":
+        this_mem_str += rate_append(this_art["sub"], this_art["rate"])
+        if this_art["sub"] in GOOD_LIST.keys():
+            this_mem_str += "%s无效" % (GOOD_LIST[this_art["sub"]])
+        elif this_art["sub"] in BAD_LIST.keys():
+            this_mem_str += "%s无效" % (BAD_LIST[this_art["sub"]])
         else:
-            print("CODE IGNORE新SUB:%s" % this_art['sub'])
-    elif this_art['code'] == 'HEAL':
-        if this_art['sub'] == "HP":
+            print("CODE IGNORE新SUB:%s" % this_art["sub"])
+    elif this_art["code"] == "HEAL":
+        if this_art["sub"] == "HP":
             this_mem_str += "HP回复"
-        elif this_art['sub'] == "MP_DAMAGE":
+        elif this_art["sub"] == "MP_DAMAGE":
             this_mem_str += "MP伤害"
-        elif this_art['sub'] == "MP":
+        elif this_art["sub"] == "MP":
             this_mem_str += "MP回复"
         else:
-            print("HEAL新sub:", this_art['sub'])
-    elif this_art['code'] == 'REVOKE':
-        if this_art['sub'] in REVOKE_TYPES.keys():
-            this_mem_str += REVOKE_TYPES[this_art['sub']]
+            print("HEAL新sub:", this_art["sub"])
+    elif this_art["code"] == "REVOKE":
+        if this_art["sub"] in REVOKE_TYPES.keys():
+            this_mem_str += REVOKE_TYPES[this_art["sub"]]
         else:
-            print("REVOKE新sub: ",this_art['sub'])
-    elif this_art['code'] == 'BUFF':
+            print("REVOKE新sub: ",this_art["sub"])
+    elif this_art["code"] == "LIMITED_ENEMY_TYPE":
+        target_name = WORDS_TRANS[this_art["genericValue"]]
         if "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+            this_mem_str += '<span title="%.1f%%">对%s%s</span>' % (this_art["effect"] / 10, target_name, GOOD_LIST[this_art["sub"]])
         else:
-            this_mem_str += "%sUP" % (WORDS_TRANS[this_art['sub']])
-    elif this_art['code'] == 'LIMITED_ENEMY_TYPE':
-        target_name = WORDS_TRANS[this_art['genericValue']]
+            this_mem_str += "对%s%s" % (target_name,GOOD_LIST[this_art["sub"]])
+    elif this_art["code"] == "DEBUFF":
         if "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">对%s%s</span>' % (this_art['effect'] / 10, target_name, GOOD_LIST[this_art['sub']])
-        else:
-            this_mem_str += "对%s%s" % (target_name,GOOD_LIST[this_art['sub']])
-    elif this_art['code'] == 'BUFF_DYING':
-        if "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">濒死时%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
-        else:
-            this_mem_str += "濒死时%sUP" % (WORDS_TRANS[this_art['sub']])
-    elif this_art['code'] == 'BUFF_HPMAX':
-        if "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">HP最大时%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
-        else:
-            this_mem_str += "HP最大时%sUP" % (WORDS_TRANS[this_art['sub']])
-    elif this_art['code'] == 'BUFF_PARTY_DIE':
-        if "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">同伴死亡时%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
-        else:
-            this_mem_str += "同伴死亡时%sUP" % (WORDS_TRANS[this_art['sub']])
-    elif this_art['code'] == 'BUFF_DIE':
-        if "effect" in this_art:
-            this_mem_str += '<span title="%.1f%%">死亡时同伴%sUP</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
-        else:
-            this_mem_str += "死亡时同伴%sUP" % (WORDS_TRANS[this_art['sub']])
-    elif this_art['code'] == 'DEBUFF':
-        if "effect" in this_art:
-            if "WEAK" in this_art['sub']:
-                this_mem_str += '<span title="%.1f%%">%s耐性DOWN</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+            if "WEAK" in this_art["sub"]:
+                this_mem_str += '<span title="%.1f%%">%s耐性DOWN</span>' % (this_art["effect"] / 10, WORDS_TRANS[this_art["sub"]])
             else:
-                this_mem_str += '<span title="%.1f%%">%sDOWN</span>' % (this_art['effect'] / 10, WORDS_TRANS[this_art['sub']])
+                this_mem_str += '<span title="%.1f%%">%sDOWN</span>' % (this_art["effect"] / 10, WORDS_TRANS[this_art["sub"]])
         else:
-            this_mem_str += "%sDOWN" % (WORDS_TRANS[this_art['sub']])
-    elif this_art['code'] == 'INITIAL' and this_art['sub'] == 'MP':
-        this_mem_str += "初始%dMP" % (this_art['effect'] / 10)
-    elif this_art['code'] == "RESURRECT":
+            this_mem_str += "%sDOWN" % (WORDS_TRANS[this_art["sub"]])
+    elif this_art["code"] == "INITIAL" and this_art["sub"] == "MP":
+        this_mem_str += "初始%dMP" % (this_art["effect"] / 10)
+    elif this_art["code"] == "RESURRECT":
         this_mem_str += "苏生"
-    elif this_art['code'] == "ATTACK":
+    elif this_art["code"] == "ATTACK":
         sub_str = ""
-        if 'sub' in this_art:
-            if this_art['sub'] == "DAMAGE_UP_BADS":
+        if "sub" in this_art:
+            if this_art["sub"] == "DAMAGE_UP_BADS":
                 sub_str += "异常增伤"
-            elif this_art['sub'] == "LINKED_DAMAGE":
+            elif this_art["sub"] == "LINKED_DAMAGE":
                 sub_str += "低HP威力UP"
-            elif this_art['sub'] == "ALIGNMENT":
+            elif this_art["sub"] == "ALIGNMENT":
                 sub_str += "属性强化"
-            elif this_art['sub'] == "DUMMY":
+            elif this_art["sub"] == "DUMMY":
                 return "DUMMY"
-        if this_art['target'] == "TARGET":
+        if this_art["target"] == "TARGET":
             this_mem_str += "对敌方单体%s伤害"%sub_str
-        elif this_art['target'] == "ALL":
+        elif this_art["target"] == "ALL":
             this_mem_str += "对敌方全体%s伤害"%sub_str
-        elif this_art['target'][0:6] == "RANDOM":
-            this_mem_str += "随机%s次 %s伤害"%(this_art['target'][-1],sub_str)
-        elif this_art['target'] == "HORIZONTAL":
+        elif this_art["target"][0:6] == "RANDOM":
+            this_mem_str += "随机%s次 %s伤害"%(this_art["target"][-1],sub_str)
+        elif this_art["target"] == "HORIZONTAL":
             this_mem_str += "横方向%s伤害"%sub_str
-        elif this_art['target'] == "VERTICAL":
+        elif this_art["target"] == "VERTICAL":
             this_mem_str += "纵方向%s伤害"%sub_str
         else:
             print("新攻击：%s",str(this_art))
-        if 'effect' in this_art:
-            this_mem_str = '<span title="%.1f%%">%s</span>'%(this_art['effect'] / 10, this_mem_str)
-
+        if "effect" in this_art:
+            this_mem_str = '<span title="%.1f%%">%s</span>'%(this_art["effect"] / 10, this_mem_str)
     else:
-        print("ART新CODE:", this_art["code"])
+        if this_art["code"] in CODE_MAP:
+            temp_str = CODE_MAP[this_art["code"]]
+            if "effect" in this_art:
+                temp_str = '<span title="%.1f%%">' + temp_str + "</span>"
+                this_mem_str += temp_str % (this_art["effect"] / 10, WORDS_TRANS[this_art["sub"]])
+            else:
+                this_mem_str += temp_str % (WORDS_TRANS[this_art["sub"]])
+        else:
+            print("ART新CODE:", this_art["code"])
     return this_mem_str
 
 def rate_append(type,rate):
@@ -514,7 +501,7 @@ def rate_append(type,rate):
         if rate > 1000:
             return '<span title="%.1f%%">必定</span>'%(rate/10)
         elif rate == 1000:
-            return '必定'
+            return "必定"
         else:
             return '<span title="%.1f%%">概率</span>'%(rate/10)
     else:
@@ -523,44 +510,44 @@ def rate_append(type,rate):
 def range_to_str(this_art):
     result_str = ""
     # Magia无范围
-    if this_art['code'] == "ATTACK":
+    if this_art["code"] == "ATTACK":
         return ""
-    if this_art['target'] == 'SELF':
-        if this_art['code'] == 'HEAL':
+    if this_art["target"] == "SELF":
+        if this_art["code"] == "HEAL":
             # 如 (自/10%)
-            if this_art['sub'] == "MP" or this_art['sub'] == "MP_DAMAGE":
-                result_str += "(自/%d)" % (this_art['effect']/10)
+            if this_art["sub"] == "MP" or this_art["sub"] == "MP_DAMAGE":
+                result_str += "(自/%d)" % (this_art["effect"]/10)
             else:
-                result_str += "(自/%d%%)" % (this_art['effect']/10)
-        elif 'turn' in this_art.keys():
+                result_str += "(自/%d%%)" % (this_art["effect"]/10)
+        elif "turn" in this_art.keys():
             # 如 (自/3T)
-            result_str += "(自/%dT)" % (this_art['turn'])
+            result_str += "(自/%dT)" % (this_art["turn"])
         else:
             result_str += "(自)"
     else:
         temp_str = ""
         # 敌单 敌全 单 全
-        if (this_art['code'] == 'REVOKE' and (this_art['sub'] == 'BUFF' or this_art['sub'] == 'GOOD')) \
-            or this_art['code'] in TYPE_WILL_ON_ENEMY \
-            or (this_art['code'] == "HEAL" and this_art['sub'] == "MP_DAMAGE"):
+        if (this_art["code"] == "REVOKE" and (this_art["sub"] == "BUFF" or this_art["sub"] == "GOOD")) \
+            or this_art["code"] in TYPE_WILL_ON_ENEMY \
+            or (this_art["code"] == "HEAL" and this_art["sub"] == "MP_DAMAGE"):
             temp_str += "敌"
 
-        if this_art['target'] == 'ALL':
-            temp_str += '全'
-        elif this_art['target'] == 'ONE' or this_art['target'] == 'TARGET':
-            temp_str += '单'
+        if this_art["target"] == "ALL":
+            temp_str += "全"
+        elif this_art["target"] == "ONE" or this_art["target"] == "TARGET":
+            temp_str += "单"
 
-        if 'turn' in this_art.keys():
+        if "turn" in this_art.keys():
             # 如 (敌单/1T)
-            result_str += "(%s/%dT)" % (temp_str, this_art['turn'])
-        elif this_art['code'] == "HEAL":
+            result_str += "(%s/%dT)" % (temp_str, this_art["turn"])
+        elif this_art["code"] == "HEAL":
             # 如 (全/30%)
-            if this_art['sub'] == "MP" or this_art['sub'] == "MP_DAMAGE":
-                result_str += "(%s/%d)" % (temp_str,this_art['effect']/10)
+            if this_art["sub"] == "MP" or this_art["sub"] == "MP_DAMAGE":
+                result_str += "(%s/%d)" % (temp_str,this_art["effect"]/10)
             else:
-                result_str += "(%s/%d%%)" % (temp_str,this_art['effect']/10)
-        elif this_art['code'] == "RESURRECT":
-            result_str += "(%s/%d%%)" % (temp_str,this_art['effect']/10)
+                result_str += "(%s/%d%%)" % (temp_str,this_art["effect"]/10)
+        elif this_art["code"] == "RESURRECT":
+            result_str += "(%s/%d%%)" % (temp_str,this_art["effect"]/10)
         else:
             # 如 (敌全)
             result_str += "(%s)" % temp_str

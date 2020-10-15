@@ -2,31 +2,33 @@ import time
 from script import db
 from script.jsonpack import *
 
+OUTPUT_HEADER = '{| class="wikitable" style="text-align:center; margin:0 auto;"\n! 关卡 !! 材料掉落 !! Wave !! 敌人 !! 技能\n|-\n'
+
 def main():
     while(True):
         input_str = input("是否更新Battledata.json?(Y/N)")
-        if (input_str == 'Y' or input_str == 'y'):
+        if (input_str == "Y" or input_str == "y"):
             battle_list_json = download_json(BDATA_JSON, "battleList.json")
             break
-        elif (input_str == 'N' or input_str == 'n'):
+        elif (input_str == "N" or input_str == "n"):
             battle_list_json = read_json("battleList.json")
             break
     while(True):
         input_str = input("是否更新gift.json?(Y/N)")
-        if (input_str == 'Y' or input_str == 'y'):
+        if (input_str == "Y" or input_str == "y"):
             gift_json = download_json(GIFT_JSON, "gift.json")
             break
-        elif (input_str == 'N' or input_str == 'n'):
+        elif (input_str == "N" or input_str == "n"):
             gift_json = read_json("gift.json")
             break
-    output_result = '{| class="wikitable" style="text-align:center; margin:0 auto;"\n! 关卡 !! 材料掉落 !! Wave !! 敌人 !! 技能\n|-\n'
+    output_result = OUTPUT_HEADER
     mode = 0
     while(True):
         if (mode == 0):
             id = input("输入查询关卡id(如1011011)，输入1切换模式，输入9输出当前内容，输入0退出:")
             if (id == "0"): break
             if (id == "9"):
-                output_result += '|}'
+                output_result += "|}"
                 os.chdir(os.getcwd())
                 dir = os.path.join(os.getcwd(),"output")
                 if not os.path.exists(dir):
@@ -35,10 +37,10 @@ def main():
                 file = open(file_name,"w",encoding="utf-8")
                 file.write(output_result)
                 file.close()
-                output_result = '{| class="wikitable" style="text-align:center; margin:0 auto;"\n! 关卡 !! 材料掉落 !! Wave !! 敌人 !! 技能\n|-\n'
+                output_result = OUTPUT_HEADER
                 print("成功输出！")
                 continue
-            if (id == '1'):
+            if (id == "1"):
                 mode = 1
                 continue
             quest_json = jsonjudge_auto(id)
@@ -54,7 +56,7 @@ def main():
             id = input("输入查询关卡组id(如101101)，输入1切换模式，输入9输出当前内容，输入0退出:")
             if (id == "0"): break
             if (id == "9"):
-                output_result += '|}'
+                output_result += "|}"
                 os.chdir(os.getcwd())
                 dir = os.path.join(os.getcwd(),"output")
                 if not os.path.exists(dir):
@@ -63,7 +65,7 @@ def main():
                 file = open(file_name,"w",encoding="utf-8")
                 file.write(output_result)
                 file.close()
-                output_result = '{| class="wikitable" style="text-align:center; margin:0 auto;"\n! 关卡 !! 材料掉落 !! Wave !! 敌人 !! 技能\n|-\n'
+                output_result = OUTPUT_HEADER
                 print("成功输出！")
                 continue
             if (id == "1"):
@@ -84,17 +86,17 @@ def main():
                 print_str = str_header + return_str
                 output_result += print_str
 
-    output_result += '|}'
+    output_result += "|}"
     os.chdir(os.getcwd())
     dir = os.path.join(os.getcwd(),"output")
     if not os.path.exists(dir):
         os.mkdir(dir)
-    if output_result != '{| class="wikitable" style="text-align:center; margin:0 auto;"\n! 关卡 !! 材料掉落 !! Wave !! 敌人 !! 技能\n|-\n|}':
+    if output_result != OUTPUT_HEADER:
         file_name = os.path.join(dir, time.strftime("%Y-%m-%d %H-%M-%S.txt", time.localtime()))
         file = open(file_name,"w",encoding="utf-8")
         file.write(output_result)
         file.close()
     print("程序退出。")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

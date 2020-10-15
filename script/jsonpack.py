@@ -33,7 +33,7 @@ def read_json(name):
     jsondir()
     full_path = get_json_path(name)
     if os.path.exists(full_path):
-        fjson = open(full_path, encoding="utf-8", errors='ignore')
+        fjson = open(full_path, encoding="utf-8", errors="ignore")
         text = fjson.read()
         fjson.close()
         data = json.loads(text)
@@ -49,7 +49,7 @@ def download_json(url,name):
     get_result = session.get(url)
     content = get_result.content
     full_path = get_json_path(name)
-    sjson = open(full_path, 'wb')
+    sjson = open(full_path, "wb")
     sjson.write(content)
     sjson.close()
     result = content.decode("utf-8",errors="ignore")
