@@ -44,6 +44,7 @@ CHAR_ID_LIST = {
     1102 : "[[八千代·美冬（起始ver.）]]",
     1103 : "[[谣鹤乃]]",
     1105 : "[[小菲莉希亚]]",
+    1107 : "[[灯花·音梦（圣夜ver.）]]",
     1108 : "[[圣阿莉娜]]",
     1109 : "[[小玲奈（偶像ver.）]]",
     1110 : "[[十咎桃子（修女ver.）]]",
@@ -51,6 +52,7 @@ CHAR_ID_LIST = {
     1117 : "[[八云御魂（晴着ver.）]]",
     1118 : "[[天音姐妹（泳装ver.）]]",
     1201 : "[[小伊吕波]]",
+    1203 : "[[鹤乃·菲莉希亚（快递ver.）]]",
     1208 : "[[圣阿莉娜]]",
     1209 : "[[玲奈·枫（泳装ver.）]]",
     1301 : "[[伊吕波·八千代（决战ver.）]]",
@@ -315,8 +317,16 @@ WORDS_TRANS = {"ATTACK" : "攻击力",
                "DAMAGE" : "造成伤害",
                "WEAK_BLAST" : "Blast伤害",
                "WEAK_CHARGE_DONE" : "Charge后伤害",
+               "WEAK_FIRE" : "火属性伤害",
                "WEAK_WATER" : "水属性伤害",
-               "WEAK_LIGHT" : "光属性伤害"}
+               "WEAK_TIMBER" : "木属性伤害",
+               "WEAK_DARK" : "暗属性伤害",
+               "WEAK_LIGHT" : "光属性伤害",
+               "ATTACK_FIRE" : "火属性攻击力",
+               "ATTACK_TIMBER" : "木属性攻击力",
+               "ATTACK_WATER" : "水属性攻击力",
+               "ATTACK_LIGHT" : "光属性攻击力",
+               "ATTACK_DARK" : "暗属性攻击力"}
 REVOKE_TYPES = {"BUFF" : "Buff解除",
                 "DEBUFF" : "Debuff解除",
                 "BAD" : "状态异常解除",
@@ -346,7 +356,8 @@ COST_TRANS = {"みたま特製エナジードリンク" : "饮料",
               "乙女の秘密":"少女的秘密",
               "アクアリウムへの招待状":"请柬",
               "いたずら駄菓子":"糖果",
-              "白紙の便箋":"便笺"}
+              "白紙の便箋":"便笺",
+              "ヒイラギの葉":"柊树叶"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？","災"]
 
 POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
@@ -386,10 +397,12 @@ def art_to_str(this_art):
     this_mem_str = ""
     if this_art["code"] == "ENCHANT":
         sub_state = BAD_LIST[this_art["sub"]]
-        if this_art["rate"] != 1000:
+        if this_art["rate"] < 1000:
             this_mem_str += '<span title="%.1f%%">攻击时概率赋予%s(%dT)状态</span>' % (this_art["rate"] / 10 ,sub_state, this_art["turn"])
-        else:
+        elif this_art["rate"] == 1000:
             this_mem_str += "攻击时必定赋予%s(%dT)状态" % (sub_state, this_art["turn"])
+        elif this_art["rate"] > 1000:
+            this_mem_str += '<span title="%.1f%%">攻击时必定赋予%s(%dT)状态</span>' % (this_art["rate"] / 10 ,sub_state, this_art["turn"])
     elif this_art["code"] == "CONDITION_GOOD":
         this_mem_str += rate_append(this_art["sub"], this_art["rate"])
         this_art_str = GOOD_LIST[this_art["sub"]]
