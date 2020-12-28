@@ -173,7 +173,7 @@ CHAR_ID_LIST = {
     6013 : "[[振动的海蓝宝石之踵]]",
     6014 : "[[下陷的绿松石之耳]]",
     6015 : "[[美丽的珍珠之眼]]",
-    6016 : "[[健全的欧珀之首]]",
+    6016 : "[[健全的蛋白石之首]]",
 
     6101 : "[[幸福的魔女]]",
     6102 : "[[幸福魔女]]",
@@ -268,7 +268,8 @@ BAD_LIST = {"POISON" : "毒",
             "BAN_MAGIA" : "Magia封印",
             "INVALID_HEAL_HP" : "HP回复禁止",
             "INVALID_HEAL_MP" : "MP回复禁止",
-            "DEBUFF" : "DEBUFF",}
+            "DEBUFF" : "DEBUFF",
+            "CONDITION_BAD": "异常状态"}
 GOOD_LIST = {"AUTO_HEAL" : "自动回复",
              "AVOID" : "回避",
              "COUNTER" : "反击",
