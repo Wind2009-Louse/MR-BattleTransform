@@ -1,3 +1,3 @@
-GIFT_JSON = "127.0.0.1:10086/data/gift.json"
-BDATA_JSON = "127.0.0.1:10086/data/battleList.json"
-DATA_JSON_LIST = "127.0.0.1:10086/data/battle/"
+GIFT_JSON = "http://stat.magireco.moe/data/gift.json"
+BDATA_JSON = "http://stat.magireco.moe/data/battleList.json"
+DATA_JSON_LIST = "http://stat.magireco.moe/data/battle/"
