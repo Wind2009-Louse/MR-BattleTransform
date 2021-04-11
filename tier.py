@@ -61,12 +61,14 @@ rank_power_dict = {"RANK_1":2,"RANK_2":2.2,"RANK_3":2.4,"RANK_4":2.6,"RANK_5":3}
 # (HP, ATK, DEF)
 grow_diff = {"BALANCE": (1,1,1), "ATTACK": (0.98, 1.03, 0.97), "DEFENSE": (0.97, 0.98, 1.05), "HP": (1.04, 0.97, 0.98), "ATKDEF": (0.99, 1.02, 1.01), "ATKHP": (1.02, 1.01, 0.99), "DEFHP": (1.01, 0.99, 1.02)}
 ATTRIBUTE = {"FIRE":"{{属性|火}}","WATER":"{{属性|水}}","TIMBER":"{{属性|木}}","LIGHT":"{{属性|光}}","DARK":"{{属性|暗}}","VOID":"{{属性|无}}"}
-CHARA_NAME = {1001: "环伊吕波",1002: "七海八千代",1003: "由比鹤乃",1004: "二叶莎奈",1005: "深月菲莉希亚",1006: "梓美冬",1007: "里见灯花",1008: "阿莉娜·格雷",1009: "水波玲奈",1010: "十咎桃子",1011: "秋野枫",1012: "御园花凛",1013: "龙城明日香",1014: "柊音梦",1015: "环忧",1016: "和泉十七夜",1017: "八云御魂",1018: "天音月夜",1019: "天音月咲",1022: "煌里光",1023: "笠音青",1024: "大庭树里",1025: "时女静香",1026: "广江千春",1027: "土岐沙绪",1029: "宫尾时雨",1030: "安积育梦",1038: "八云御影",1039: "佐和月出里",1040: "篠目夜鹤",1041: "莉薇娅·梅黛洛斯",1042: "小丘比",1101: "环伊吕波（泳装ver.）",1102: "八千代·美冬（起始ver.）",1103: "谣鹤乃",1104: "谣莎奈",1105: "小菲莉希亚",1107: "灯花·音梦（圣夜ver.）",1108: "圣阿莉娜",1109: "小玲奈（偶像ver.）",1110: "十咎桃子（修女ver.）",1116: "和泉十七夜（吸血鬼ver.）",1117: "八云御魂（晴着ver.）",1118: "天音姐妹（泳装ver.）",1201: "小伊吕波",1203: "鹤乃·菲莉希亚（快递ver.）",1209: "玲奈·枫（泳装ver.）",1301: "伊吕波·八千代（决战ver.）",1401: "伊吕波·忧（巫女ver.）",2001: "鹿目圆",2002: "晓美焰",2003: "晓美焰（眼镜ver.）",2004: "美树沙耶香",2005: "巴麻美",2006: "佐仓杏子",2007: "百江渚",2100: "鹿目圆（晴着ver.）",2101: "圆神",2102: "小圆前辈",2300: "晓美焰（泳装ver.）",2400: "美树沙耶香（晴着ver.）",2500: "圣麻美",2501: "巴麻美（泳装ver.）",2600: "佐仓杏子（泳装ver.）",2700: "百江渚（情人节ver.）",3001: "矢宵鹿乃子",3002: "空穗夏希",3003: "都雏乃",3004: "美凪纱纱罗",3005: "常盘七夏",3006: "木崎衣美里",3007: "保澄雫",3008: "志伸晶",3009: "胡桃爱香",3010: "阿见莉爱",3011: "夏目佳子",3012: "纯美雨",3013: "伊吹丽良",3014: "桑水清佳",3015: "相野未都",3016: "粟根心",3017: "七濑幸佳",3018: "更纱帆奈",3019: "毬子彩花",3020: "真尾日美香",3021: "铃鹿朔夜",3023: "江利爱实",3024: "若菜纺",3025: "五十铃怜",3026: "静海木叶",3027: "游佐叶月",3028: "三栗菖蒲",3029: "加贺见真良",3030: "春名木乃美",3031: "绫野梨花",3032: "梢麻友",3033: "史乃沙优希",3034: "惠萌花",3035: "千秋理子",3036: "由贵真里爱",3037: "安名梅露",3038: "古町美仓",3039: "三穗野星罗",3040: "吉良手鞠",3041: "柚希步鸟",3042: "枇枇木巡",3043: "万年樱之谣",3044: "智珠兰华",3045: "柚希理音",3046: "观鸟令",3047: "青叶知花",3049: "雪野加奈惠",3050: "香春优奈",3051: "饰利润",3052: "阿什莉·泰勒",3053: "牧野郁美",3056: "水树垒",3058: "南津凉子",3501: "梨花·怜（圣诞ver.）",3502: "万年樱之谣（泳装ver.）",3900: "黑",4001: "美国织莉子",4002: "吴纪里香",4003: "千岁由麻",4011: "和美",4012: "御崎海香",4013: "牧薰",4021: "塔鲁特",4022: "莉兹",4023: "梅丽莎",4025: "可鲁波",4026: "爱丽莎",4027: "拉皮努",4028: "塔鲁特（ver.Final）",4031: "天乃铃音",4032: "日向茉莉",4033: "成见亚里纱",4034: "诗音千里",4035: "奏遥香",4036:"美琴椿", 4041: "战场原黑仪",4042: "八九寺真宵",4043: "神原骏河",4044: "千石抚子",4045: "羽川翼",4046: "忍野忍",4051: "高町奈叶",4052: "菲特",4053: "八神疾风"}
+CHARA_NAME = {1001: "环伊吕波",1002: "七海八千代",1003: "由比鹤乃",1004: "二叶莎奈",1005: "深月菲莉希亚",1006: "梓美冬",1007: "里见灯花",1008: "阿莉娜·格雷",1009: "水波玲奈",1010: "十咎桃子",1011: "秋野枫",1012: "御园花凛",1013: "龙城明日香",1014: "柊音梦",1015: "环忧",1016: "和泉十七夜",1017: "八云御魂",1018: "天音月夜",1019: "天音月咲",1022: "煌里光",1023: "笠音青",1024: "大庭树里",1025: "时女静香",1026: "广江千春",1027: "土岐沙绪",1029: "宫尾时雨",1030: "安积育梦",1038: "八云御影",1039: "佐和月出里",1040: "篠目夜鹤",1041: "莉薇娅·梅黛洛斯",1042: "小丘比",1101: "环伊吕波（泳装ver.）",1102: "八千代·美冬（起始ver.）",1103: "谣鹤乃",1104: "谣莎奈",1105: "小菲莉希亚",1107: "灯花·音梦（圣夜ver.）",1108: "圣阿莉娜",1109: "小玲奈（偶像ver.）",1110: "十咎桃子（修女ver.）",1116: "和泉十七夜（吸血鬼ver.）",1117: "八云御魂（晴着ver.）",1118: "天音姐妹（泳装ver.）",1201: "小伊吕波",1203: "鹤乃·菲莉希亚（快递ver.）",1209: "玲奈·枫（泳装ver.）",1301: "伊吕波·八千代（决战ver.）",1401: "伊吕波·忧（巫女ver.）",2001: "鹿目圆",2002: "晓美焰",2003: "晓美焰（眼镜ver.）",2004: "美树沙耶香",2005: "巴麻美",2006: "佐仓杏子",2007: "百江渚",2100: "鹿目圆（晴着ver.）",2101: "圆神",2102: "小圆前辈",2103: "究极小圆前辈",2300: "晓美焰（泳装ver.）",2400: "美树沙耶香（晴着ver.）",2500: "圣麻美",2501: "巴麻美（泳装ver.）",2600: "佐仓杏子（泳装ver.）",2700: "百江渚（情人节ver.）",3001: "矢宵鹿乃子",3002: "空穗夏希",3003: "都雏乃",3004: "美凪纱纱罗",3005: "常盘七夏",3006: "木崎衣美里",3007: "保澄雫",3008: "志伸晶",3009: "胡桃爱香",3010: "阿见莉爱",3011: "夏目佳子",3012: "纯美雨",3013: "伊吹丽良",3014: "桑水清佳",3015: "相野未都",3016: "粟根心",3017: "七濑幸佳",3018: "更纱帆奈",3019: "毬子彩花",3020: "真尾日美香",3021: "铃鹿朔夜",3023: "江利爱实",3024: "若菜纺",3025: "五十铃怜",3026: "静海木叶",3027: "游佐叶月",3028: "三栗菖蒲",3029: "加贺见真良",3030: "春名木乃美",3031: "绫野梨花",3032: "梢麻友",3033: "史乃沙优希",3034: "惠萌花",3035: "千秋理子",3036: "由贵真里爱",3037: "安名梅露",3038: "古町美仓",3039: "三穗野星罗",3040: "吉良手鞠",3041: "柚希步鸟",3042: "枇枇木巡",3043: "万年樱之谣",3044: "智珠兰华",3045: "柚希理音",3046: "观鸟令",3047: "青叶知花",3049: "雪野加奈惠",3050: "香春优奈",3051: "饰利润",3052: "阿什莉·泰勒",3053: "牧野郁美",3054: "三轮光音",3056: "水树垒",3058: "南津凉子",3501: "梨花·怜（圣诞ver.）",3502: "万年樱之谣（泳装ver.）",3900: "黑",4001: "美国织莉子",4002: "吴纪里香",4003: "千岁由麻",4011: "和美",4012: "御崎海香",4013: "牧薰",4021: "塔鲁特",4022: "莉兹",4023: "梅丽莎",4025: "可鲁波",4026: "爱丽莎",4027: "拉皮努",4028: "塔鲁特（ver.Final）",4031: "天乃铃音",4032: "日向茉莉",4033: "成见亚里纱",4034: "诗音千里",4035: "奏遥香",4036:"美琴椿", 4041: "战场原黑仪",4042: "八九寺真宵",4043: "神原骏河",4044: "千石抚子",4045: "羽川翼",4046: "忍野忍",4051: "高町奈叶",4052: "菲特",4053: "八神疾风"}
 CHARGE_DMG_DICT = {1: {0: 1, 1: 1.1, 2: 1.2}, 2: {0: 1, 1: 1.4, 2: 1.7}, 3:{0: 1, 1: 1, 2: 1}}
 '''[盘][位置][是否首A]'''
 DISC_MP_DICT = {1:{0: {0: 7, 1: 10}, 1: {0: 10.5, 1: 13.5}, 2: {0: 14, 1: 17}}, 2:{0: {0: 0, 1: 0}, 1: {0: 0, 1: 3}, 2:{0: 0, 1: 3}}, 3: {0: {0: 2, 1: 2}, 1: {0: 3, 1: 6}, 2: {0: 4, 1: 7}}}
 MAX_SINGLE_DMG = 9999999
 MAX_MP = 150
+ENEMY_DEF = 6000
+DISC_DIVIDE = 16
 
 def convert_to_dict(obj):
     '''把Object对象转换成Dict对象'''
@@ -120,82 +122,33 @@ def all_check(id):
         all_data.add("%s-%s"%(verb_code, eff))
     return all_data
 
-def get_most_dmg_disc(disc_list):
-    '''根据给定的发牌，得到最大伤害的出牌'''
+def get_possible_disc(disc_list):
+    '''根据给定的发牌，得到所有可能的出牌'''
     if len(disc_list) < 3:
         print("不够盘！")
         return []
     disc_count = [0, 0, 0, 0]
     for disc in disc_list:
         disc_count[disc] += 1
-    # BBB
-    if disc_count[2] >= 3:
-        return [2, 2, 2]
-    if disc_count[3] >= 2:
-        # CCB
-        if disc_count[2] > 0:
-            return [3, 3, 2]
-        # CCA
-        if disc_count[1] > 0:
-            return [3, 3, 1]
-        # CCC
-        return [3, 3, 3]
-    if disc_count[3] == 1:
-        # CBB
-        if disc_count[2] > 1:
-            return [3, 2, 2]
-        # ACB
-        if disc_count[2] == 1:
-            return [1, 3, 2]
-    # ABB
-    if disc_count[2] == 2:
-        return [1, 2, 2]
-    # AAB
-    if disc_count[2] == 1:
-        return [1, 1, 2]
-    if disc_count[3] == 1:
-        return [1, 3, 1]
-    # AAA
-    return [1, 1, 1]
     
-def get_most_mp_disc(disc_list):
-    '''根据给定的发牌，得到最大MP的出牌'''
-    if len(disc_list) < 3:
-        print("不够盘！")
-        return []
-    disc_count = [0, 0, 0, 0]
-    for disc in disc_list:
-        disc_count[disc] += 1
-    # AAA
-    if disc_count[1] == 3:
-        return [1, 1, 1]
-    if disc_count[1] == 2:
-        # ACA
-        if disc_count[3] > 0:
-            return [1, 3, 1]
-        # ABA
-        if disc_count[2] > 0:
-            return [1, 2, 1]
-    if disc_count[1] == 1:
-        # CCA
-        if disc_count[3] > 1:
-            return [3, 3, 1]
-        # ABB
-        if disc_count[3] == 0 and disc_count[2] > 1:
-            return [1, 2, 2]
-        # ACB
-        return [1, 3, 2]
-    # CCC
-    if disc_count[3] > 2:
-        return [3, 3, 3]
-    # CCB
-    if disc_count[3] > 1:
-        return [3, 3, 2]
-    # CBB
-    if disc_count[3] > 0:
-        return [3, 2, 2]
-    # BBB
-    return [2, 2, 2]
+    result_set = set()
+    current_list = [0,0,0]
+    for first in range(1, 4):
+        if disc_count[first] > 0:
+            current_list[0] = first
+            disc_count[first] -= 1
+            for second in range(1, 4):
+                if disc_count[second] > 0:
+                    current_list[1] = second
+                    disc_count[second] -= 1
+                    for third in range(1, 4):
+                        if disc_count[third] > 0:
+                            current_list[2] = third
+                            disc_key = disclist_to_key(current_list)
+                            result_set.add(disc_key)
+                    disc_count[second] += 1
+            disc_count[first] += 1
+    return result_set
 
 def disclist_to_key(disc_list):
     '''将出牌list转成key'''
@@ -212,7 +165,7 @@ def key_to_disclist(key):
     key -= second * 10
     return [first, second, key]
 
-def get_best_disc_list(data : CharaData, get_mp=False):
+def get_disc_list(data : CharaData):
     '''获得烧酒的各种发牌情况下三连的最大伤害/最大MP出牌类型'''
     cache_idx = data.accele_disc * 100 + data.blast_disc * 10 + data.charge_disc * 1
     if cache_idx in BEST_DISC_CACHE:
@@ -224,31 +177,24 @@ def get_best_disc_list(data : CharaData, get_mp=False):
     all_disc.extend(accele_disc)
     all_disc.extend(blast_disc)
     all_disc.extend(charge_disc)
-    func = get_most_dmg_disc
-    if get_mp:
-        func = get_most_mp_disc
 
-    result = {}
+    result = []
     # 5选3
-    five_best_key = disclist_to_key(func(all_disc))
-    result[five_best_key] = 1
+    five_disc = get_possible_disc(all_disc)
+    result.append(five_disc)
     # 4选3
     for remove_idx in range(0, 5):
         four_disc = all_disc.copy()
         del four_disc[remove_idx]
-        key = disclist_to_key(func(four_disc))
-        if key not in result:
-            result[key] = 0
-        result[key] += 1
+        four_disc = get_possible_disc(four_disc)
+        result.append(four_disc)
     # 3选3
     for first_idx in range(0, 3):
         for second_idx in range(first_idx + 1, 4):
             for third_idx in range(second_idx + 1, 5):
-                three_disc = [all_disc[first_idx], all_disc[second_idx], all_disc[third_idx]]
-                key = disclist_to_key(func(three_disc))
-                if key not in result:
-                    result[key] = 0
-                result[key] += 1
+                three_disc_list = [all_disc[first_idx], all_disc[second_idx], all_disc[third_idx]]
+                three_disc = get_possible_disc(three_disc_list)
+                result.append(three_disc)
     return result
 
 def read_from_chara_id(id):
@@ -419,6 +365,37 @@ def read_from_chara_id(id):
     CHARA_DICT[id] = result
     return result
 
+def get_magia_dmg(chara_atk, enemy_def, atk_stat=1, dmg_stat=1, magia_stat=1, weak_stat=0, element_weak=1,
+    magia_range="", magia_factor=1, is_void=False):
+    '''计算Magia伤害'''
+    calu_atk = chara_atk * min(3, atk_stat)
+    base_dmg = calu_atk - enemy_def / 3
+    magia_factor_weak = magia_factor
+    if not is_void:
+        magia_factor_weak *= 1.2
+    dmg_stat = min(3, dmg_stat)
+    magia_stat = min(3, magia_stat)
+    dmg_stat_weak = min(3, dmg_stat + weak_stat)
+    # 随机伤害
+    if magia_range[0:6] == "RANDOM":
+        random_times = int(magia_range[-1])
+        single_point_dmg = min(MAX_SINGLE_DMG, base_dmg * magia_factor * dmg_stat * magia_stat * element_weak)
+        single_point_dmg_weak = min(MAX_SINGLE_DMG, base_dmg * magia_factor_weak * dmg_stat_weak * magia_stat * element_weak)
+        single_dmg = single_point_dmg * 0.8 + single_point_dmg_weak * 0.2
+        total_dmg = single_dmg * random_times
+        return total_dmg
+    else:
+        # 范围伤害
+        dmg_point_count = 1
+        if magia_range in ["HORIZONTAL", "VERTICAL"]:
+            dmg_point_count = 3
+        elif magia_range == "ALL":
+            dmg_point_count = 5
+        single_point_dmg = min(MAX_SINGLE_DMG, base_dmg * magia_factor * dmg_stat * magia_stat * element_weak)
+        single_point_dmg_weak = min(MAX_SINGLE_DMG, base_dmg * magia_factor_weak * dmg_stat_weak * magia_stat * element_weak)
+        total_dmg = single_point_dmg * (dmg_point_count - 1) + single_point_dmg_weak
+        return total_dmg
+
 def get_score(id):
     '''总评分'''
     d = read_from_chara_id(id)
@@ -540,10 +517,6 @@ SUPPORT_SCORE_LIST = {
 
 def get_support_score(data: CharaData):
     '''辅助评分'''
-    all_art = []
-    all_art.extend(data.connect)
-    all_art.extend(data.magia)
-    all_art.extend(data.enhance_art)
     def get_support_score_from_list(art_list):
         base_score = 0
         for art in art_list:
@@ -598,18 +571,16 @@ def get_support_score(data: CharaData):
 def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=False):
     '''通常伤害评分'''
 
-    all_poss_disc = get_best_disc_list(data)
-    disc_divide = sum(all_poss_disc.values())
-    
     base_atk = data.max_atk
     disc_dmg_stat = [1, 1 + data.accele_dmgup / 100, 1 + data.blast_dmgup / 100, 1 + data.charge_dmgup / 100]
     blastup_stat = 0
     chargingup_stat = 0
-    chargeup_stat = 0
-    atkup_stat = 0
-    dmgup_stat = 1
+    charge_stat = 1
+    atk_stat = 1
+    dmg_stat = 1
     critical_poss = 0
     ignore_def_poss = 0
+    no_charge_cost = False
     use_art = data.enhance_art.copy()
     if use_connect:
         connect_art = data.connect.copy()
@@ -636,43 +607,47 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
                 chargingup_stat += effectValue / 1000
             # Charge后伤害UP
             elif effectCode == "CHARGE":
-                chargeup_stat += effectValue
+                charge_stat += effectValue / 1000
             # ATKUP
             elif effectCode == "ATTACK":
-                atkup_stat += effectValue
+                atk_stat += effectValue / 1000
             # 伤害UP
             elif effectCode == "DAMAGE":
-                dmgup_stat += effectValue / 1000
+                dmg_stat += effectValue / 1000
         if verbCode == "CONDITION_GOOD":
             # 伤害UP
             if effectCode == "DAMAGE":
-                dmgup_stat += effectValue / 1000
+                dmg_stat += effectValue / 1000
             # 概率暴击
             elif effectCode == "CRITICAL":
                 critical_poss = max(critical_poss, poss / 1000)
             # 概率无视防御
             elif effectCode == "DEFENSE_IGNORED":
                 ignore_def_poss = max(ignore_def_poss, poss / 1000)
+            elif effectCode == "NO_COST_CHARGE":
+                no_charge_cost = True
     blastup_stat = min(1, blastup_stat)
-    chargeup_stat = min(2, 1 + chargeup_stat / 1000)
-    atkup_stat = min(2, 1 + atkup_stat / 1000)
-    base_atk *= atkup_stat
+    chargingup_stat = min(1, chargingup_stat)
+    charge_stat = min(2, charge_stat)
+    atk_stat = min(2, atk_stat)
+    base_atk *= atk_stat
     # 模拟打6kDEF
     base_dmg = (base_atk - 2000) * (1 - ignore_def_poss) + base_atk * ignore_def_poss
     average_dmg = 0
-    def get_dmg_from_disc(use_disc):
+    def get_dmg_from_disc(use_disc, no_cost_charge=False):
         total_dmg = 0
         current_charging = 0
+        all_blast = (use_disc[0] == 2 and use_disc[1] == 2 and use_disc[2] == 2)
         for disc_idx in range(0, 3):
             disc = use_disc[disc_idx]
             # 基本盘型系数
             base_disc_factor = 1.2
-            if disc == 2:
+            if disc == 2 and not all_blast:
                 base_disc_factor = 0.9
             # 盘型加成
             disc_factor = disc_dmg_stat[disc]
             # 克制系数，默认打克制
-            element_plus = 2
+            element_plus = 1.5
             if data.is_void:
                 element_plus = 1
             # B系数
@@ -682,9 +657,9 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
             # C系数
             charge_plus = CHARGE_DMG_DICT[disc][current_charging]
             if disc != 3:
-                charge_plus = min(5.5, charge_plus * chargeup_stat) 
+                charge_plus = min(5.5, charge_plus * charge_stat) 
             # 伤害系数
-            base_dmg_factor = dmgup_stat
+            base_dmg_factor = dmg_stat
             if disc == 2:
                 base_dmg_factor += blastup_stat
             if disc == 3:
@@ -695,31 +670,35 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
             dmg = base_dmg * base_disc_factor * disc_factor * element_plus * blast_disc_place * charge_plus * base_dmg_factor
             if disc == 3:
                 current_charging += 1
-            else:
+            elif not no_cost_charge:
                 current_charging = 0
             if disc == 2:
                 dmg *= 2
             total_dmg += dmg
             
         return total_dmg
-    for disc_key in all_poss_disc.keys():
-        disc_list = key_to_disclist(disc_key)
-        dmg = get_dmg_from_disc(disc_list)
-        dmg *= all_poss_disc[disc_key] / disc_divide
-        average_dmg += dmg
+    all_poss_disc = get_disc_list(data)
+    for disc_set in all_poss_disc:
+        max_dmg = 0
+        for disc_key in disc_set:
+            disc_list = key_to_disclist(disc_key)
+            dmg = get_dmg_from_disc(disc_list, no_charge_cost) / DISC_DIVIDE
+            max_dmg = max(max_dmg, dmg)
+        average_dmg += max_dmg
     return average_dmg
 
 def get_magia_score(data : CharaData):
     base_atk = data.max_atk
     magia_factor = 0
     magia_range = ""
-    atkup_stat = 1
+    atk_stat = 1
     element_atkup_stat = 0
     element_weak_stat = 1
     dmg_stat = 1
+    dmg_up_weak = 0
     accele_mp_stat = 1
     mp_gain_stat = 1
-    mp_gain_hit_stat = 1
+    mp_gain_hit_stat = 0
     init_mp = 0
     gain_mp = 0
     magia_stat = 1
@@ -735,8 +714,8 @@ def get_magia_score(data : CharaData):
             magia_factor = get_from_dict(art, "effectValue") / 1000
             if not data.is_void:
                 magia_factor *= 1.5
-            if effectCode == "ALIGNMENT":
-                magia_factor *= 2
+                if effectCode == "ALIGNMENT":
+                    magia_factor *= 2
         if verbCode == "BUFF":
             # Accele MPUP
             if effectCode == "ACCEL":
@@ -746,7 +725,7 @@ def get_magia_score(data : CharaData):
                 mp_gain_stat += effectValue / 1000
             # ATKUP
             if effectCode == "ATTACK":
-                atkup_stat += effectValue / 1000
+                atk_stat += effectValue / 1000
             # 伤害UP
             if effectCode == "DAMAGE":
                 dmg_stat += effectValue / 1000
@@ -757,6 +736,9 @@ def get_magia_score(data : CharaData):
             # 伤害UP
             if effectCode == "DAMAGE":
                 dmg_stat += effectValue / 1000
+            # 异常增伤
+            if effectCode == "DAMAGE_UP_BAD":
+                dmg_up_weak += effectValue / 1000
             # 被攻击时MPUP
             if effectCode == "MP_PLUS_DAMAGED":
                 mp_gain_hit_stat += effectValue / 10
@@ -790,11 +772,8 @@ def get_magia_score(data : CharaData):
     
     init_mp += gain_mp * mp_gain_stat
 
-    all_poss_disc = get_best_disc_list(data, True)
-    disc_divide = sum(all_poss_disc.values())
-
     # 攻击MP
-    for disc_key in all_poss_disc.keys():
+    def get_mp_by_disckey(disc_key, no_charge_cost=False):
         disc_list = key_to_disclist(disc_key)
         current_mp = 0
         current_charge = 0
@@ -820,30 +799,28 @@ def get_magia_score(data : CharaData):
             disc_mp *= data.atk_mp
             if disc == 3:
                 current_charge += 1
-            else:
+            elif not no_charge_cost:
                 current_charge = 0
-            current_mp += int(disc_mp * 10) / 10
-        current_mp *= all_poss_disc[disc_key] / disc_divide
-        init_mp += current_mp
+            current_mp += disc_mp
+        return current_mp
+    
+    all_poss_disc = get_disc_list(data)
+    atk_mp = 0
+    for disc_set in all_poss_disc:
+        max_mp = 0
+        for disc_key in disc_set:
+            get_mp = get_mp_by_disckey(disc_key) / DISC_DIVIDE
+            max_mp = max(max_mp, get_mp)
+        atk_mp += max_mp
+    init_mp += int(atk_mp * 10) / 10
 
     # 受击MP
     hit_mp = int((4 * data.def_mp + mp_gain_hit_stat) * mp_gain_stat * 30) / 10
     init_mp += hit_mp
 
-    magia_dmg = 0
-    magia_count = 0
-    single_point_dmg = min(MAX_SINGLE_DMG, base_atk * (min(3, atkup_stat) + element_atkup_stat) * magia_factor * min(3, dmg_stat) * magia_stat * element_weak_stat)
-    # 随机伤害
-    if magia_range[0:6] == "RANDOM":
-        magia_count = int(magia_range[-1])
-    else:
-        # 范围伤害
-        magia_count = 1
-        if magia_range in ["HORIZONTAL", "VERTICAL"]:
-            magia_count = 3
-        elif magia_range == "ALL":
-            magia_count = 5
-    magia_dmg = single_point_dmg * magia_count
+    magia_dmg = get_magia_dmg(base_atk, ENEMY_DEF,
+        min(3, atk_stat + element_atkup_stat), dmg_stat, magia_stat, dmg_up_weak, element_weak_stat, 
+        magia_range, magia_factor, data.is_void)
     magia_log = 1
     if magia_dmg > 0:
         magia_log = math.log(magia_dmg, 10)
@@ -851,18 +828,16 @@ def get_magia_score(data : CharaData):
 
 def get_kimochi_score(data: CharaData):
     '''心魔评分'''
-    total_dmg = 0
-
     base_atk = data.max_atk
     doppel_factor = 0
     doppel_range = ""
-    magia_up = 1
+    magia_stat = 1
     mp_gain = 0
     mp_rate = 1
-    atk_up = 2
+    atk_stat = 2
     element_atk_up = 0
     element_weak = 1
-    dmg_up = 2
+    dmg_stat = 2
     dmg_up_weak = 0
 
     dmg_art_list = data.doppel
@@ -914,10 +889,10 @@ def get_kimochi_score(data: CharaData):
             mp_rate += get_from_dict(art, "effectValue") / 1000
         # Magia UP
         if verbCode == "BUFF" and effectCode == "MAGIA":
-            magia_up += get_from_dict(art, "effectValue") / 1000
+            magia_stat += get_from_dict(art, "effectValue") / 1000
         # 增伤
         if verbCode == "CONDITION_GOOD" and effectCode == "DAMAGE_UP":
-            dmg_up += get_from_dict(art, "effectValue") / 1000
+            dmg_stat += get_from_dict(art, "effectValue") / 1000
         # 异常增伤
         if verbCode == "CONDITION_GOOD" and effectCode == "DAMAGE_UP_BAD":
             dmg_up_weak += get_from_dict(art, "effectValue") / 1000
@@ -931,34 +906,13 @@ def get_kimochi_score(data: CharaData):
             element_atk_up += effectValue
 
     mp_gain *= mp_rate
-    magia_up = min(2, magia_up)
+    magia_stat = min(2, magia_stat)
+    atk_stat = min(3, atk_stat + element_atk_up)
 
-    # 随机伤害
-    if doppel_range[0:6] == "RANDOM":
-        random_times = int(doppel_range[-1])
-        doppel_dmg_up_weak = min(3, dmg_up + dmg_up_weak)
-        doppel_factor_weak = doppel_factor
-        if not data.is_void:
-            doppel_factor_weak *= 1.2
-        single_point_dmg = min(MAX_SINGLE_DMG, base_atk * min(3, atk_up + element_atk_up) * doppel_factor * dmg_up * magia_up * element_weak)
-        single_point_dmg_weak = min(MAX_SINGLE_DMG, base_atk * min(3, atk_up + element_atk_up) * doppel_factor_weak * doppel_dmg_up_weak * magia_up * element_weak)
-        single_dmg = single_point_dmg * 0.8 + single_point_dmg_weak * 0.2
-        total_dmg = single_dmg * random_times
-    else:
-        # 范围伤害
-        dmg_point_count = 1
-        if doppel_range in ["HORIZONTAL", "VERTICAL"]:
-            dmg_point_count = 3
-        elif doppel_range == "ALL":
-            dmg_point_count = 5
-        
-        # 异常点伤害
-        bad_doppel_factor = doppel_factor
-        if not data.is_void:
-            bad_doppel_factor *= 1.2
-        bad_point_dmg = min(MAX_SINGLE_DMG, base_atk * min(3, atk_up + element_atk_up) * bad_doppel_factor * min(3, dmg_up + dmg_up_weak) * magia_up * element_weak)
-        normal_point_dmg = min(MAX_SINGLE_DMG, base_atk * min(3, atk_up + element_atk_up) * doppel_factor * min(3, dmg_up) * magia_up * element_weak)
-        total_dmg = bad_point_dmg + normal_point_dmg * (dmg_point_count - 1)
+    total_dmg = get_magia_dmg(base_atk, ENEMY_DEF * 0.05,
+        atk_stat, dmg_stat, magia_stat, dmg_up_weak, element_weak,
+        doppel_range, doppel_factor, data.is_void)
+
     return (total_dmg, mp_gain, (total_dmg * (1 + mp_gain / MAX_MP)))
 
 BAD_STATUS_LIST = {
