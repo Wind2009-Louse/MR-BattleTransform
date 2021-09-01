@@ -5,7 +5,8 @@ import math
 # 把记忆考虑进去
 MEMO_INCLUDE = {1040: 1470}
 # 自定义精神强化数值，未乘以0.6
-SE_SUM = {}
+SE_SUM = {1210: [5748, 2400, 2000]}
+SE_ABCSUM = {1210:[6.0, 6.0, 5.0]}
 DEBUG = False
 
 allchara_file = []
@@ -36,7 +37,7 @@ for memo_key in allmemo_file:
         if mlb_key not in memo:
             continue
         mlb_data = memo[mlb_key]
-        for art_idx in range(1, 10):
+        for art_idx in range(1, 100):
             art_key = "art%d"%art_idx
             if art_key not in mlb_data:
                 break
@@ -61,7 +62,7 @@ rank_power_dict = {"RANK_1":2,"RANK_2":2.2,"RANK_3":2.4,"RANK_4":2.6,"RANK_5":3}
 # (HP, ATK, DEF)
 grow_diff = {"BALANCE": (1,1,1), "ATTACK": (0.98, 1.03, 0.97), "DEFENSE": (0.97, 0.98, 1.05), "HP": (1.04, 0.97, 0.98), "ATKDEF": (0.99, 1.02, 1.01), "ATKHP": (1.02, 1.01, 0.99), "DEFHP": (1.01, 0.99, 1.02)}
 ATTRIBUTE = {"FIRE":"{{属性|火}}","WATER":"{{属性|水}}","TIMBER":"{{属性|木}}","LIGHT":"{{属性|光}}","DARK":"{{属性|暗}}","VOID":"{{属性|无}}"}
-CHARA_NAME = {1001: "环伊吕波",1002: "七海八千代",1003: "由比鹤乃",1004: "二叶莎奈",1005: "深月菲莉希亚",1006: "梓美冬",1007: "里见灯花",1008: "阿莉娜·格雷",1009: "水波玲奈",1010: "十咎桃子",1011: "秋野枫",1012: "御园花凛",1013: "龙城明日香",1014: "柊音梦",1015: "环忧",1016: "和泉十七夜",1017: "八云御魂",1018: "天音月夜",1019: "天音月咲",1022: "煌里光",1023: "笠音青",1024: "大庭树里",1025: "时女静香",1026: "广江千春",1027: "土岐沙绪",1029: "宫尾时雨",1030: "安积育梦",1038: "八云御影",1039: "佐和月出里",1040: "篠目夜鹤",1041: "莉薇娅·梅黛洛斯",1042: "小丘比",1101: "环伊吕波（泳装ver.）",1102: "八千代·美冬（起始ver.）",1103: "谣鹤乃",1104: "谣莎奈",1105: "小菲莉希亚",1107: "灯花·音梦（圣夜ver.）",1108: "圣阿莉娜",1109: "小玲奈（偶像ver.）",1110: "十咎桃子（修女ver.）",1116: "和泉十七夜（吸血鬼ver.）",1117: "八云御魂（晴着ver.）",1118: "天音姐妹（泳装ver.）",1201: "小伊吕波",1203: "鹤乃·菲莉希亚（快递ver.）",1209: "玲奈·枫（泳装ver.）",1301: "伊吕波·八千代（决战ver.）",1401: "伊吕波·忧（巫女ver.）",2001: "鹿目圆",2002: "晓美焰",2003: "晓美焰（眼镜ver.）",2004: "美树沙耶香",2005: "巴麻美",2006: "佐仓杏子",2007: "百江渚",2100: "鹿目圆（晴着ver.）",2101: "圆神",2102: "小圆前辈",2103: "究极小圆前辈",2300: "晓美焰（泳装ver.）",2400: "美树沙耶香（晴着ver.）",2500: "圣麻美",2501: "巴麻美（泳装ver.）",2600: "佐仓杏子（泳装ver.）",2700: "百江渚（情人节ver.）",3001: "矢宵鹿乃子",3002: "空穗夏希",3003: "都雏乃",3004: "美凪纱纱罗",3005: "常盘七夏",3006: "木崎衣美里",3007: "保澄雫",3008: "志伸晶",3009: "胡桃爱香",3010: "阿见莉爱",3011: "夏目佳子",3012: "纯美雨",3013: "伊吹丽良",3014: "桑水清佳",3015: "相野未都",3016: "粟根心",3017: "七濑幸佳",3018: "更纱帆奈",3019: "毬子彩花",3020: "真尾日美香",3021: "铃鹿朔夜",3023: "江利爱实",3024: "若菜纺",3025: "五十铃怜",3026: "静海木叶",3027: "游佐叶月",3028: "三栗菖蒲",3029: "加贺见真良",3030: "春名木乃美",3031: "绫野梨花",3032: "梢麻友",3033: "史乃沙优希",3034: "惠萌花",3035: "千秋理子",3036: "由贵真里爱",3037: "安名梅露",3038: "古町美仓",3039: "三穗野星罗",3040: "吉良手鞠",3041: "柚希步鸟",3042: "枇枇木巡",3043: "万年樱之谣",3044: "智珠兰华",3045: "柚希理音",3046: "观鸟令",3047: "青叶知花",3049: "雪野加奈惠",3050: "香春优奈",3051: "饰利润",3052: "阿什莉·泰勒",3053: "牧野郁美",3054: "三轮光音",3056: "水树垒",3058: "南津凉子",3501: "梨花·怜（圣诞ver.）",3502: "万年樱之谣（泳装ver.）",3900: "黑",4001: "美国织莉子",4002: "吴纪里香",4003: "千岁由麻",4011: "和美",4012: "御崎海香",4013: "牧薰",4021: "塔鲁特",4022: "莉兹",4023: "梅丽莎",4025: "可鲁波",4026: "爱丽莎",4027: "拉皮努",4028: "塔鲁特（ver.Final）",4031: "天乃铃音",4032: "日向茉莉",4033: "成见亚里纱",4034: "诗音千里",4035: "奏遥香",4036:"美琴椿", 4041: "战场原黑仪",4042: "八九寺真宵",4043: "神原骏河",4044: "千石抚子",4045: "羽川翼",4046: "忍野忍",4051: "高町奈叶",4052: "菲特",4053: "八神疾风"}
+CHARA_NAME = {1001: "环伊吕波",1002: "七海八千代",1003: "由比鹤乃",1004: "二叶莎奈",1005: "深月菲莉希亚",1006: "梓美冬",1007: "里见灯花",1008: "阿莉娜·格雷",1009: "水波玲奈",1010: "十咎桃子",1011: "秋野枫",1012: "御园花凛",1013: "龙城明日香",1014: "柊音梦",1015: "环忧",1016: "和泉十七夜",1017: "八云御魂",1018: "天音月夜",1019: "天音月咲",1021: "红晴结菜",1022: "煌里光",1023: "笠音青",1024: "大庭树里",1025: "时女静香",1026: "广江千春",1027: "土岐沙绪",1028:"蓝家姬奈",1029: "宫尾时雨",1030: "安积育梦",1031:"神乐灿",1032:"游狩美由利",1033:"冰室拉比", 1034:"三浦旭", 1035:"栗栖亚历山德拉", 1036:"有爱丽", 1037:"里见那由他",1038: "八云御影",1039: "佐和月出里",1040: "篠目夜鹤",1041: "莉薇娅·梅黛洛斯",1042: "小丘比",1101: "环伊吕波（泳装ver.）",1102: "八千代·美冬（起始ver.）",1103: "谣鹤乃",1104: "谣莎奈",1105: "小菲莉希亚",1107: "灯花·音梦（圣夜ver.）",1108: "圣阿莉娜",1109: "小玲奈（偶像ver.）",1110: "十咎桃子（修女ver.）",1116: "和泉十七夜（吸血鬼ver.）",1117: "八云御魂（晴着ver.）",1118: "天音姐妹（泳装ver.）",1201: "小伊吕波",1202: "七海八千代（七夕ver.）",1203: "鹤乃·菲莉希亚（快递ver.）",1209: "玲奈·枫（泳装ver.）",1210: "桃子·御魂（人鱼ver.）",1301: "伊吕波·八千代（决战ver.）",1401: "伊吕波·忧（巫女ver.）",2001: "鹿目圆",2002: "晓美焰",2003: "晓美焰（眼镜ver.）",2004: "美树沙耶香",2005: "巴麻美",2006: "佐仓杏子",2007: "百江渚",2100: "鹿目圆（晴着ver.）",2101: "圆神",2102: "小圆前辈",2103: "究极小圆前辈",2104: "圆·伊吕波",2300: "晓美焰（泳装ver.）",2400: "美树沙耶香（晴着ver.）",2401: "美树沙耶香（冲浪ver.）",2500: "圣麻美",2501: "巴麻美（泳装ver.）",2600: "佐仓杏子（泳装ver.）",2700: "百江渚（情人节ver.）",3001: "矢宵鹿乃子",3002: "空穗夏希",3003: "都雏乃",3004: "美凪纱纱罗",3005: "常盘七夏",3006: "木崎衣美里",3007: "保澄雫",3008: "志伸晶",3009: "胡桃爱香",3010: "阿见莉爱",3011: "夏目佳子",3012: "纯美雨",3013: "伊吹丽良",3014: "桑水清佳",3015: "相野未都",3016: "粟根心",3017: "七濑幸佳",3018: "更纱帆奈",3019: "毬子彩花",3020: "真尾日美香",3021: "铃鹿朔夜",3023: "江利爱实",3024: "若菜纺",3025: "五十铃怜",3026: "静海木叶",3027: "游佐叶月",3028: "三栗菖蒲",3029: "加贺见真良",3030: "春名木乃美",3031: "绫野梨花",3032: "梢麻友",3033: "史乃沙优希",3034: "惠萌花",3035: "千秋理子",3036: "由贵真里爱",3037: "安名梅露",3038: "古町美仓",3039: "三穗野星罗",3040: "吉良手鞠",3041: "柚希步鸟",3042: "枇枇木巡",3043: "万年樱之谣",3044: "智珠兰华",3045: "柚希理音",3046: "观鸟令",3047: "青叶知花",3049: "雪野加奈惠",3050: "香春优奈",3051: "饰利润",3052: "阿什莉·泰勒",3053: "牧野郁美",3054: "三轮光音",3055:"桐野纱枝",3056: "水树垒",3058: "南津凉子",3501: "梨花·怜（圣诞ver.）",3502: "万年樱之谣（泳装ver.）",3503:"木叶·叶月",3900: "黑",4001: "美国织莉子",4002: "吴纪里香",4003: "千岁由麻",4011: "和美",4012: "御崎海香",4013: "牧薰",4021: "塔鲁特",4022: "莉兹",4023: "梅丽莎",4024: "米诺",4025: "可鲁波",4026: "爱丽莎",4027: "拉皮努",4028: "塔鲁特（ver.Final）",4121: "伊莎贝拉（魔女ver.）",4031: "天乃铃音",4032: "日向茉莉",4033: "成见亚里纱",4034: "诗音千里",4035: "奏遥香",4036:"美琴椿", 4041: "战场原黑仪",4042: "八九寺真宵",4043: "神原骏河",4044: "千石抚子",4045: "羽川翼",4046: "忍野忍",4051: "高町奈叶",4052: "菲特",4053: "八神疾风"}
 CHARGE_DMG_DICT = {1: {0: 1, 1: 1.1, 2: 1.2}, 2: {0: 1, 1: 1.4, 2: 1.7}, 3:{0: 1, 1: 1, 2: 1}}
 '''[盘][位置][是否首A]'''
 DISC_MP_DICT = {1:{0: {0: 7, 1: 10}, 1: {0: 10.5, 1: 13.5}, 2: {0: 14, 1: 17}}, 2:{0: {0: 0, 1: 0}, 1: {0: 0, 1: 3}, 2:{0: 0, 1: 3}}, 3: {0: {0: 2, 1: 2}, 1: {0: 3, 1: 6}, 2: {0: 4, 1: 7}}}
@@ -226,7 +227,7 @@ def read_from_chara_id(id):
             result.max_def = max_data["defense"] + max_data["defense"] * grow_df[2] * rank_power_dict[max_data["rank"]]
             # 盘
             last_blast = None
-            for disc_idx in range(1, 10):
+            for disc_idx in range(1, 100):
                 disc_key = "commandType%d"%disc_idx
                 if disc_key not in max_data:
                     break
@@ -248,7 +249,7 @@ def read_from_chara_id(id):
             # connect
             if "cardSkill" in max_data:
                 connect_data = max_data["cardSkill"]
-                for art_idx in range(1, 10):
+                for art_idx in range(1, 100):
                     art_key = "art%d"%art_idx
                     if art_key not in connect_data:
                         break
@@ -257,7 +258,7 @@ def read_from_chara_id(id):
             # Magia
             if "cardMagia" in max_data:
                 magia_data = max_data["cardMagia"]
-                for art_idx in range(1, 10):
+                for art_idx in range(1, 100):
                     art_key = "art%d"%art_idx
                     if art_key not in magia_data:
                         break
@@ -269,7 +270,7 @@ def read_from_chara_id(id):
             # Doppel
             if "doppelCardMagia" in max_data:
                 doppel_data = max_data["doppelCardMagia"]
-                for art_idx in range(1, 10):
+                for art_idx in range(1, 100):
                     art_key = "art%d"%art_idx
                     if art_key not in doppel_data:
                         break
@@ -282,7 +283,7 @@ def read_from_chara_id(id):
             if "maxPieceSkillList" in max_data:
                 ex_data_list = max_data["maxPieceSkillList"]
                 for ex_data in ex_data_list:
-                    for art_idx in range(1, 10):
+                    for art_idx in range(1, 100):
                         art_key = "art%d"%art_idx
                         if art_key not in ex_data:
                             break
@@ -291,7 +292,7 @@ def read_from_chara_id(id):
             # 觉醒
             if "cardCustomize" in max_data:
                 awaken_data = max_data["cardCustomize"]
-                for awaken_idx in range(1, 10):
+                for awaken_idx in range(1, 100):
                     code_key = "bonusCode%d"%awaken_idx
                     num_key = "bonusNum%d"%awaken_idx
                     if code_key not in awaken_data or num_key not in awaken_data:
@@ -315,6 +316,9 @@ def read_from_chara_id(id):
         enhance_hp = 0
         enhance_atk = 0
         enhance_def = 0
+        enhance_accele = 0
+        enhance_blast = 0
+        enhance_charge = 0
         enhance_list = data["enhancementCellList"]
         for enhance_cell in enhance_list:
             if enhance_cell["enhancementType"] == "HP":
@@ -324,15 +328,15 @@ def read_from_chara_id(id):
             elif enhance_cell["enhancementType"] == "DEFENSE":
                 enhance_def += enhance_cell["effectValue"]
             elif enhance_cell["enhancementType"] == "DISK_ACCELE":
-                result.accele_dmgup += enhance_cell["effectValue"] / 10
+                enhance_accele += enhance_cell["effectValue"] / 10
             elif enhance_cell["enhancementType"] == "DISK_BLAST":
-                result.blast_dmgup += enhance_cell["effectValue"] / 10
+                enhance_blast += enhance_cell["effectValue"] / 10
             elif enhance_cell["enhancementType"] == "DISK_CHARGE":
-                result.charge_dmgup += enhance_cell["effectValue"] / 10
+                enhance_charge += enhance_cell["effectValue"] / 10
             elif enhance_cell["enhancementType"] == "SKILL":
                 enhance_skill = enhance_cell["emotionSkill"]
                 cd_turn = get_from_dict(enhance_skill, "intervalTurn", 0)
-                for art_idx in range(1, 10):
+                for art_idx in range(1, 100):
                     art_key = "art%d"%art_idx
                     if art_key not in enhance_skill:
                         break
@@ -343,9 +347,16 @@ def read_from_chara_id(id):
             enhance_hp = SE_SUM[id][0]
             enhance_atk = SE_SUM[id][1]
             enhance_def = SE_SUM[id][2]
+        if id in SE_ABCSUM:
+            enhance_accele = SE_ABCSUM[id][0]
+            enhance_blast = SE_ABCSUM[id][1]
+            enhance_charge = SE_ABCSUM[id][2]
         result.max_hp += enhance_hp * 0.6
         result.max_atk += enhance_atk * 0.6
         result.max_def += enhance_def * 0.6
+        result.accele_dmgup += enhance_accele
+        result.blast_dmgup += enhance_blast
+        result.charge_dmgup += enhance_charge
 
     # 记忆
     if id in MEMO_INCLUDE:
@@ -355,7 +366,7 @@ def read_from_chara_id(id):
             if mlb_key not in memo:
                 continue
             mlb_data = memo[mlb_key]
-            for art_idx in range(1, 10):
+            for art_idx in range(1, 100):
                 art_key = "art%d"%art_idx
                 if art_key not in mlb_data:
                     break
@@ -368,7 +379,7 @@ def read_from_chara_id(id):
 def get_magia_dmg(chara_atk, enemy_def, atk_stat=1, dmg_stat=1, magia_stat=1, weak_stat=0, element_weak=1,
     magia_range="", magia_factor=1, is_void=False):
     '''计算Magia伤害'''
-    calu_atk = chara_atk * min(3, atk_stat)
+    calu_atk = chara_atk * atk_stat
     base_dmg = calu_atk - enemy_def / 3
     magia_factor_weak = magia_factor
     if not is_void:
@@ -476,6 +487,34 @@ SUPPORT_SCORE_LIST = {
         # 耐性 UP
         "RESIST"        : 0.0001
     },
+    "BUFF_DYING" : {
+        # Accele MPUP
+        "ACCEL"         : 0.0015,
+        # Blast UP
+        "BLAST"         : 0.001,
+        # Charge UP
+        "CHARGE"        : 0.00075,
+        # Charge盘UP
+        "CHARGING"      : 0.0005,
+        # MP获得量UP
+        "MP_GAIN"       : 0.00125,
+        # ATTACK UP
+        "ATTACK"        : 0.005,
+        "ATTACK_FIRE"   : 0.005,
+        "ATTACK_WATER"  : 0.005,
+        "ATTACK_TIMBER" : 0.005,
+        "ATTACK_LIGHT"  : 0.005,
+        "ATTACK_DARK"   : 0.005,
+        "ATTACK_VOID"   : 0.005,
+        # 伤害UP
+        "DAMAGE"        : 0.005,
+        # Magia UP
+        "MAGIA"         : 0.002,
+        # DEF UP
+        "DEFENSE"       : 0.001,
+        # 耐性 UP
+        "RESIST"        : 0.0001
+    },
     "CONDITION_GOOD" : {
         # 伤害UP
         "DAMAGE_UP"            : 0.005,
@@ -495,7 +534,9 @@ SUPPORT_SCORE_LIST = {
         "DAMAGE_DOWN_CHARGE"   : 0.0001,
         "DAMAGE_DOWN_CHARGING" : 0.0001,
         # 自动回复
-        "AUTO_HEAL"            : 0.0025
+        "AUTO_HEAL"            : 0.0025,
+        # 屏障
+        "BARRIER"            : 0.00005
     },
     "REVOKE" : {
         # Debuff解除
@@ -548,6 +589,8 @@ def get_support_score(data: CharaData):
 
             if verbCode == "CONDITION_GOOD" and effectCode == "AUTO_HEAL" and get_from_dict(art, "genericValue") == "MP":
                 power = 0.015
+            if verbCode == "CONDITION_GOOD" and effectCode == "BARRIER":
+                enable_turn = 1
 
             effectValue = get_from_dict(art, "effectValue")
             if effectValue is None:
@@ -577,6 +620,7 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
     chargingup_stat = 0
     charge_stat = 1
     atk_stat = 1
+    atk_stat_dying = 0
     dmg_stat = 1
     critical_poss = 0
     ignore_def_poss = 0
@@ -614,6 +658,10 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
             # 伤害UP
             elif effectCode == "DAMAGE":
                 dmg_stat += effectValue / 1000
+        if verbCode == "BUFF_DYING":
+            # ATKUP
+            if effectCode == "ATTACK":
+                atk_stat_dying += effectValue / 1000
         if verbCode == "CONDITION_GOOD":
             # 伤害UP
             if effectCode == "DAMAGE":
@@ -629,11 +677,13 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
     blastup_stat = min(1, blastup_stat)
     chargingup_stat = min(1, chargingup_stat)
     charge_stat = min(2, charge_stat)
-    atk_stat = min(2, atk_stat)
+    atk_stat = min(2, atk_stat) + atk_stat_dying
     base_atk *= atk_stat
+
     # 模拟打6kDEF
     base_dmg = (base_atk - 2000) * (1 - ignore_def_poss) + base_atk * ignore_def_poss
     average_dmg = 0
+    dmg_hashmap = {}
     def get_dmg_from_disc(use_disc, no_cost_charge=False):
         total_dmg = 0
         current_charging = 0
@@ -656,7 +706,7 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
                 blast_disc_place += disc_idx * 0.1
             # C系数
             charge_plus = CHARGE_DMG_DICT[disc][current_charging]
-            if disc != 3:
+            if disc != 3 and current_charging > 0:
                 charge_plus = min(5.5, charge_plus * charge_stat) 
             # 伤害系数
             base_dmg_factor = dmg_stat
@@ -681,10 +731,13 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
     for disc_set in all_poss_disc:
         max_dmg = 0
         for disc_key in disc_set:
-            disc_list = key_to_disclist(disc_key)
-            dmg = get_dmg_from_disc(disc_list, no_charge_cost) / DISC_DIVIDE
+            dmg = get_from_dict(dmg_hashmap, disc_key, 0)
+            if dmg == 0:
+                disc_list = key_to_disclist(disc_key)
+                dmg = get_dmg_from_disc(disc_list, no_charge_cost) 
+                dmg_hashmap[disc_key] = dmg
             max_dmg = max(max_dmg, dmg)
-        average_dmg += max_dmg
+        average_dmg += max_dmg / DISC_DIVIDE
     return average_dmg
 
 def get_magia_score(data : CharaData):
@@ -692,6 +745,7 @@ def get_magia_score(data : CharaData):
     magia_factor = 0
     magia_range = ""
     atk_stat = 1
+    atk_stat_dying = 0
     element_atkup_stat = 0
     element_weak_stat = 1
     dmg_stat = 1
@@ -732,6 +786,10 @@ def get_magia_score(data : CharaData):
             # Magia UP
             if effectCode == "MAGIA":
                 magia_stat += effectValue / 1000
+        if verbCode == "BUFF_DYING":
+            # ATKUP
+            if effectCode == "ATTACK":
+                atk_stat_dying += effectValue / 1000
         if verbCode == "CONDITION_GOOD":
             # 伤害UP
             if effectCode == "DAMAGE":
@@ -771,6 +829,7 @@ def get_magia_score(data : CharaData):
             init_mp += effectValue
     
     init_mp += gain_mp * mp_gain_stat
+    regen_mp = init_mp
 
     # 攻击MP
     def get_mp_by_disckey(disc_key, no_charge_cost=False):
@@ -803,23 +862,27 @@ def get_magia_score(data : CharaData):
                 current_charge = 0
             current_mp += disc_mp
         return current_mp
-    
+    mp_hashmap = {}
+
     all_poss_disc = get_disc_list(data)
     atk_mp = 0
     for disc_set in all_poss_disc:
         max_mp = 0
         for disc_key in disc_set:
-            get_mp = get_mp_by_disckey(disc_key) / DISC_DIVIDE
+            get_mp = get_from_dict(mp_hashmap, disc_key, 0)
+            if get_mp == 0:
+                get_mp = get_mp_by_disckey(disc_key)
+                mp_hashmap[disc_key] = get_mp
             max_mp = max(max_mp, get_mp)
-        atk_mp += max_mp
+        atk_mp += max_mp / DISC_DIVIDE
     init_mp += int(atk_mp * 10) / 10
 
     # 受击MP
-    hit_mp = int((4 * data.def_mp + mp_gain_hit_stat) * mp_gain_stat * 30) / 10
+    hit_mp = int((4 + mp_gain_hit_stat) * data.def_mp * mp_gain_stat * 30) / 10
     init_mp += hit_mp
 
     magia_dmg = get_magia_dmg(base_atk, ENEMY_DEF,
-        min(3, atk_stat + element_atkup_stat), dmg_stat, magia_stat, dmg_up_weak, element_weak_stat, 
+        min(3, atk_stat)+ element_atkup_stat + atk_stat_dying, dmg_stat, magia_stat, dmg_up_weak, element_weak_stat, 
         magia_range, magia_factor, data.is_void)
     magia_log = 1
     if magia_dmg > 0:
@@ -835,6 +898,7 @@ def get_kimochi_score(data: CharaData):
     mp_gain = 0
     mp_rate = 1
     atk_stat = 2
+    atk_stat_dying = 0
     element_atk_up = 0
     element_weak = 1
     dmg_stat = 2
@@ -904,10 +968,14 @@ def get_kimochi_score(data: CharaData):
         if verbCode == "BUFF" and effectCode in ["ATTACK_FIRE", "ATTACK_WATER", "ATTACK_TIMBER", "ATTACK_LIGHT", "ATTACK_DARK", "ATTACK_VOID"]:
             effectValue = get_from_dict(art, "effectValue") / 1000
             element_atk_up += effectValue
+        # 濒死ATK
+        if verbCode == "BUFF_DYING" and effectCode in ["ATTACK"]:
+            effectValue = get_from_dict(art, "effectValue") / 1000
+            atk_stat_dying += effectValue
 
     mp_gain *= mp_rate
     magia_stat = min(2, magia_stat)
-    atk_stat = min(3, atk_stat + element_atk_up)
+    atk_stat = min(3, atk_stat) + element_atk_up + atk_stat_dying
 
     total_dmg = get_magia_dmg(base_atk, ENEMY_DEF * 0.05,
         atk_stat, dmg_stat, magia_stat, dmg_up_weak, element_weak,
@@ -977,7 +1045,8 @@ FUNCTION_SCORE_LIST = {
         "GOOD" : 0.00075
     },
     "DRAW" : {
-        "AGAIN" : 0.00075
+        "AGAIN" : 0.001,
+        "CHARGE": 0.003
     },
     "IGNORE" : {
         "AVOID"         : 0.0005,
@@ -1041,8 +1110,8 @@ def get_function_score(data: CharaData):
             elif verbCode == "IGNORE" and effectCode in ["DEBUFF", "CONDITION_BAD"]:
                 enable_turn = 1
             # 洗牌
-            elif verbCode == "DRAW":
-                power = 0.00075
+            #elif verbCode == "DRAW":
+            #    power = 0.00075
 
             poss = get_from_dict(art, "probability")
             if poss is not None:

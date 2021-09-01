@@ -75,8 +75,10 @@ CHAR_ID_LIST = {
     2101 : "[[圆神]]",
     2102 : "[[小圆前辈]]",
     2103 : "[[究极小圆前辈]]",
+    2104 : "[[圆·伊吕波]]",
     2300 : "[[晓美焰（泳装ver.）]]",
     2400 : "[[美树沙耶香（晴着ver.）]]",
+    2401 : "[[美树沙耶香（冲浪ver.）]]",
     2500 : "[[圣麻美]]",
     2501 : "[[巴麻美（泳装ver.）]]",
     2600 : "[[佐仓杏子（泳装ver.）]]",
@@ -391,7 +393,8 @@ COST_TRANS = {"みたま特製エナジードリンク" : "饮料",
               "絡まりリボン":"缎带",
               "疑惑の写真":"写真",
               "キレイな川魚":"河鱼",
-              "七夕飾り":"装饰"}
+              "七夕飾り":"装饰",
+              "憩いのアイス":"冰淇淋"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？","災"]
 
 POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
@@ -455,7 +458,7 @@ def art_to_str(this_art):
         elif this_art_str == "Survive":
             this_art_str = '<span title="%.1f%%">Survive</span>'%(this_art["effect"] / 10)
         elif this_art_str == "屏障":
-            this_art_str = '屏障(%d")'%(this_art["effect"])
+            this_art_str = '屏障(%d)'%(this_art["effect"])
         else:
             effect_not_used = False
         if this_art_str == "保护" and "param" in this_art.keys():
