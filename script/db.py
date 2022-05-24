@@ -26,6 +26,12 @@ def get_quest_header(id_str, json_data, item_data, height=1):
                     battle_title = "BATTLE %d" % temp_id
                 else:
                     battle_title = "BATTLE %d"%data["sectionIndex"]
+                if json_data["uSectionList"][i]["questType"] == "REG_ACC":
+                    if "parameterMap" in data:
+                        regParam = data["parameterMap"]
+                        if "FLOOR" in regParam:
+                            battle_title = "第%s阶段"%regParam["FLOOR"]
+
                 if "needItemNum" in data.keys():
                     battle_ap = data["needItemNum"]
                 elif "ap" in data.keys():
@@ -247,19 +253,14 @@ def get_battle_enemy(json_data, battle_id=0):
                         this_mem_str += "&"
                     this_art = this_art_list[art_id]
                     this_mem_str += art_to_str(this_art)
-                    turn_str = ""
-                    target_str = ""
                     # 判断是否需要输出效果范围(和下一个效果相同则不输出)
-                    if "turn" in this_art and this_art["code"] != "ENCHANT":
-                        turn_str += "%dT"%this_art["turn"]
-                    if "target" in this_art and this_art["target"] == "ALL":
-                        target_str += "全"
-                    if len(turn_str) > 0 and len(target_str) > 0:
-                        this_mem_str += "(%s/%s)"%(target_str, turn_str)
-                    elif len(turn_str) > 0:
-                        this_mem_str += "(%s)"%(turn_str)
-                    elif len(target_str) > 0:
-                        this_mem_str += "(%s)"%(target_str)
+                    this_range = range_to_str(this_art)
+                    if (art_id != len(this_art_list)-1):
+                        next_range = range_to_str(this_art_list[art_id+1])
+                    else:
+                        next_range = ""
+                    if this_range != next_range:
+                        this_mem_str += this_range
                 # 是否标记效果名
                 if "name" in abi_mem.keys():
                     need_add_skillname = False

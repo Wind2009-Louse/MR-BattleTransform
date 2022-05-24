@@ -44,6 +44,7 @@ CHAR_ID_LIST = {
     1040 : "[[篠目夜鹤]]",
     1041 : "[[莉薇娅·梅黛洛斯]]",
     1042 : "[[小丘比]]",
+    1043 : "[[黑江]]",
     1101 : "[[环伊吕波（泳装ver.）]]",
     1102 : "[[八千代·美冬（起始ver.）]]",
     1103 : "[[谣鹤乃]]",
@@ -56,6 +57,9 @@ CHAR_ID_LIST = {
     1116 : "[[和泉十七夜（吸血鬼ver.）]]",
     1117 : "[[八云御魂（晴着ver.）]]",
     1118 : "[[天音姐妹（泳装ver.）]]",
+    1125 : "[[时女静香（元旦日出ver.）]]",
+    1137 : "[[那由他·御影（圣诞ver.）]]",
+    1118 : "[[天音姐妹（泳装ver.）]]",
     1201 : "[[小伊吕波]]",
     1202 : "[[七海八千代（七夕ver.）]]",
     1203 : "[[鹤乃·菲莉希亚（快递ver.）]]",
@@ -63,7 +67,9 @@ CHAR_ID_LIST = {
     1209 : "[[玲奈·枫（泳装ver.）]]",
     1210 : "[[桃子·御魂（人鱼ver.）]]",
     1301 : "[[伊吕波·八千代（决战ver.）]]",
+    1302 : "[[七海八千代（动画ver.）]]",
     1401 : "[[伊吕波·忧（巫女ver.）]]",
+    1501 : "[[环伊吕波（动画ver.）]]",
     2001 : "[[鹿目圆]]",
     2002 : "[[晓美焰]]",
     2003 : "[[晓美焰（眼镜ver.）]]",
@@ -76,12 +82,15 @@ CHAR_ID_LIST = {
     2102 : "[[小圆前辈]]",
     2103 : "[[究极小圆前辈]]",
     2104 : "[[圆·伊吕波]]",
+    2201 : "[[恶魔小焰]]",
     2300 : "[[晓美焰（泳装ver.）]]",
     2400 : "[[美树沙耶香（晴着ver.）]]",
     2401 : "[[美树沙耶香（冲浪ver.）]]",
     2500 : "[[圣麻美]]",
     2501 : "[[巴麻美（泳装ver.）]]",
+    2502 : "[[圣麻美（动画ver.）]]",
     2600 : "[[佐仓杏子（泳装ver.）]]",
+    2602 : "[[佐仓杏子（魔女化身ver.）]]",
     2700 : "[[百江渚（情人节ver.）]]",
     3001 : "[[矢宵鹿乃子]]",
     3002 : "[[空穗夏希]]",
@@ -145,6 +154,7 @@ CHAR_ID_LIST = {
     4001 : "[[美国织莉子]]",
     4002 : "[[吴纪里香]]",
     4003 : "[[千岁由麻]]",
+    4004 : "[[美国织莉子（ver.Final）]]",
     4011 : "[[和美]]",
     4012 : "[[御崎海香]]",
     4013 : "[[牧薰]]",
@@ -158,6 +168,7 @@ CHAR_ID_LIST = {
     4028 : "[[塔鲁特（Ver.Final）]]",
     4029 : "[[佩尔内勒]]",
     4121 : "[[伊莎贝拉（魔女ver.）]]",
+    4122 : "[[伊莎贝拉]]",
     4031 : "[[天乃铃音]]",
     4032 : "[[日向茉莉]]",
     4033 : "[[成见亚里纱]]",
@@ -206,6 +217,7 @@ CHAR_ID_LIST = {
     6109 : "[[流浪的魔女]]",
     6110 : "[[占卜师的魔女]]",
     6112 : "[[狱门的魔女]]",
+    6113 : "[[评论家的魔女]]",
     6212 : "[[镜之魔女]]",
     6400 : "[[班长的魔女]]",
     6401 : "[[玫瑰园的魔女]]",
@@ -394,7 +406,11 @@ COST_TRANS = {"みたま特製エナジードリンク" : "饮料",
               "疑惑の写真":"写真",
               "キレイな川魚":"河鱼",
               "七夕飾り":"装饰",
-              "憩いのアイス":"冰淇淋"}
+              "想い結ぶシュシュ":"发圈",
+              "サークルリスト":"名单",
+              "憧憬の烙印":"烙印",
+              "マギウスの指令書":"指令书",
+              "ハワイ行のチケット":"奖券"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？","災"]
 
 POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
@@ -575,14 +591,14 @@ def range_to_str(this_art):
         if this_art["code"] == "HEAL":
             # 如 (自/10%)
             if this_art["sub"] == "MP" or this_art["sub"] == "MP_DAMAGE":
-                result_str += "(自/%d)" % (this_art["effect"]/10)
+                result_str += "自/%d" % (this_art["effect"]/10)
             else:
-                result_str += "(自/%d%%)" % (this_art["effect"]/10)
+                result_str += "自/%d%%" % (this_art["effect"]/10)
         elif "turn" in this_art.keys():
             # 如 (自/3T)
-            result_str += "(自/%dT)" % (this_art["turn"])
+            result_str += "自/%dT" % (this_art["turn"])
         else:
-            result_str += "(自)"
+            result_str += "自"
     else:
         temp_str = ""
         # 敌单 敌全 单 全
@@ -598,16 +614,20 @@ def range_to_str(this_art):
 
         if "turn" in this_art.keys():
             # 如 (敌单/1T)
-            result_str += "(%s/%dT)" % (temp_str, this_art["turn"])
+            result_str += "%s/%dT" % (temp_str, this_art["turn"])
         elif this_art["code"] == "HEAL":
             # 如 (全/30%)
             if this_art["sub"] == "MP" or this_art["sub"] == "MP_DAMAGE":
-                result_str += "(%s/%d)" % (temp_str,this_art["effect"]/10)
+                result_str += "%s/%d" % (temp_str,this_art["effect"]/10)
             else:
-                result_str += "(%s/%d%%)" % (temp_str,this_art["effect"]/10)
+                result_str += "%s/%d%%" % (temp_str,this_art["effect"]/10)
         elif this_art["code"] == "RESURRECT":
-            result_str += "(%s/%d%%)" % (temp_str,this_art["effect"]/10)
+            result_str += "%s/%d%%" % (temp_str,this_art["effect"]/10)
         else:
             # 如 (敌全)
-            result_str += "(%s)" % temp_str
-    return result_str
+            result_str += "%s" % temp_str
+    if "param" in this_art and this_art["param"] == 1:
+        if len(result_str) > 0:
+            result_str += "/"
+        result_str += "不可解除"
+    return "(%s)"%result_str
