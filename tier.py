@@ -3,10 +3,10 @@ import json
 import math
 
 # 把记忆考虑进去
-MEMO_INCLUDE = {1040: 1470}
+MEMO_INCLUDE = {1040: 1470, 2106: 1793}
 # 自定义精神强化数值，未乘以0.6
-SE_SUM = {1210: [5748, 2400, 2000]}
-SE_ABCSUM = {1210:[6.0, 6.0, 5.0]}
+SE_SUM = {1044: [8642, 2219, 2407]}
+SE_ABCSUM = {}
 DEBUG = False
 
 allchara_file = []
@@ -62,13 +62,21 @@ rank_power_dict = {"RANK_1":2,"RANK_2":2.2,"RANK_3":2.4,"RANK_4":2.6,"RANK_5":3}
 # (HP, ATK, DEF)
 grow_diff = {"BALANCE": (1,1,1), "ATTACK": (0.98, 1.03, 0.97), "DEFENSE": (0.97, 0.98, 1.05), "HP": (1.04, 0.97, 0.98), "ATKDEF": (0.99, 1.02, 1.01), "ATKHP": (1.02, 1.01, 0.99), "DEFHP": (1.01, 0.99, 1.02)}
 ATTRIBUTE = {"FIRE":"{{属性|火}}","WATER":"{{属性|水}}","TIMBER":"{{属性|木}}","LIGHT":"{{属性|光}}","DARK":"{{属性|暗}}","VOID":"{{属性|无}}"}
-CHARA_NAME = {1001: "环伊吕波",1002: "七海八千代",1003: "由比鹤乃",1004: "二叶莎奈",1005: "深月菲莉希亚",1006: "梓美冬",1007: "里见灯花",1008: "阿莉娜·格雷",1009: "水波玲奈",1010: "十咎桃子",1011: "秋野枫",1012: "御园花凛",1013: "龙城明日香",1014: "柊音梦",1015: "环忧",1016: "和泉十七夜",1017: "八云御魂",1018: "天音月夜",1019: "天音月咲",1021: "红晴结菜",1022: "煌里光",1023: "笠音青",1024: "大庭树里",1025: "时女静香",1026: "广江千春",1027: "土岐沙绪",1028:"蓝家姬奈",1029: "宫尾时雨",1030: "安积育梦",1031:"神乐灿",1032:"游狩美由利",1033:"冰室拉比", 1034:"三浦旭", 1035:"栗栖亚历山德拉", 1036:"有爱丽", 1037:"里见那由他",1038: "八云御影",1039: "佐和月出里",1040: "篠目夜鹤",1041: "莉薇娅·梅黛洛斯",1042: "小丘比",1101: "环伊吕波（泳装ver.）",1102: "八千代·美冬（起始ver.）",1103: "谣鹤乃",1104: "谣莎奈",1105: "小菲莉希亚",1107: "灯花·音梦（圣夜ver.）",1108: "圣阿莉娜",1109: "小玲奈（偶像ver.）",1110: "十咎桃子（修女ver.）",1116: "和泉十七夜（吸血鬼ver.）",1117: "八云御魂（晴着ver.）",1118: "天音姐妹（泳装ver.）",1201: "小伊吕波",1202: "七海八千代（七夕ver.）",1203: "鹤乃·菲莉希亚（快递ver.）",1209: "玲奈·枫（泳装ver.）",1210: "桃子·御魂（人鱼ver.）",1301: "伊吕波·八千代（决战ver.）",1401: "伊吕波·忧（巫女ver.）",2001: "鹿目圆",2002: "晓美焰",2003: "晓美焰（眼镜ver.）",2004: "美树沙耶香",2005: "巴麻美",2006: "佐仓杏子",2007: "百江渚",2100: "鹿目圆（晴着ver.）",2101: "圆神",2102: "小圆前辈",2103: "究极小圆前辈",2104: "圆·伊吕波",2300: "晓美焰（泳装ver.）",2400: "美树沙耶香（晴着ver.）",2401: "美树沙耶香（冲浪ver.）",2500: "圣麻美",2501: "巴麻美（泳装ver.）",2600: "佐仓杏子（泳装ver.）",2700: "百江渚（情人节ver.）",3001: "矢宵鹿乃子",3002: "空穗夏希",3003: "都雏乃",3004: "美凪纱纱罗",3005: "常盘七夏",3006: "木崎衣美里",3007: "保澄雫",3008: "志伸晶",3009: "胡桃爱香",3010: "阿见莉爱",3011: "夏目佳子",3012: "纯美雨",3013: "伊吹丽良",3014: "桑水清佳",3015: "相野未都",3016: "粟根心",3017: "七濑幸佳",3018: "更纱帆奈",3019: "毬子彩花",3020: "真尾日美香",3021: "铃鹿朔夜",3023: "江利爱实",3024: "若菜纺",3025: "五十铃怜",3026: "静海木叶",3027: "游佐叶月",3028: "三栗菖蒲",3029: "加贺见真良",3030: "春名木乃美",3031: "绫野梨花",3032: "梢麻友",3033: "史乃沙优希",3034: "惠萌花",3035: "千秋理子",3036: "由贵真里爱",3037: "安名梅露",3038: "古町美仓",3039: "三穗野星罗",3040: "吉良手鞠",3041: "柚希步鸟",3042: "枇枇木巡",3043: "万年樱之谣",3044: "智珠兰华",3045: "柚希理音",3046: "观鸟令",3047: "青叶知花",3049: "雪野加奈惠",3050: "香春优奈",3051: "饰利润",3052: "阿什莉·泰勒",3053: "牧野郁美",3054: "三轮光音",3055:"桐野纱枝",3056: "水树垒",3058: "南津凉子",3501: "梨花·怜（圣诞ver.）",3502: "万年樱之谣（泳装ver.）",3503:"木叶·叶月",3900: "黑",4001: "美国织莉子",4002: "吴纪里香",4003: "千岁由麻",4011: "和美",4012: "御崎海香",4013: "牧薰",4021: "塔鲁特",4022: "莉兹",4023: "梅丽莎",4024: "米诺",4025: "可鲁波",4026: "爱丽莎",4027: "拉皮努",4028: "塔鲁特（ver.Final）",4121: "伊莎贝拉（魔女ver.）",4031: "天乃铃音",4032: "日向茉莉",4033: "成见亚里纱",4034: "诗音千里",4035: "奏遥香",4036:"美琴椿", 4041: "战场原黑仪",4042: "八九寺真宵",4043: "神原骏河",4044: "千石抚子",4045: "羽川翼",4046: "忍野忍",4051: "高町奈叶",4052: "菲特",4053: "八神疾风"}
+CHARA_NAME = {1001: "环伊吕波",1002: "七海八千代",1003: "由比鹤乃",1004: "二叶莎奈",1005: "深月菲莉希亚",1006: "梓美冬",1007: "里见灯花",1008: "阿莉娜·格雷",1009: "水波玲奈",1010: "十咎桃子",1011: "秋野枫",1012: "御园花凛",1013: "龙城明日香",1014: "柊音梦",1015: "环忧",1016: "和泉十七夜",1017: "八云御魂",1018: "天音月夜",1019: "天音月咲",1021: "红晴结菜",1022: "煌里光",1023: "笠音青",1024: "大庭树里",1025: "时女静香",1026: "广江千春",1027: "土岐沙绪",1028:"蓝家姬奈",1029: "宫尾时雨",1030: "安积育梦",1031:"神乐灿",1032:"游狩美由利",1033:"冰室拉比", 1034:"三浦旭", 1035:"栗栖亚历山德拉", 1036:"有爱丽", 1037:"里见那由他",1038: "八云御影",1039: "佐和月出里",1040: "篠目夜鹤",1041: "莉薇娅·梅黛洛斯",1042: "小丘比",1043: "黑江",1044: "濑奈命",1045: "水名露",1046: "千鹤",1101: "环伊吕波（泳装ver.）",1102: "八千代·美冬（起始ver.）",1103: "谣鹤乃",1104: "谣莎奈",1105: "小菲莉希亚",1107: "灯花·音梦（圣夜ver.）",1108: "圣阿莉娜",1109: "小玲奈（偶像ver.）",1110: "十咎桃子（修女ver.）",1112: "花凛·阿莉娜（万圣ver.）",1116: "和泉十七夜（吸血鬼ver.）",1117: "八云御魂（晴着ver.）",1118: "天音姐妹（泳装ver.）",1125: "时女静香（元旦日出ver.）",1137: "那由他·御影（圣诞ver.）",1143: "黑江（泳装ver.）",1201: "小伊吕波",1202: "七海八千代（七夕ver.）",1203: "鹤乃·菲莉希亚（快递ver.）",1209: "玲奈·枫（泳装ver.）",1210: "桃子·御魂（人鱼ver.）",1301: "伊吕波·八千代（决战ver.）",1302: "七海八千代（动画ver.）",1303: "谣鹤乃（动画ver.）",1309: "水波玲奈（动画ver.）",1401: "伊吕波·忧（巫女ver.）",1501: "环伊吕波（动画ver.）",1601: "∞伊吕波",2001: "鹿目圆",2002: "晓美焰",2003: "晓美焰（眼镜ver.）",2004: "美树沙耶香",2005: "巴麻美",2006: "佐仓杏子",2007: "百江渚",2100: "鹿目圆（晴着ver.）",2101: "圆神",2102: "小圆前辈",2103: "究极小圆前辈",2104: "圆·伊吕波",2106: "鹿目圆（泳装ver.）",2201: "恶魔小焰",2300: "晓美焰（泳装ver.）",2400: "美树沙耶香（晴着ver.）",2401: "美树沙耶香（冲浪ver.）",2500: "圣麻美",2501: "巴麻美（泳装ver.）",2502: "圣麻美（动画ver.）",2600: "佐仓杏子（泳装ver.）",2602: "佐仓杏子（魔女化身ver.）",2700: "百江渚（情人节ver.）",3001: "矢宵鹿乃子",3002: "空穗夏希",3003: "都雏乃",3004: "美凪纱纱罗",3005: "常盘七夏",3006: "木崎衣美里",3007: "保澄雫",3008: "志伸晶",3009: "胡桃爱香",3010: "阿见莉爱",3011: "夏目佳子",3012: "纯美雨",3013: "伊吹丽良",3014: "桑水清佳",3015: "相野未都",3016: "粟根心",3017: "七濑幸佳",3018: "更纱帆奈",3019: "毬子彩花",3020: "真尾日美香",3021: "铃鹿朔夜",3023: "江利爱实",3024: "若菜纺",3025: "五十铃怜",3026: "静海木叶",3027: "游佐叶月",3028: "三栗菖蒲",3029: "加贺见真良",3030: "春名木乃美",3031: "绫野梨花",3032: "梢麻友",3033: "史乃沙优希",3034: "惠萌花",3035: "千秋理子",3036: "由贵真里爱",3037: "安名梅露",3038: "古町美仓",3039: "三穗野星罗",3040: "吉良手鞠",3041: "柚希步鸟",3042: "枇枇木巡",3043: "万年樱之谣",3044: "智珠兰华",3045: "柚希理音",3046: "观鸟令",3047: "青叶知花",3048: "由良萤",3049: "雪野加奈惠",3050: "香春优奈",3051: "饰利润",3052: "阿什莉·泰勒",3053: "牧野郁美",3054: "三轮光音",3055:"桐野纱枝",3056: "水树垒",3057: "真井灯", 3058: "南津凉子",3059: "入名库什",3501: "梨花·怜（圣诞ver.）",3502: "万年樱之谣（泳装ver.）",3503:"木叶·叶月",3900: "黑",4001: "美国织莉子",4002: "吴纪里香",4003: "千岁由麻",4004: "美国织莉子（ver.Final）",4011: "和美",4012: "御崎海香",4013: "牧薰",4014: "昴和美",4021: "塔鲁特",4022: "莉兹",4023: "梅丽莎",4024: "米诺",4025: "可鲁波",4026: "爱丽莎",4027: "拉皮努",4028: "塔鲁特（ver.Final）",4029: "佩尔内勒",4121: "伊莎贝拉（魔女ver.）",4122:"伊莎贝拉",4031: "天乃铃音",4032: "日向茉莉",4033: "成见亚里纱",4034: "诗音千里",4035: "奏遥香",4036:"美琴椿", 4041: "战场原黑仪",4042: "八九寺真宵",4043: "神原骏河",4044: "千石抚子",4045: "羽川翼",4046: "忍野忍",4051: "高町奈叶",4052: "菲特",4053: "八神疾风"}
 CHARGE_DMG_DICT = {1: {0: 1, 1: 1.1, 2: 1.2}, 2: {0: 1, 1: 1.4, 2: 1.7}, 3:{0: 1, 1: 1, 2: 1}}
 '''[盘][位置][是否首A]'''
 DISC_MP_DICT = {1:{0: {0: 7, 1: 10}, 1: {0: 10.5, 1: 13.5}, 2: {0: 14, 1: 17}}, 2:{0: {0: 0, 1: 0}, 1: {0: 0, 1: 3}, 2:{0: 0, 1: 3}}, 3: {0: {0: 2, 1: 2}, 1: {0: 3, 1: 6}, 2: {0: 4, 1: 7}}}
 MAX_SINGLE_DMG = 9999999
 MAX_MP = 150
+
+ENEMY_ATK = 13000
+ENEMY_ATK_UP = 0.2
+ENEMY_DMG_UP = 0.25
 ENEMY_DEF = 6000
+ENEMY_IGNORE_EVADE = 0.2
+ENEMY_IGNORE_CUT = 0.05
+ENEMY_CUT = 0.15
+
 DISC_DIVIDE = 16
 
 def convert_to_dict(obj):
@@ -120,7 +128,8 @@ def all_check(id):
     for art in all_art:
         verb_code = get_from_dict(art, "verbCode")
         eff = get_from_dict(art, "effectCode")
-        all_data.add("%s-%s"%(verb_code, eff))
+        target = get_from_dict(art, "targetId")
+        all_data.add("%s-%s-%s"%(verb_code, eff, target))
     return all_data
 
 def get_possible_disc(disc_list):
@@ -303,7 +312,7 @@ def read_from_chara_id(id):
                         result.max_atk *= (1 + awaken_data[num_key] / 1000)
                     if awaken_data[code_key] == "DEFENSE":
                         result.max_def *= (1 + awaken_data[num_key] / 1000)
-                    if awaken_data[code_key] == "ACCELE":
+                    if awaken_data[code_key] == "ACCEL":
                         result.accele_dmgup += awaken_data[num_key] / 10
                     if awaken_data[code_key] == "BLAST":
                         result.blast_dmgup += awaken_data[num_key] / 10
@@ -336,12 +345,14 @@ def read_from_chara_id(id):
             elif enhance_cell["enhancementType"] == "SKILL":
                 enhance_skill = enhance_cell["emotionSkill"]
                 cd_turn = get_from_dict(enhance_skill, "intervalTurn", 0)
+                skillEffectRange = get_from_dict(enhance_skill, "skillEffectRange", "ALL")
                 for art_idx in range(1, 100):
                     art_key = "art%d"%art_idx
                     if art_key not in enhance_skill:
                         break
                     if cd_turn > 0:
                         enhance_skill[art_key]["intervalTurn"] = cd_turn
+                    enhance_skill[art_key]["skillEffectRange"] = skillEffectRange
                     result.enhance_art.append(enhance_skill[art_key])
         if id in SE_SUM:
             enhance_hp = SE_SUM[id][0]
@@ -351,9 +362,9 @@ def read_from_chara_id(id):
             enhance_accele = SE_ABCSUM[id][0]
             enhance_blast = SE_ABCSUM[id][1]
             enhance_charge = SE_ABCSUM[id][2]
-        result.max_hp += enhance_hp * 0.6
-        result.max_atk += enhance_atk * 0.6
-        result.max_def += enhance_def * 0.6
+        result.max_hp += enhance_hp
+        result.max_atk += enhance_atk
+        result.max_def += enhance_def
         result.accele_dmgup += enhance_accele
         result.blast_dmgup += enhance_blast
         result.charge_dmgup += enhance_charge
@@ -370,6 +381,7 @@ def read_from_chara_id(id):
                 art_key = "art%d"%art_idx
                 if art_key not in mlb_data:
                     break
+                mlb_data[art_key]["memory"] = 1
                 result.enhance_art.append(mlb_data[art_key])
             break
 
@@ -419,7 +431,7 @@ def get_score(id):
     # 周回
     d_loop_power = get_loop_score(d)
     # 镜层 TODO
-    d_mirror_power = 0
+    d_mirror_power = get_mirror_score(d)
     # 辅助
     d_support_power = get_support_score(d)
     # 高难普攻
@@ -536,7 +548,7 @@ SUPPORT_SCORE_LIST = {
         # 自动回复
         "AUTO_HEAL"            : 0.0025,
         # 屏障
-        "BARRIER"            : 0.00005
+        "BARRIER"              : 0.00005
     },
     "REVOKE" : {
         # Debuff解除
@@ -611,7 +623,7 @@ def get_support_score(data: CharaData):
     total_score += get_support_score_from_list(data.doppel)
     return total_score
 
-def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=False):
+def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=False, single_target=False):
     '''通常伤害评分'''
 
     base_atk = data.max_atk
@@ -624,6 +636,7 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
     dmg_stat = 1
     critical_poss = 0
     ignore_def_poss = 0
+    ignore_cut_poss = 0
     no_charge_cost = False
     use_art = data.enhance_art.copy()
     if use_connect:
@@ -672,16 +685,21 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
             # 概率无视防御
             elif effectCode == "DEFENSE_IGNORED":
                 ignore_def_poss = max(ignore_def_poss, poss / 1000)
+            # 不消耗C
             elif effectCode == "NO_COST_CHARGE":
                 no_charge_cost = True
+        if verbCode == "IGNORE":
+            if effectCode == "DAMAGE_DOWN":
+                ignore_cut_poss = max(ignore_cut_poss, poss / 1000)
     blastup_stat = min(1, blastup_stat)
     chargingup_stat = min(1, chargingup_stat)
     charge_stat = min(2, charge_stat)
     atk_stat = min(2, atk_stat) + atk_stat_dying
     base_atk *= atk_stat
 
-    # 模拟打6kDEF
-    base_dmg = (base_atk - 2000) * (1 - ignore_def_poss) + base_atk * ignore_def_poss
+    # 模拟打6kDEF，10%伤害cut
+    base_dmg = max(500, base_atk - ENEMY_DEF / 3) * (1 - ignore_def_poss) + base_atk * ignore_def_poss
+    dmg_stat = (dmg_stat - ENEMY_CUT) * (1 - ignore_cut_poss) + dmg_stat * ignore_cut_poss
     average_dmg = 0
     dmg_hashmap = {}
     def get_dmg_from_disc(use_disc, no_cost_charge=False):
@@ -722,7 +740,7 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
                 current_charging += 1
             elif not no_cost_charge:
                 current_charging = 0
-            if disc == 2:
+            if disc == 2 and not single_target:
                 dmg *= 2
             total_dmg += dmg
             
@@ -740,7 +758,7 @@ def get_normal_damage(data: CharaData, use_connect : bool, ignore_enableTurn=Fal
         average_dmg += max_dmg / DISC_DIVIDE
     return average_dmg
 
-def get_magia_score(data : CharaData):
+def get_magia_score(data : CharaData, count_magia_buff=True, count_element_mp=True):
     base_atk = data.max_atk
     magia_factor = 0
     magia_range = ""
@@ -753,12 +771,14 @@ def get_magia_score(data : CharaData):
     accele_mp_stat = 1
     mp_gain_stat = 1
     mp_gain_hit_stat = 0
+    mp_gain_element_hit_stat = 0
     init_mp = 0
     gain_mp = 0
     magia_stat = 1
     blast_mp = 0
     use_art = data.enhance_art.copy()
-    use_art.extend(data.magia)
+    if count_magia_buff:
+        use_art.extend(data.magia)
     for art in use_art:
         verbCode = get_from_dict(art, "verbCode")
         effectCode = get_from_dict(art, "effectCode")
@@ -802,7 +822,7 @@ def get_magia_score(data : CharaData):
                 mp_gain_hit_stat += effectValue / 10
             # 被弱点属性攻击时MPUP
             if effectCode == "MP_PLUS_WEAKED" and not data.is_void:
-                mp_gain_hit_stat += effectValue / 10
+                mp_gain_element_hit_stat += effectValue / 10
             # Blast MP
             if effectCode == "MP_PLUS_BLAST":
                 blast_mp += effectValue / 10
@@ -878,7 +898,10 @@ def get_magia_score(data : CharaData):
     init_mp += int(atk_mp * 10) / 10
 
     # 受击MP
-    hit_mp = int((4 + mp_gain_hit_stat) * data.def_mp * mp_gain_stat * 30) / 10
+    if count_element_mp:
+        hit_mp = int((4 + mp_gain_hit_stat + mp_gain_element_hit_stat) * data.def_mp * mp_gain_stat * 30) / 10
+    else:
+        hit_mp = int((4 + mp_gain_hit_stat) * data.def_mp * mp_gain_stat * 30) / 10
     init_mp += hit_mp
 
     magia_dmg = get_magia_dmg(base_atk, ENEMY_DEF,
@@ -931,9 +954,13 @@ def get_kimochi_score(data: CharaData):
         if verbCode == "HEAL" and effectCode == "MP":
             mp_value = get_from_dict(dmg_art, "effectValue") / 10
             mp_gain += mp_value
+    # 计算强化效果
     for art in data.enhance_art:
+        if get_from_dict(art, "targetId") == "ALL":
+            continue
         verbCode = get_from_dict(art, "verbCode")
         effectCode = get_from_dict(art, "effectCode")
+        effectValue = get_from_dict(art, "effectValue", 0) / 1000
         # MP自回
         if verbCode == "CONDITION_GOOD" and effectCode == "AUTO_HEAL":
             if get_from_dict(art, "genericValue") == "MP":
@@ -950,30 +977,54 @@ def get_kimochi_score(data: CharaData):
             mp_gain += mp_value
         # MP获得量UP
         if verbCode == "BUFF" and effectCode == "MP_GAIN":
-            mp_rate += get_from_dict(art, "effectValue") / 1000
+            mp_rate += effectValue
         # Magia UP
         if verbCode == "BUFF" and effectCode == "MAGIA":
-            magia_stat += get_from_dict(art, "effectValue") / 1000
+            magia_stat += effectValue
         # 增伤
         if verbCode == "CONDITION_GOOD" and effectCode == "DAMAGE_UP":
-            dmg_stat += get_from_dict(art, "effectValue") / 1000
+            dmg_stat += effectValue
         # 异常增伤
         if verbCode == "CONDITION_GOOD" and effectCode == "DAMAGE_UP_BAD":
-            dmg_up_weak += get_from_dict(art, "effectValue") / 1000
+            dmg_up_weak += effectValue
         # 属性增伤
-        if verbCode == "DEBUFF" and effectCode in ["WEAK_FIRE", "WEAK_WATER", "WEAK_TIMBER", "WEAK_LIGHT", "WEAK_DARK", "WEAK_VOID"]:
-            effectValue = get_from_dict(art, "effectValue") / 1000
-            element_weak += effectValue
+#        if verbCode == "DEBUFF" and effectCode in ["WEAK_FIRE", "WEAK_WATER", "WEAK_TIMBER", "WEAK_LIGHT", "WEAK_DARK", "WEAK_VOID"]:
+#            effectValue = effectValue
+#            element_weak += effectValue
         # 属性ATK
         if verbCode == "BUFF" and effectCode in ["ATTACK_FIRE", "ATTACK_WATER", "ATTACK_TIMBER", "ATTACK_LIGHT", "ATTACK_DARK", "ATTACK_VOID"]:
-            effectValue = get_from_dict(art, "effectValue") / 1000
             element_atk_up += effectValue
         # 濒死ATK
         if verbCode == "BUFF_DYING" and effectCode in ["ATTACK"]:
-            effectValue = get_from_dict(art, "effectValue") / 1000
             atk_stat_dying += effectValue
 
+    # 计算出MP效率，一次心魔可以打出的次数
     mp_gain *= mp_rate
+    mp_percent = mp_gain / MAX_MP
+
+    if mp_percent > 0:
+        for art in dmg_art_list:
+            if get_from_dict(art, "targetId") == "ALL":
+                continue
+            verbCode = get_from_dict(art, "verbCode")
+            effectCode = get_from_dict(art, "effectCode")
+            effectValue = get_from_dict(art, "effectValue", 0) * mp_percent / 1000
+            # Magia UP
+            if verbCode == "BUFF" and effectCode == "MAGIA":
+                magia_stat += effectValue
+            # 增伤
+            if verbCode == "CONDITION_GOOD" and effectCode == "DAMAGE_UP":
+                dmg_stat += effectValue
+            # 异常增伤
+            if verbCode == "CONDITION_GOOD" and effectCode == "DAMAGE_UP_BAD":
+                dmg_up_weak += effectValue
+            # 属性ATK
+            if verbCode == "BUFF" and effectCode in ["ATTACK_FIRE", "ATTACK_WATER", "ATTACK_TIMBER", "ATTACK_LIGHT", "ATTACK_DARK", "ATTACK_VOID"]:
+                element_atk_up += effectValue
+            # 濒死ATK
+            if verbCode == "BUFF_DYING" and effectCode in ["ATTACK"]:
+                atk_stat_dying += effectValue
+
     magia_stat = min(2, magia_stat)
     atk_stat = min(3, atk_stat) + element_atk_up + atk_stat_dying
 
@@ -981,7 +1032,7 @@ def get_kimochi_score(data: CharaData):
         atk_stat, dmg_stat, magia_stat, dmg_up_weak, element_weak,
         doppel_range, doppel_factor, data.is_void)
 
-    return (total_dmg, mp_gain, (total_dmg * (1 + mp_gain / MAX_MP)))
+    return (total_dmg, mp_gain, (total_dmg * (1 + mp_percent)))
 
 BAD_STATUS_LIST = {
     # 毒
@@ -1013,8 +1064,6 @@ FUNCTION_SCORE_LIST = {
     "CONDITION_GOOD" : {
         # 闪避
         "AVOID"             : 0.0005,
-        # Charge Combo+
-        "C_COMBO_PLUS"      : 0.0001,
         # 反击
         "COUNTER"           : 0.00025,
         # 暴击
@@ -1025,8 +1074,6 @@ FUNCTION_SCORE_LIST = {
         "GUTS"              : 0.00025,
         # VARIABLE
         "IMITATE_ATTRIBUTE" : 0.001,
-        # Charge不消耗
-        "NO_COST_CHARGE"    : 0.001,
         # 保护
         "PROTECT"           : 0.0006,
         # 挑衅
@@ -1036,7 +1083,13 @@ FUNCTION_SCORE_LIST = {
         # 加速
         "SKILL_QUICK"       : 0.00075,
         # Survive
-        "SURVIVE"           : 0.001
+        "SURVIVE"           : 0.001,
+        # Charge Combo+
+        "C_COMBO_PLUS"      : 0.0001,
+        # Charge不消耗
+        "NO_COST_CHARGE"    : 0.001,
+        # Debuff反射
+        "REFLECT_DEBUFF"    : 0.001
     },
     "REVOKE" : {
         # Buff解除
@@ -1046,7 +1099,9 @@ FUNCTION_SCORE_LIST = {
     },
     "DRAW" : {
         "AGAIN" : 0.001,
-        "CHARGE": 0.003
+        "CHARGE": 0.003,
+        "ACCEL" : 0.003,
+        "BLAST" : 0.003
     },
     "IGNORE" : {
         "AVOID"         : 0.0005,
@@ -1133,6 +1188,269 @@ def get_function_score(data: CharaData):
     magia_score = get_function_score_from_list(data.magia) * 2
     doppel_score = get_function_score_from_list(data.doppel) * 1
     return se_score + connect_score + magia_score + doppel_score
+
+def get_mirror_score(data: CharaData):
+    '''镜层评分'''
+    # 攻击伤害分，50000算一个人得5分，最高10分
+    attack_score = min(10, get_normal_damage(data, False, True, True) / 10000)
+
+    # 防守分，受击三次剩余的HP，存活时取值为5-10
+    defence_score = get_mirror_score_defense(data)
+
+    # MP分，100MP时取15
+    mp_score = (get_magia_score(data, False)[1] + get_magia_score(data, False, False)[1]) * 15 / 200
+    # 3C角色MP补正
+    if data.charge_disc >= 3:
+        mp_score /= 2
+
+    # Charge分
+    charge_score = get_mirror_score_charge(data)
+
+    # 特殊功能分
+    special_score = get_mirror_score_special(data)
+
+    if DEBUG:
+        print(attack_score, defence_score, mp_score, charge_score, special_score)
+    
+    return sum([attack_score, defence_score, mp_score, charge_score, special_score])
+
+def get_mirror_score_defense(data: CharaData):
+    base_defense = data.max_def
+    base_defense_stat = 1
+    base_maxhp_defense_stat = 0
+    base_dying_defense_stat = 0
+    base_cut = 0
+    base_accele_cut = 0
+    base_blast_cut = 0
+    base_charging_cut = 0
+    base_charge_cut = 0
+
+    base_evade_poss = 0
+    base_barrier = 0
+
+    enemy_miss_poss = 0
+    enemy_atk_down_stat = 0
+    enemy_dmg_down_stat = 0
+
+    survive_percent = 0
+    is_gut = False
+
+    use_art = data.enhance_art.copy()
+    for art in use_art:
+        verbCode = get_from_dict(art, "verbCode")
+        effectCode = get_from_dict(art, "effectCode")
+        effectValue = get_from_dict(art, "effectValue", 0)
+        probability = get_from_dict(art, "probability", 0)
+        if verbCode == "BUFF":
+            # 防御
+            if effectCode == "DEFENSE":
+                base_defense_stat += effectValue / 1000
+        if verbCode == "BUFF_DYING":
+            # 濒死防御
+            if effectCode == "DEFENSE":
+                base_dying_defense_stat += effectValue / 1000
+        if verbCode == "BUFF_MAXHP":
+            # 最大HP防御
+            if effectCode == "DEFENSE":
+                base_maxhp_defense_stat += effectValue / 1000
+        if verbCode == "CONDITION_GOOD":
+            # 伤害cut
+            if effectCode == "DAMAGE_DOWN":
+                base_cut += effectValue / 1000
+            # A伤害CUT
+            if effectCode == "DAMAGE_DOWN_ACCEL":
+                base_accele_cut += effectValue / 1000
+            # B伤害CUT
+            if effectCode == "DAMAGE_DOWN_BLAST":
+                base_blast_cut += effectValue / 1000
+            # C后伤害CUT
+            if effectCode == "DAMAGE_DOWN_CHARGE":
+                base_charge_cut += effectValue / 1000
+            # C伤害CUT
+            if effectCode == "DAMAGE_DOWN_CHARGING":
+                base_charging_cut += effectValue / 1000
+            # 闪避
+            if effectCode == "AVOID":
+                base_evade_poss = max(probability / 1000, base_evade_poss)
+            # BARRIER
+            if effectCode == "BARRIER":
+                base_barrier = max(base_barrier, effectValue)
+            # Survive
+            if effectCode == "SURVIVE":
+                survive_percent = max(effectValue / 1000, survive_percent)
+            if effectCode == "GUTS":
+                is_gut = True
+        # 概率miss
+        if verbCode == "CONDITION_BAD":
+            if effectCode in ["FOG","DARKNESS","BLINDNESS"]:
+                enemy_miss_poss = enemy_miss_poss + (1 - enemy_miss_poss) * effectValue / 1000
+        if verbCode == "DEBUFF":
+            # 攻击力DOWN
+            if effectCode == "ATTACK":
+                enemy_atk_down_stat += effectValue / 1000
+            # 伤害DOWN
+            if effectCode == "DAMAGE":
+                enemy_dmg_down_stat += effectValue / 1000
+
+    current_hp = data.max_hp
+    def calculate_dmg(disc: int, current_charging: 0, disc_index: int, current_hp: int, current_barrier: int, is_gut: bool):
+        if current_hp <= 0:
+            return (0, 0, False)
+
+        # B系数
+        blast_disc_place = 1
+        if disc == 2:
+            blast_disc_place += disc_index * 0.1
+        # C系数
+        charged_up = CHARGE_DMG_DICT[disc][current_charging]
+
+        # 防御
+        current_def_stat = base_defense_stat
+        if current_hp == data.max_hp:
+            current_def_stat += base_maxhp_defense_stat
+        current_def_stat = min(2, current_def_stat)
+        if data.max_hp * 0.2 >= current_hp:
+            current_def_stat += base_dying_defense_stat
+        current_def = base_defense * current_def_stat
+
+        # 伤害削减
+        current_cut = base_cut
+        if disc == 1:
+            current_cut += base_accele_cut
+        if disc == 2:
+            current_cut += base_blast_cut
+        if disc == 3:
+            current_cut += base_charging_cut
+        if disc != 3 and current_charging > 0:
+            current_cut += base_charge_cut
+
+        # 基本盘型系数
+        base_disc_factor = 1.2
+        if disc == 2:
+            base_disc_factor = 0.9
+
+        current_enemy_atk = ENEMY_ATK * max(0.05, (1 + ENEMY_ATK_UP - enemy_atk_down_stat))
+        base_dmg = max(500, current_enemy_atk - current_def / 3) * base_disc_factor * blast_disc_place * charged_up
+        evaded_dmg = base_dmg * (1 - base_evade_poss * (1 - ENEMY_IGNORE_EVADE))
+        missed_dmg = evaded_dmg * (1 - enemy_miss_poss)
+        final_dmg = missed_dmg * max(0.05, 1 - current_cut - enemy_dmg_down_stat + ENEMY_DMG_UP)
+
+        if current_barrier > final_dmg:
+            current_barrier -= final_dmg
+            final_dmg = 0
+        elif current_barrier > 0:
+            final_dmg -= current_barrier
+            current_barrier = 0
+        current_hp -= final_dmg
+
+        if current_hp <= 0 and is_gut:
+            current_hp = data.max_hp / 100
+            is_gut = False
+
+        return (current_hp, current_barrier, is_gut)
+
+    # 敌方ACB
+    base_score = 0
+    current_hp, base_barrier, is_gut = calculate_dmg(1, 0, 0, current_hp, base_barrier, is_gut)
+    if current_hp > 0:
+        base_score += 2
+    current_hp, base_barrier, is_gut = calculate_dmg(3, 0, 1, current_hp, base_barrier, is_gut)
+    if current_hp > 0:
+        base_score += 2
+    current_hp, base_barrier, is_gut = calculate_dmg(2, 1, 2, current_hp, base_barrier, is_gut)
+    if current_hp > 0:
+        base_score += 2
+
+    if current_hp <= 0 and survive_percent > 0:
+        current_hp = data.max_hp * survive_percent
+    
+    return max(current_hp, 0) * 5 / data.max_hp + base_score
+
+def get_mirror_score_charge(data: CharaData):
+    charge_plus = 0
+    use_art = data.enhance_art.copy()
+    for art in use_art:
+        verbCode = get_from_dict(art, "verbCode")
+        effectCode = get_from_dict(art, "effectCode")
+        effectValue = get_from_dict(art, "effectValue", 0)
+        if verbCode == "CONDITION_GOOD":
+            # C+
+            if effectCode == "C_COMBO_PLUS":
+                charge_plus += effectValue / 1000
+    charge_plus **= 2
+    return charge_plus
+
+MIRROR_SPECIAL_SCORE_VALUE_LIST = {
+}
+
+MIRROR_SPECIAL_SCORE_POSS_LIST = {
+    # 重抽
+    "DRAW" : {
+        "AGAIN" : 0.005,
+        "ACCEL" : 0.0075,
+        "BLAST" : 0.0075,
+        "CHARGE": 0.0075,
+        "SELF"  : 0.01
+    },
+    "CONDITION_GOOD" : {
+        # 加速
+        "SKILL_QUICK"    : 0.01,
+        # 挑衅
+        "PROVOKE"        : 0.0025,
+        # 保护
+        "PROTECT"        : 0.004,
+        # Debuff反射
+        "REFLECT_DEBUFF" : 0.0015
+    },
+    "REVOKE" : {
+        # Buff解除
+        "BUFF"   : 0.00025,
+        # 赋予效果解除
+        "GOOD"   : 0.00025,
+        # Debuff解除
+        "DEBUFF" : 0.0004,
+        # 异常状态解除
+        "BAD"    : 0.00025
+    },
+    # 异常/Debuff无效
+    "IGNORE" : {
+        "DEBUFF"        : 0.001,
+        "CONDITION_BAD" : 0.001
+    }
+}
+
+def get_mirror_score_special(data: CharaData):
+    result_score = 0
+    use_art = data.enhance_art.copy()
+    for art in use_art:
+        if get_from_dict(art, "skillEffectRange", "ALL") == "QUEST":
+            continue
+        if get_from_dict(art, "memory", 0) > 0:
+            continue
+        verbCode = get_from_dict(art, "verbCode", "None")
+        effectCode = get_from_dict(art, "effectCode", "None")
+        effectValue = get_from_dict(art, "effectValue", 0)
+        probability = get_from_dict(art, "probability", 1000)
+        targetId = get_from_dict(art, "targetId", "SELF")
+        target_count = 1
+        if targetId == "ALL":
+            target_count = 3
+
+        value_power = get_from_dict(
+            get_from_dict(MIRROR_SPECIAL_SCORE_VALUE_LIST, verbCode, {}),
+            effectCode,
+            0
+        )
+        poss_power = get_from_dict(
+            get_from_dict(MIRROR_SPECIAL_SCORE_POSS_LIST, verbCode, {}),
+            effectCode,
+            0
+        )
+
+        current_score = value_power * effectValue + poss_power * probability
+        result_score += current_score * target_count
+
+    return result_score
 
 def calu():
     print("编号\t中文名\t最高稀有度\t属性\t基础数值\t周回表现\t镜层表现\t辅助\t单T普攻\t高难普攻\t连携增幅值\t连携增幅比\t二人普攻\t普攻综合\tMagia伤害\tMP效率\tMagia系数\t心魔伤害\t心魔回流\t心魔系数\t功能性")
