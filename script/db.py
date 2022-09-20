@@ -1,3 +1,4 @@
+from copy import copy
 from script.names import *
 
 def get_quest_header(id_str, json_data, item_data, height=1):
@@ -104,6 +105,7 @@ def enemy_initial():
               "DEF": 0,
               "ATTR": set(),
               "MEM":set(),
+              "GIMMICK_MEM": [],
               "Magia": 0,
               "Doppel": 0,
               "position":0}
@@ -150,6 +152,8 @@ def get_battle_enemy(json_data, battle_id=0):
             for mem_id in this_enemy["memoriaList"]:
                 if mem_id not in new_enemy["MEM"]:
                     new_enemy["MEM"].add(mem_id)
+            if "hpRateGimmickList" in this_enemy:
+                new_enemy["GIMMICK_MEM"] = this_enemy["hpRateGimmickList"]
             if "magiaId" in this_enemy:
                 new_enemy["Magia"] = this_enemy["magiaId"]
             if "doppelId" in this_enemy:
@@ -228,93 +232,111 @@ def get_battle_enemy(json_data, battle_id=0):
                     positions_str = "{{阵形|%d=%s}}"%(POSITION_TRANSFORM[enemy["position"][0]],attr_color)
             return_str += '| %s<span title="ATK:%d&#10;DEF:%d">%s(%d/%s)</span> || '%(positions_str,enemy["ATK"],enemy["DEF"],enemy["name"],enemy["HP"],attr_list)
             # 敌人技能，按照能力型-技能型排序
-            ability_memory = []
-            skill_memory = []
             total_mem_str = ""
-            for mem in json_data["memoriaList"]:
-                if mem["memoriaId"] in enemy["MEM"]:
-                    if mem["cost"] > 0:
-                        skill_memory.append(mem)
-                    else:
-                        ability_memory.append(mem)
-            # 能力型
-            for abi_mem in ability_memory:
-                this_mem_str = ""
-                # 获取效果
-                this_art_list = []
-                for art_id in abi_mem["artList"]:
-                    for art in json_data["artList"]:
-                        if art["artId"] == art_id:
-                            this_art_list.append(art)
-                            break
-                # 将效果输出
-                for art_id in range(len(this_art_list)):
-                    if art_id > 0:
-                        this_mem_str += "&"
-                    this_art = this_art_list[art_id]
-                    this_mem_str += art_to_str(this_art)
-                    # 判断是否需要输出效果范围(和下一个效果相同则不输出)
-                    this_range = range_to_str(this_art)
-                    if (art_id != len(this_art_list)-1):
-                        next_range = range_to_str(this_art_list[art_id+1])
-                    else:
-                        next_range = ""
-                    if this_range != next_range:
-                        this_mem_str += this_range
-                # 是否标记效果名
-                if "name" in abi_mem.keys():
-                    need_add_skillname = False
-                    for char in SPECIAL_MEMORY_NAME:
-                        if char in abi_mem["name"]:
-                            need_add_skillname = True
-                            break
-                    if need_add_skillname:
-                        this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,abi_mem["name"])
-                if (total_mem_str != ""):
-                    total_mem_str += "<br />"
-                # 战斗开始时附加状态的能力型记忆
-                if "type" in abi_mem.keys() and abi_mem["type"] == "STARTUP":
-                    this_mem_str = "战斗开始时获得" + this_mem_str
-                total_mem_str += this_mem_str
+            def draw_memory(memoriaIdList):
+                curr_memory_str = ""
+                ability_memory = []
+                skill_memory = []
+                for mem in json_data["memoriaList"]:
+                    if mem["memoriaId"] in memoriaIdList:
+                        if mem["cost"] > 0:
+                            skill_memory.append(mem)
+                        else:
+                            ability_memory.append(mem)
+                # 能力型
+                for abi_mem in ability_memory:
+                    this_mem_str = ""
+                    # 获取效果
+                    this_art_list = []
+                    for art_id in abi_mem["artList"]:
+                        for art in json_data["artList"]:
+                            if art["artId"] == art_id:
+                                this_art_list.append(art)
+                                break
+                    # 将效果输出
+                    for art_id in range(len(this_art_list)):
+                        if art_id > 0:
+                            this_mem_str += "&"
+                        this_art = this_art_list[art_id]
+                        this_mem_str += art_to_str(this_art)
+                        # 判断是否需要输出效果范围(和下一个效果相同则不输出)
+                        this_range = range_to_str(this_art)
+                        if (art_id != len(this_art_list)-1):
+                            next_range = range_to_str(this_art_list[art_id+1])
+                        else:
+                            next_range = ""
+                        if this_range != next_range:
+                            this_mem_str += this_range
+                    # 是否标记效果名
+                    if "name" in abi_mem.keys():
+                        need_add_skillname = False
+                        for char in SPECIAL_MEMORY_NAME:
+                            if char in abi_mem["name"]:
+                                need_add_skillname = True
+                                break
+                        if need_add_skillname:
+                            this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,abi_mem["name"])
+                    # 战斗开始时附加状态的能力型记忆
+                    if "type" in abi_mem.keys() and abi_mem["type"] == "STARTUP":
+                        this_mem_str = "战斗开始时获得" + this_mem_str
+                    curr_memory_str += this_mem_str + "<br />"
 
-            # 技能型
-            for skill_mem in skill_memory:
-                this_mem_str = ""
-                # 获取效果
-                this_art_list = []
-                for art_id in skill_mem["artList"]:
-                    for art in json_data["artList"]:
-                        if art["artId"] == art_id:
-                            this_art_list.append(art)
-                            break
-                # 将效果输出
-                for art_id in range(len(this_art_list)):
-                    if art_id > 0:
-                        this_mem_str += "&"
-                    this_art = this_art_list[art_id]
-                    this_mem_str += art_to_str(this_art)
-                    # 判断是否需要输出效果范围(和下一个效果相同则不输出)
-                    this_range = range_to_str(this_art)
-                    if (art_id != len(this_art_list)-1):
-                        next_range = range_to_str(this_art_list[art_id+1])
-                    else:
-                        next_range = ""
-                    if this_range != next_range:
-                        this_mem_str += this_range
+                # 技能型
+                for skill_mem in skill_memory:
+                    this_mem_str = ""
+                    # 获取效果
+                    this_art_list = []
+                    for art_id in skill_mem["artList"]:
+                        for art in json_data["artList"]:
+                            if art["artId"] == art_id:
+                                this_art_list.append(art)
+                                break
+                    # 将效果输出
+                    for art_id in range(len(this_art_list)):
+                        if art_id > 0:
+                            this_mem_str += "&"
+                        this_art = this_art_list[art_id]
+                        this_mem_str += art_to_str(this_art)
+                        # 判断是否需要输出效果范围(和下一个效果相同则不输出)
+                        this_range = range_to_str(this_art)
+                        if (art_id != len(this_art_list)-1):
+                            next_range = range_to_str(this_art_list[art_id+1])
+                        else:
+                            next_range = ""
+                        if this_range != next_range:
+                            this_mem_str += this_range
 
-                this_mem_str = "%s[%dT]" % (this_mem_str, skill_mem["cost"])
-                if "name" in skill_mem.keys():
-                    need_add_skillname = False
-                    for char in SPECIAL_MEMORY_NAME:
-                        if char in skill_mem["name"]:
-                            need_add_skillname = True
-                            break
-                    if need_add_skillname:
-                        this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,skill_mem["name"])
-                if (total_mem_str != ""):
-                    total_mem_str += "<br />"
-                total_mem_str += this_mem_str
+                    this_mem_str = "%s[%dT]" % (this_mem_str, skill_mem["cost"])
+                    if "name" in skill_mem.keys():
+                        need_add_skillname = False
+                        for char in SPECIAL_MEMORY_NAME:
+                            if char in skill_mem["name"]:
+                                need_add_skillname = True
+                                break
+                        if need_add_skillname:
+                            this_mem_str = "{{Ruby|1=%s|2=%s}}"%(this_mem_str,skill_mem["name"])
+                    curr_memory_str += this_mem_str + "<br />"
+                return curr_memory_str
             
+            # 多阶段敌人判断
+            if len(enemy["GIMMICK_MEM"]) > 0:
+                all_mem = copy(enemy["MEM"])
+                overlayed_mem = copy(all_mem)
+                for step in enemy["GIMMICK_MEM"]:
+                    all_mem -= set(step["memoriaIdList"])
+                    overlayed_mem &= set(step["memoriaIdList"])
+                all_mem |= overlayed_mem
+                if len(all_mem) > 0:
+                    total_mem_str += draw_memory(all_mem)
+
+                sorted_step = sorted(enemy["GIMMICK_MEM"], key=lambda x: x["hpRate"] if "hpRate" in x else 100, reverse=True)
+                for step in sorted_step:
+                    hp_rate = step["hpRate"] if "hpRate" in step else 100
+                    total_mem_str += "<b>%d%%HP:</b><br />"%hp_rate
+                    draw_mem_idset = set(step["memoriaIdList"]) - all_mem
+                    total_mem_str += draw_memory(draw_mem_idset)
+            else:
+                total_mem_str += draw_memory(enemy["MEM"])
             # Magia
             if enemy["Magia"] != 0:
                 this_mem_str = '<span class="mw-customtoggle-m%d-%d" style="background:LightGrey;">\
@@ -350,8 +372,6 @@ battle_id, enemy["Magia"], battle_id, enemy["Magia"])
                     if this_range != next_range:
                         this_mem_str += this_range
                 this_mem_str += "</div>"
-                if total_mem_str != "":
-                    total_mem_str += "<br />"
                 total_mem_str += this_mem_str
 
             # Doppel

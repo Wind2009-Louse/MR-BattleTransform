@@ -45,6 +45,7 @@ CHAR_ID_LIST = {
     1041 : "[[莉薇娅·梅黛洛斯]]",
     1042 : "[[小丘比]]",
     1043 : "[[黑江]]",
+    1044 : "[[濑奈命]]",
     1101 : "[[环伊吕波（泳装ver.）]]",
     1102 : "[[八千代·美冬（起始ver.）]]",
     1103 : "[[谣鹤乃]]",
@@ -59,6 +60,7 @@ CHAR_ID_LIST = {
     1118 : "[[天音姐妹（泳装ver.）]]",
     1125 : "[[时女静香（元旦日出ver.）]]",
     1137 : "[[那由他·御影（圣诞ver.）]]",
+    1143 : "[[黑江（泳装ver.）]]",
     1118 : "[[天音姐妹（泳装ver.）]]",
     1201 : "[[小伊吕波]]",
     1202 : "[[七海八千代（七夕ver.）]]",
@@ -68,8 +70,11 @@ CHAR_ID_LIST = {
     1210 : "[[桃子·御魂（人鱼ver.）]]",
     1301 : "[[伊吕波·八千代（决战ver.）]]",
     1302 : "[[七海八千代（动画ver.）]]",
+    1303 : "[[谣鹤乃（动画ver.）]]",
+    1309 : "[[水波玲奈（动画ver.）]]",
     1401 : "[[伊吕波·忧（巫女ver.）]]",
     1501 : "[[环伊吕波（动画ver.）]]",
+    1601 : "[[∞伊吕波]]",
     2001 : "[[鹿目圆]]",
     2002 : "[[晓美焰]]",
     2003 : "[[晓美焰（眼镜ver.）]]",
@@ -82,6 +87,7 @@ CHAR_ID_LIST = {
     2102 : "[[小圆前辈]]",
     2103 : "[[究极小圆前辈]]",
     2104 : "[[圆·伊吕波]]",
+    2106 : "[[鹿目圆（泳装ver.）]]",
     2201 : "[[恶魔小焰]]",
     2300 : "[[晓美焰（泳装ver.）]]",
     2400 : "[[美树沙耶香（晴着ver.）]]",
@@ -218,7 +224,9 @@ CHAR_ID_LIST = {
     6110 : "[[占卜师的魔女]]",
     6112 : "[[狱门的魔女]]",
     6113 : "[[评论家的魔女]]",
+    6211 : "[[镜之魔女]]",
     6212 : "[[镜之魔女]]",
+    6214 : "[[镜之魔女]]",
     6400 : "[[班长的魔女]]",
     6401 : "[[玫瑰园的魔女]]",
     6403 : "[[零食的魔女]]",
@@ -341,7 +349,8 @@ GOOD_LIST = {"AUTO_HEAL" : "自动回复",
              "MP_PLUS_BLAST" : "Blast攻击时获得MP",
              "IMITATE_ATTRIBUTE" : "Variable",
              "NO_COST_CHARGE" : "Charge无消耗",
-             "BARRIER" : "屏障"}
+             "BARRIER" : "屏障",
+             "REFLECT_DEBUFF" : "Debuff反射"}
 CHANCE_GOOD_LIST = ["AVOID","COUNTER","CRITICAL","DAMAGE_DOWN","DAMAGE_UP",
                     "DEFENSE_IGNORED","PROVOKE","PROTECT","PURSUE","INVALID_HEAL_HP",
                     "SKILL_QUICK"]
@@ -475,6 +484,8 @@ def art_to_str(this_art):
             this_art_str = '<span title="%.1f%%">Survive</span>'%(this_art["effect"] / 10)
         elif this_art_str == "屏障":
             this_art_str = '屏障(%d)'%(this_art["effect"])
+        elif this_art_str == "Debuff反射":
+            this_art_str = 'Debuff反射%d回'%(this_art["effect"])
         else:
             effect_not_used = False
         if this_art_str == "保护" and "param" in this_art.keys():
