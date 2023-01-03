@@ -51,6 +51,7 @@ CHAR_ID_LIST = {
     1103 : "[[谣鹤乃]]",
     1104 : "[[谣莎奈]]",
     1105 : "[[小菲莉希亚]]",
+    1106 : "[[梓美冬（童话ver.）]]",
     1107 : "[[灯花·音梦（圣夜ver.）]]",
     1108 : "[[圣阿莉娜]]",
     1109 : "[[小玲奈（偶像ver.）]]",
@@ -59,6 +60,7 @@ CHAR_ID_LIST = {
     1117 : "[[八云御魂（晴着ver.）]]",
     1118 : "[[天音姐妹（泳装ver.）]]",
     1125 : "[[时女静香（元旦日出ver.）]]",
+    1133 : "[[冰室拉比（心魔ver.）]]",
     1137 : "[[那由他·御影（圣诞ver.）]]",
     1143 : "[[黑江（泳装ver.）]]",
     1118 : "[[天音姐妹（泳装ver.）]]",
@@ -68,11 +70,14 @@ CHAR_ID_LIST = {
     1208 : "[[圣阿莉娜]]",
     1209 : "[[玲奈·枫（泳装ver.）]]",
     1210 : "[[桃子·御魂（人鱼ver.）]]",
+    1216 : "[[和泉十七夜（常暗ver.）]]",
+    1217 : "[[八云御魂（常暗ver.）]]",
     1301 : "[[伊吕波·八千代（决战ver.）]]",
     1302 : "[[七海八千代（动画ver.）]]",
     1303 : "[[谣鹤乃（动画ver.）]]",
     1309 : "[[水波玲奈（动画ver.）]]",
     1401 : "[[伊吕波·忧（巫女ver.）]]",
+    1402 : "[[七海八千代（童话ver.）]]",
     1501 : "[[环伊吕波（动画ver.）]]",
     1601 : "[[∞伊吕波]]",
     2001 : "[[鹿目圆]]",
@@ -89,6 +94,7 @@ CHAR_ID_LIST = {
     2104 : "[[圆·伊吕波]]",
     2106 : "[[鹿目圆（泳装ver.）]]",
     2201 : "[[恶魔小焰]]",
+    2203 : "[[晓美焰（晴着ver.）]]",
     2300 : "[[晓美焰（泳装ver.）]]",
     2400 : "[[美树沙耶香（晴着ver.）]]",
     2401 : "[[美树沙耶香（冲浪ver.）]]",
@@ -419,7 +425,9 @@ COST_TRANS = {"みたま特製エナジードリンク" : "饮料",
               "サークルリスト":"名单",
               "憧憬の烙印":"烙印",
               "マギウスの指令書":"指令书",
-              "ハワイ行のチケット":"奖券"}
+              "ハワイ行のチケット":"奖券",
+              "仮面":"假面",
+              "なかよし手帳":"手册"}
 SPECIAL_MEMORY_NAME = ["!","…","、","！","？","災"]
 
 POSITION_TRANSFORM = {1:3, 2:6, 3:9, 4:2, 5:5, 6:8, 7:1, 8:4, 9:7}
@@ -570,6 +578,11 @@ def art_to_str(this_art):
             print("新攻击：%s",str(this_art))
         if "effect" in this_art:
             this_mem_str = '<span title="%.1f%%">%s</span>'%(this_art["effect"] / 10, this_mem_str)
+    elif this_art["code"] == "TURN_ALLY" or this_art["code"] == "TURN_ENEMY":
+        if this_art["sub"] == "BUFF":
+            this_mem_str += "Buff延长"
+        elif this_art["sub"] == "DEBUFF":
+            this_mem_str += "Debuff延长"
     else:
         if this_art["code"] in CODE_MAP:
             temp_str = CODE_MAP[this_art["code"]]
@@ -598,7 +611,21 @@ def range_to_str(this_art):
     # Magia无范围
     if this_art["code"] == "ATTACK":
         return ""
-    if this_art["target"] == "SELF":
+    if this_art["code"] == "TURN_ALLY":
+        if this_art["target"] == "SELF":
+            result_str += "自"
+        elif this_art["target"] == "ALL":
+            result_str += "己全"
+        if "effect" in this_art:
+            result_str += "/%dT" % (this_art["effect"])
+    elif this_art["code"] == "TURN_ENEMY":
+        if this_art["target"] == "ONE":
+            result_str += "敌单"
+        elif this_art["target"] == "ALL":
+            result_str += "敌全"
+        if "effect" in this_art:
+            result_str += "/%dT" % (this_art["effect"])
+    elif this_art["target"] == "SELF":
         if this_art["code"] == "HEAL":
             # 如 (自/10%)
             if this_art["sub"] == "MP" or this_art["sub"] == "MP_DAMAGE":
