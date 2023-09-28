@@ -104,7 +104,7 @@ def enemy_initial():
               "ATK": 0,
               "DEF": 0,
               "ATTR": set(),
-              "MEM":set(),
+              "MEM": [],
               "GIMMICK_MEM": [],
               "Magia": 0,
               "Doppel": 0,
@@ -118,6 +118,10 @@ def get_battle_enemy(json_data, battle_id=0):
     wave_state = []
     # 加载敌人信息
     this_wave_index = 0
+    memoria_dict = {}
+    for mem in json_data["memoriaList"]:
+        memoria_dict[mem['memoriaId']] = mem
+
     for this_wave in json_data["waveList"]:
         this_wave_index += 1
         this_wave_state = {
@@ -150,8 +154,7 @@ def get_battle_enemy(json_data, battle_id=0):
             if "pos" in this_enemy.keys():
                 new_enemy["position"] = [this_enemy["pos"]]
             for mem_id in this_enemy["memoriaList"]:
-                if mem_id not in new_enemy["MEM"]:
-                    new_enemy["MEM"].add(mem_id)
+                new_enemy["MEM"].append(mem_id)
             if "hpRateGimmickList" in this_enemy:
                 new_enemy["GIMMICK_MEM"] = this_enemy["hpRateGimmickList"]
             if "magiaId" in this_enemy:
@@ -237,8 +240,9 @@ def get_battle_enemy(json_data, battle_id=0):
                 curr_memory_str = ""
                 ability_memory = []
                 skill_memory = []
-                for mem in json_data["memoriaList"]:
-                    if mem["memoriaId"] in memoriaIdList:
+                for mem_id in memoriaIdList:
+                    if mem_id in memoria_dict.keys():
+                        mem = memoria_dict[mem_id]
                         if mem["cost"] > 0:
                             skill_memory.append(mem)
                         else:
