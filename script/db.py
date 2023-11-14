@@ -324,7 +324,7 @@ def get_battle_enemy(json_data, battle_id=0):
             
             # 多阶段敌人判断
             if len(enemy["GIMMICK_MEM"]) > 0:
-                all_mem = copy(enemy["MEM"])
+                all_mem = set(copy(enemy["MEM"]))
                 overlayed_mem = copy(all_mem)
                 for step in enemy["GIMMICK_MEM"]:
                     all_mem -= set(step["memoriaIdList"])
