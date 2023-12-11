@@ -1,5 +1,30 @@
 from copy import copy
+from typing import List
 from script.names import *
+
+class FieldData:
+    side : str
+    alignment : str
+    art_list : List[int]
+    def __init__(self, field_dict : dict) -> None:
+        self.side = field_dict["side"]
+        self.alignment = field_dict["alignment"]
+        self.art_list = field_dict["artList"]
+
+class WaveState:
+    begin : int
+    end : int
+    enemies: List
+    positions : List
+    allgirls : bool
+    fields : List[FieldData]
+    def __init__(self, wave_index : int) -> None:
+        self.begin = wave_index
+        self.end = wave_index
+        self.enemies = []
+        self.positions = []
+        self.allgirls = True
+        self.fields = []
 
 def get_quest_header(id_str, json_data, item_data, height=1):
     '''获得关卡内容(名字、难度、AP、掉落)'''
@@ -115,26 +140,26 @@ def get_battle_enemy(json_data, battle_id=0):
     '''输出敌人信息'''
     return_str = ""
     enemy_count = 0
-    wave_state = []
+    wave_state : List[WaveState] = []
     # 加载敌人信息
     this_wave_index = 0
     memoria_dict = {}
     for mem in json_data["memoriaList"]:
         memoria_dict[mem['memoriaId']] = mem
+    art_dict = {}
+    for art in json_data["artList"]:
+        art_dict[art['artId']] = art
+    all_fields = []
+    if "fieldArtList" in json_data:
+        all_fields = json_data["fieldArtList"]
 
     for this_wave in json_data["waveList"]:
         this_wave_index += 1
-        this_wave_state = {
-            "begin":this_wave_index,
-            "end":this_wave_index,
-            "enemies":[],
-            "positions":[],
-            "allgirls":True
-        }
+        this_wave_state = WaveState(this_wave_index)
         for this_enemy in this_wave["enemyList"]:
             # 如果是大型敌人，则记录其位置
             if "enemySizeType" in this_enemy.keys() and this_enemy["enemySizeType"] == "BIG":
-                this_wave_state["positions"].append(this_enemy["pos"])
+                this_wave_state.positions.append(this_enemy["pos"])
             new_enemy = enemy_initial()
             # 判断是否全为少女
             if type(this_enemy["miniCharId"]) != int:
@@ -142,7 +167,7 @@ def get_battle_enemy(json_data, battle_id=0):
             else:
                 enemy_id = this_enemy["miniCharId"]
             if (enemy_id >= 500000 and (enemy_id // 100) not in [7150,7151,7700,7701]) or enemy_id % 10 == 9:
-                this_wave_state["allgirls"] = False
+                this_wave_state.allgirls = False
             # 读取
             new_enemy["HP"] = this_enemy["hp"]
             if new_enemy["HP"] == 0:
@@ -163,7 +188,7 @@ def get_battle_enemy(json_data, battle_id=0):
                 new_enemy["Doppel"] = this_enemy["doppelId"]
             # 判断是否存在相同的敌人
             have_same_enemy = False
-            for enemy_before in this_wave_state["enemies"]:
+            for enemy_before in this_wave_state.enemies:
                 if enemy_before["name"] == new_enemy["name"] \
                 and enemy_before["ATK"] == new_enemy["ATK"] \
                 and enemy_before["DEF"] == new_enemy["DEF"] \
@@ -176,26 +201,42 @@ def get_battle_enemy(json_data, battle_id=0):
                     enemy_before["position"].append(this_enemy["pos"])
                     break
             if not have_same_enemy:
-                this_wave_state["enemies"].append(new_enemy)
+                this_wave_state.enemies.append(new_enemy)
         # 清除标记
-        if not this_wave_state["allgirls"]:
-            for this_enemy in this_wave_state["enemies"]:
+        if not this_wave_state.allgirls:
+            for this_enemy in this_wave_state.enemies:
                 this_enemy["position"] = 0
+        # 获取场地数据
+        for field in all_fields:
+            field_wave = field['wave']
+            if field_wave == this_wave_index:
+                field = FieldData(field)
+                this_wave_state.fields.append(field)
         # 判断是否和上一Wave重复
         if len(wave_state) > 0:
             last_wave = wave_state[len(wave_state)-1]
             isAllSame = True
-            for enemy_this_wave in this_wave_state["enemies"]:
-                if enemy_this_wave not in last_wave["enemies"]:
+            for enemy_this_wave in this_wave_state.enemies:
+                if enemy_this_wave not in last_wave.enemies:
                     isAllSame = False
                     break
-            for enemy_last_wave in last_wave["enemies"]:
-                if enemy_last_wave not in this_wave_state["enemies"]:
+            for enemy_last_wave in last_wave.enemies:
+                if enemy_last_wave not in this_wave_state.enemies:
                     isAllSame = False
                     break
+
+            for field_this_wave in this_wave_state.fields:
+                if field_this_wave not in last_wave.fields:
+                    isAllSame = False
+                    break
+            for field_last_wave in last_wave.fields:
+                if field_last_wave not in this_wave_state.fields:
+                    isAllSame = False
+                    break
+
             # 如果重复，则修改wave index
             if isAllSame:
-                wave_state[len(wave_state) - 1]["end"] = this_wave_index
+                wave_state[len(wave_state) - 1].end = this_wave_index
             else:
                 wave_state.append(this_wave_state)
         else:
@@ -205,16 +246,34 @@ def get_battle_enemy(json_data, battle_id=0):
     for wave_index in range(len(wave_state)):
         # 关卡基本信息
         this_wave = wave_state[wave_index]
-        this_enemy_count = len(this_wave["enemies"])
+        this_enemy_count = len(this_wave.enemies)
         enemy_count += this_enemy_count
-        if this_wave["begin"] == this_wave["end"]:
-            wave_str = "%s"%this_wave["begin"]
+        if this_wave.begin == this_wave.end:
+            wave_str = "%s"%this_wave.begin
         else:
-            wave_str = "%s-%s"%(this_wave["begin"],this_wave["end"])
-        return_str += '| rowspan = "%d" | W%s\n'%(this_enemy_count,wave_str)
+            wave_str = "%s-%s"%(this_wave.begin,this_wave.end)
+        # 场地信息
+        field_str = ""
+        for field in this_wave.fields:
+            cur_field_str = FIELD_SIDE_LIST[field.side]
+            if field.alignment != "ALL":
+                cur_field_str += ATTR_LIST[field.alignment] + "属性"
+
+            # 将效果输出
+            for art_idx in range(len(field.art_list)):
+                if art_idx > 0:
+                    cur_field_str += "&"
+                this_art_id = field.art_list[art_idx]
+                this_art = art_dict[this_art_id]
+                cur_field_str += art_to_str(this_art)
+
+            field_str += "<br />" + cur_field_str
+        if len(field_str) > 0:
+            field_str = "<br />" + field_str
+        return_str += '| rowspan = "%d" | W%s%s\n'%(this_enemy_count,wave_str,field_str)
         # 判断是否为大型敌人
         positions_str = ""
-        if len(this_wave["positions"]) > 0:
+        if len(this_wave.positions) > 0:
             positions_str = "{{阵形"
             attr_color = ATTR_COLOR[list(this_wave["enemies"][0]["ATTR"])[0]]
             for pos in [7,4,1,8,5,2,9,6,3]:
@@ -224,11 +283,11 @@ def get_battle_enemy(json_data, battle_id=0):
             positions_str += "}}"
         # 每个敌人
         total_mem_str = ""
-        for enemy in this_wave["enemies"]:
+        for enemy in this_wave.enemies:
             attr_list = ""
             for each_attr in enemy["ATTR"]:
                 attr_list += each_attr
-            if this_wave["allgirls"]:
+            if this_wave.allgirls:
                 attr_color = ATTR_COLOR[list(enemy["ATTR"])[0]]
                 positions_str = ""
                 if len(enemy["position"]) == 1:
@@ -324,7 +383,7 @@ def get_battle_enemy(json_data, battle_id=0):
             
             # 多阶段敌人判断
             if len(enemy["GIMMICK_MEM"]) > 0:
-                all_mem = set(copy(enemy["MEM"]))
+                all_mem = set(enemy["MEM"])
                 overlayed_mem = copy(all_mem)
                 for step in enemy["GIMMICK_MEM"]:
                     all_mem -= set(step["memoriaIdList"])
